@@ -36,7 +36,7 @@ public class App {
         System.out.print('\t');
         System.out.print(20 + "\t");
         System.out.print("홍길동\t");
-        System.out.print("2022-07-08\r\n");
+        System.out.print("2022-07-08\r\n")
 
         System.out.print(2 + "\t" + "제목입니다2\t" + // 출력만
             11 + "\t" + "홍길동\t" + "2022-07-08\n");
@@ -57,7 +57,7 @@ public class App {
       } else {
         System.out.println("메뉴 번호가 옳지 않습니다!");
       }
-    } //while
+    } // while
     System.out.println("안녕히 가세요!");
     keyboardInput.close();
   }
