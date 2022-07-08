@@ -4,7 +4,7 @@
  */
 package com.bitcamp.board;
 
-public class App {
+public class App2 {
 
   public static void main(String[] args) {
     System.out.println("[게시판 애플리케이션]");
@@ -24,9 +24,7 @@ public class App {
       int menuNo = keyboardInput.nextInt(); // 저장할 메모리 필요! 익스프레이션이란? 결과를 리턴하는 명령문 변수명은 알아보기 쉽게
       keyboardInput.nextLine(); // 입력한 숫자 뒤에 남아 있는 줄바꿈 코드 제거
 
-      if (menuNo == 0) {
-        break;
-      } else if (menuNo == 1) {
+       if (menuNo == 1) {
         System.out.println("[게시글 목록]");
         System.out.println("번호 제목 조회수 작성자 등록일");
 
@@ -58,7 +56,6 @@ public class App {
         System.out.println("메뉴 번호가 옳지 않습니다!");
       }
     } //while
-    System.out.println("안녕히 가세요!");
-    keyboardInput.close();
+  
   }
 }
