@@ -17,6 +17,9 @@ public class Exam0434 {
       // 문법
       //   (char) 정수
       System.out.print(v + i);
+      System.out.print(' ');
+      System.out.print((char) (v + i));
+      System.out.print(' ');
     }
   }
 }
