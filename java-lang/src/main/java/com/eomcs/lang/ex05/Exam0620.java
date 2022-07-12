@@ -22,7 +22,7 @@ public class Exam0620 {
 
     System.out.println(i); // 5
 
-    System.out.println(i--); // 5
+    System.out.println(i--); // 5 <- 빼는게 먼저고 프린트가 수행되지만..?????? 반면 할당연산자는 r-value 값을 처리한후 할당연산자가 실행됨?
     // 위의 문장을 컴파일 하면 다음과 같이 바뀐다.
     //    int temp = i;
     //    i = i - 1;
