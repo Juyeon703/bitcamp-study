@@ -51,8 +51,8 @@ public class App {
           new java.text.SimpleDateFormat("yyyy-MM-dd");
 
 
-        
-        for (int i = 0; i < boardCount; i++) {
+        int i = 0;
+        while (i < boardCount) {
           // 밀리초 데이터 => Date 도구함으로 날짜 정보를 설정
           java.util.Date date = new java.util.Date(createdDate[i]);
 
@@ -61,6 +61,8 @@ public class App {
 
           System.out.printf("%d\t%s\t%d\t%s\t%s\n", // 포멧에 따라 출력
           no[i], title[i], viewCount[i], writer[i], dateStr);
+
+          i++; // 배열 인덱스를 증가시킨다
         }
 
       } else if (menuNo == 2) { // else { if {} else {} } => else if {} else{} 대괄호 생략으로 else if 된거임
@@ -72,12 +74,13 @@ public class App {
 
         //해당 번호의 게시글이 몇 번 배열에 들어 있는지 알아내기
         int boardIndex = -1;
-        
-        for (int i = 0; i < boardCount; i++) {
+        int i = 0;
+        while ( i < boardCount) {
           if (no[i] == boardNo) {
             boardIndex = i;
             break;
           }
+          i++;
         }
         // 사용자가 입력한 번호에 해당하는 게시글을 못찾았다면
         if(boardIndex == -1) {

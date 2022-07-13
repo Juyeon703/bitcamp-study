@@ -18,3 +18,5 @@ public class Exam0412 {
     System.out.println(i);
   }
 }
+
+//이런 경우는 for문보다 while문을 쓰는게 더 나음

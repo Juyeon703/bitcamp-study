@@ -18,3 +18,5 @@ public class Exam0413 {
 
   }
 }
+
+//for ( ; ; ) = while (true)
