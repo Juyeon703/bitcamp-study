@@ -6,10 +6,10 @@ package com.bitcamp.board;
 public class Prompt {
 
   static java.util.Scanner keyboardInput = new java.util.Scanner(System.in);
- 
+
   //메서드를 통해 특정 코드의 복잡함을 감출 수 있다. -> encapsulation 캡슐화
   static int inputInt() {
-/*  사용자로부터 메뉴 번호를 입력 받기
+    /*  사용자로부터 메뉴 번호를 입력 받기
     방법 1 : */
     String str = keyboardInput.nextLine();
     return Integer.parseInt(str);  //"123" => 123, "5" => 5, "ok" => 실행오류
@@ -24,7 +24,7 @@ public class Prompt {
     System.out.print(title);
     String str = keyboardInput.nextLine();
     return Integer.parseInt(str);  
-   }
+  }
 
   static String inputString() {
     return keyboardInput.nextLine();
