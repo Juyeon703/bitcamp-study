@@ -112,7 +112,71 @@ public class BoardHandler {
     boards[boardCount] = board;
 
     boardCount++;
+    System.out.println("게시글을 등록했습니다.");
   }
+
+  static void processDelete() {
+    System.out.println("[게시글 삭제]");
+    System.out.println();
+
+    int boardNo = Prompt.inputInt("삭제할 게시글 번호? "); 
+
+    int boardIndex = -1;
+    for (int i = 0; i < boardCount; i++) {
+      if (boards[i].no == boardNo) {
+        boardIndex = i;
+        break;
+      }
+    }
+
+    if(boardIndex == -1) {
+      System.out.println("해당 번호의 게시글이 없습니다!");
+      return;
+    }
+
+    for(int i = boardIndex + 1; i < boardCount; i++) {
+      boards[i - 1] = boards[i];
+    }
+
+
+    boards[--boardCount] = null;
+    System.out.println("게시글을 삭제합니다.");
+  }
+
+
+  public static void processUpdate() {
+    System.out.println("[게시글 변경]");
+    System.out.println();
+
+    int boardNo = Prompt.inputInt("변경할 게시글 번호? "); 
+
+    Board board = null;
+    for (int i = 0; i < boardCount; i++) {
+      if (boards[i].no == boardNo) {
+        board = boards[i];
+        break;
+      }
+    }
+
+    if(board == null) {
+      System.out.println("해당 번호의 게시글이 없습니다!");
+      return;
+    }
+
+    String newTitle = Prompt.inputString("제목?(" + board.title +") ");
+    String newContent = Prompt.inputString(String.format("내용?(%s) ", board.content));
+
+    String input = Prompt.inputString("변경하시겠습니까?(y/n)");
+    if (input.equals("y")) {
+      board.title = newTitle;
+      board.content = newContent;
+      System.out.println("변경했습니다.");
+    } else {
+      System.out.println("변경 취소했습니다.");
+    }
+
+  }
+
 
 } //class
 
