@@ -26,5 +26,6 @@ public class Exam0340 {
     MyObject ref = swap(a, b);
 
     System.out.printf("main(): ref.a=%d, ref.b=%d\n", ref.a, ref.b);
+    System.out.printf("main(): a=%d, b=%d\n", a, b);
   }
 }

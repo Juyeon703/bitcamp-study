@@ -19,6 +19,12 @@ public class Exam0114 {
     Score s = createScore("홍길동", 100, 100, 100);
 
     printScore(s);
+
+    Score s2 = createScore("임꺽정", 90, 80, 70);
+    printScore(s2);
+
+    Score s3 = createScore("유관순", 80, 70, 65);
+    printScore(s3);
   }
 
   static void printScore(Score s) {
@@ -29,6 +35,8 @@ public class Exam0114 {
   // 클래스를 이용하면 성적 정보를 하나로 묶어 리턴할 수 있다.
   // - Score 인스턴스를 생성하여 리턴한다.
   // - 더 정확하게 표현하면, Score 인스턴스를 생성한 후 그 주소를 리턴한다.
+
+  //createdScore = 팩토리 메서드 디자인패턴?
   static Score createScore(String name, int kor, int eng, int math) {
     Score s = new Score();
 
