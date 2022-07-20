@@ -21,6 +21,39 @@ public class BoardHandler {
   //Board 인스턴스의 주소를 저장할 레퍼런스 배열을 만든다.
   static Board[] boards = new Board[SIZE];
 
+  static void execute() {
+    while (true) {
+      System.out.println("게시판:");
+      System.out.println("  1: 게시글 목록");
+      System.out.println("  2: 게시글 상세보기");
+      System.out.println("  3: 게시글 등록");
+      System.out.println("  4: 게시글 삭제");
+      System.out.println("  5: 게시글 변경");
+      System.out.println();
+      int menuNo = Prompt.inputInt("메뉴를 선택하세요[1..5](0: 이전) ");
+      displayHeadLine();
+
+      switch (menuNo) {
+        case 0 : return;
+        case 1 : processList(); break;
+        case 2 : processDetail(); break;
+        case 3 : processInput(); break;
+        case 4 : processDelete(); break;
+        case 5 : processUpdate(); break;
+        default : System.out.println("메뉴 번호가 옳지 않습니다!");
+      }
+      displayBlankLine();
+    } //게시판 while
+  }
+
+  static void displayHeadLine() {
+    System.out.println("------------------------------------------------");
+  }
+
+  static void displayBlankLine() {
+    System.out.println();
+  }
+
   static void processList() {
     //날짜 정보에서 값을 추출하여 특정 포맷의 문자열로 만들어줄 도구를 준비
     java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
@@ -174,7 +207,6 @@ public class BoardHandler {
     } else {
       System.out.println("변경 취소했습니다.");
     }
-
   }
 
 
