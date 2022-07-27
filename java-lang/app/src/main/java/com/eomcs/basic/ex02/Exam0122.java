@@ -1,7 +1,7 @@
 // String - String.equals() vs Object.equals()
 package com.eomcs.basic.ex02;
 
-public class Exam0122 {
+public class Exam0122 extends Object{
 
   static class Member {
     String name;

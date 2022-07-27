@@ -40,13 +40,7 @@ public class BoardHandler {
   static int boardCount = 0;
   static final int SIZE = 3;
 
-  static int[] no = new int[SIZE]; 
-  static String[] title = new String[SIZE];
-  static String[] content = new String[SIZE];
-  static String[] writer = new String[SIZE];
-  static String[] password = new String[SIZE];
-  static int[] viewCount = new int[SIZE];
-  static long[] createdDate = new long[SIZE];
+  static Board[] boards = new Board[SIZE];
 
   static void processBoardList() {
     java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
@@ -54,9 +48,10 @@ public class BoardHandler {
     System.out.println("[게시글 목록]");
     System.out.println("번호 제목 조회수 작성사 등록일");
     for (int i = 0; i < boardCount; i++) {
-      java.util.Date date = new java.util.Date(createdDate[i]);
+      Board board = boards[i];
+      java.util.Date date = new java.util.Date(board.createdDate);
       String dateStr = formatter.format(date);       
-      System.out.printf("%d\t%s\t%d\t%s\t%s\n", no[i], title[i], viewCount[i], writer[i], dateStr);
+      System.out.printf("%d\t%s\t%d\t%s\t%s\n", board.no, board.title, board.viewCount, board.writer, dateStr);
     }
   }
 
@@ -67,7 +62,7 @@ public class BoardHandler {
 
     int boardIndex = -1;
     for (int i = 0; i < boardCount; i++) {
-      if (no[i] == boardNo) {
+      if (boards[i].no == boardNo) {
         boardIndex = i;
         break;
       }

@@ -1,17 +1,17 @@
 package com.bitcamp.board.dao;
 
-public class ObjectList {
+public class ObjectList14 {
   private static final int DEFAULT_SIZE = 3;
 
   // 서브 클래스에서 직접 접근할 수 있도록 접근 범위를 넓힌다.
   protected int length; 
   protected Object[] list; //protected: 같은 패키지 + 서브 클래스인 경우 접근 가능
 
-  public ObjectList() {
+  public ObjectList14() {
     this.list = new Object[DEFAULT_SIZE];
   }
 
-  public ObjectList(int initCapacity) {
+  public ObjectList14(int initCapacity) {
     this.list = new Object[initCapacity];
   }
 
