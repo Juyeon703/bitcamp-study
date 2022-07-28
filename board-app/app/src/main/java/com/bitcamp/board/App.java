@@ -34,31 +34,41 @@ public class App {
       System.out.println("  5: 일기장");
       System.out.println("  6: 회원");
       System.out.println();
-      int mainMenuNo = Prompt.inputInt("메뉴를 선택하세요[1..6](0: 종료) ");
 
-      switch (mainMenuNo) {
-        case 0: break loop;
-        case 1: // 게시판
-          boardHandler.execute();
-          break;
-        case 2: // 독서록
-          readingHandler.execute();
-          break;
-        case 3: // 방명록
-          visitHandler.execute();
-          break;
-        case 4: // 공지사항
-          noticeHandler.execute();
-          break;
-        case 5: // 일기장
-          diaryHandler.execute();
-          break;
-        case 6: // 회원
-          memberHandler.execute();
-          break;
-        default: System.out.println("메뉴 번호가 옳지 않습니다!");
-      } // switch
 
+      /*// 메뉴 번호를 잘못 입력하는 상황이 발생했을 때
+      //inputInt() 리턴 값은 -12121212를 리턴할 것이다.
+      // 이 경우를 고려해서 처리한다.
+      if (mainMenuNo == -12121212) {
+        continue;
+        }*/
+      try {
+        int mainMenuNo = Prompt.inputInt("메뉴를 선택하세요[1..6](0: 종료) ");
+        switch (mainMenuNo) {
+          case 0: break loop;
+          case 1: // 게시판
+            boardHandler.execute();
+            break;
+          case 2: // 독서록
+            readingHandler.execute();
+            break;
+          case 3: // 방명록
+            visitHandler.execute();
+            break;
+          case 4: // 공지사항
+            noticeHandler.execute();
+            break;
+          case 5: // 일기장
+            diaryHandler.execute();
+            break;
+          case 6: // 회원
+            memberHandler.execute();
+            break;
+          default: System.out.println("메뉴 번호가 옳지 않습니다!");
+        } // switch
+      } catch (Throwable ex) {
+        System.out.println("입력 값이 옳지 않습니다!!!");
+      }
 
     } // while
 

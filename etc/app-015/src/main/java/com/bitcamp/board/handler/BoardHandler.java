@@ -34,25 +34,21 @@ public class BoardHandler {
       System.out.println("  5: 변경");
       System.out.println();
 
-      try {
-        int menuNo = Prompt.inputInt("메뉴를 선택하세요[1..5](0: 이전) ");
+      int menuNo = Prompt.inputInt("메뉴를 선택하세요[1..5](0: 이전) ");
+      displayHeadline();
 
-        displayHeadline();
-
-        // 다른 인스턴스 메서드를 호출할 때 this에 보관된 인스턴스 주소를 사용한다. 
-        switch (menuNo) {
-          case 0: return;
-          case 1: this.onList(); break;
-          case 2: this.onDetail(); break;
-          case 3: this.onInput(); break;
-          case 4: this.onDelete(); break;
-          case 5: this.onUpdate(); break;
-          default: System.out.println("메뉴 번호가 옳지 않습니다!");
-        }
-        displayBlankLine();
-      } catch (Throwable ex) {
-        System.out.printf("예외 발생 : %s\n", ex.getMessage());
+      // 다른 인스턴스 메서드를 호출할 때 this에 보관된 인스턴스 주소를 사용한다. 
+      switch (menuNo) {
+        case 0: return;
+        case 1: this.onList(); break;
+        case 2: this.onDetail(); break;
+        case 3: this.onInput(); break;
+        case 4: this.onDelete(); break;
+        case 5: this.onUpdate(); break;
+        default: System.out.println("메뉴 번호가 옳지 않습니다!");
       }
+
+      displayBlankLine();
     } // 게시판 while
   }
 
@@ -73,8 +69,8 @@ public class BoardHandler {
     // boardList 인스턴스에 들어 있는 데이터 목록을 가져온다.
     Object[] list = this.boardList.toArray();
 
-    for (Object obj : list) {
-      Board board = (Board) obj;
+    for (Object item : list) {
+      Board board = (Board) item;
       Date date = new Date(board.createdDate);
       String dateStr = formatter.format(date); 
       System.out.printf("%d\t%s\t%d\t%s\t%s\n",
@@ -83,18 +79,11 @@ public class BoardHandler {
 
   }
 
-  private void onDetail() throws Throwable {
+  private void onDetail() {
     System.out.printf("[%s 상세보기]\n", this.title);
 
-    int boardNo = 0;
-    while (true) {
-      try {
-        boardNo = Prompt.inputInt("조회할 게시글 번호? ");
-        break;
-      } catch(Throwable ex) {
-        System.out.println("입력 값이 옳지 않습니다.");
-      }
-    }
+    int boardNo = Prompt.inputInt("조회할 게시글 번호? ");
+
     // 해당 번호의 게시글이 몇 번 배열에 들어 있는지 알아내기
     Board board = this.boardList.get(boardNo);
 
@@ -111,7 +100,8 @@ public class BoardHandler {
     System.out.printf("작성자: %s\n", board.writer);
     Date date = new Date(board.createdDate);
     System.out.printf("등록일: %tY-%1$tm-%1$td %1$tH:%1$tM\n", date);
-  } 
+
+  }
 
   private void onInput() {
     System.out.printf("[%s 등록]\n", this.title);
@@ -130,36 +120,22 @@ public class BoardHandler {
     System.out.println("게시글을 등록했습니다.");
   }
 
-  private void onDelete() throws Throwable{
+  private void onDelete() {
     System.out.printf("[%s 삭제]\n", this.title);
-    int boardNo = 0;
-    while (true) {
-      try {
-        boardNo = Prompt.inputInt("삭제할 게시글 번호? ");
-        break;
-      } catch(Throwable ex) {
-        System.out.println("입력 값이 옳지 않습니다!");
-      }
-    }
+
+    int boardNo = Prompt.inputInt("삭제할 게시글 번호? ");
 
     if (boardList.remove(boardNo)) {
       System.out.println("삭제하였습니다.");
     } else {
       System.out.println("해당 번호의 게시글이 없습니다!");
-    } 
-  } 
-
-  private void onUpdate() throws Throwable {
-    System.out.printf("[%s 변경]\n", this.title);
-    int boardNo = 0;
-    while (true) {
-      try {
-        boardNo = Prompt.inputInt("변경할 게시글 번호? ");
-        break;
-      } catch(Throwable ex) {
-        System.out.println("입력 값이 옳지 않습니다!");
-      }
     }
+  }
+
+  private void onUpdate() {
+    System.out.printf("[%s 변경]\n", this.title);
+
+    int boardNo = Prompt.inputInt("변경할 게시글 번호? ");
 
     Board board = this.boardList.get(boardNo);
 
@@ -179,7 +155,7 @@ public class BoardHandler {
     } else {
       System.out.println("변경 취소했습니다.");
     }
-  } 
+  }
 }
 
 
