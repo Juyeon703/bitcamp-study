@@ -10,7 +10,7 @@ public class BoardHandler {
   String title;
 
   //게시글 목록을 관리할 객체 준비
-  BoardList boardList = new BoardList();  
+  BoardList111 boardList = new BoardList111();  
   public BoardHandler() {
     this.title = "게시판";
   }
@@ -32,7 +32,7 @@ public class BoardHandler {
       System.out.println("  4: 삭제");
       System.out.println("  5: 변경");
       System.out.println();
-      int menuNo = Prompt.inputInt("메뉴를 선택하세요[1..5](0: 이전) ");
+      int menuNo = Prompt111.inputInt("메뉴를 선택하세요[1..5](0: 이전) ");
       displayHeadLine();
 
       // 다른 인스턴스 메서드를 호출할 때 this에 보관된 인스턴스 주소를 사용한다.
@@ -68,9 +68,9 @@ public class BoardHandler {
 
 
     //boardList 인스턴스에 들어 있는 데이터 목록을 가져온다.
-    Board[] list = this.boardList.toArray();
+    Board111[] list = this.boardList.toArray();
 
-    for (Board board : list) {
+    for (Board111 board : list) {
       Date date = new Date(board.createdDate);
       String dateStr = formatter.format(date); 
       System.out.printf("%d\t%s\t%d\t%s\t%s\n", // 포멧에 따라 출력
@@ -83,10 +83,10 @@ public class BoardHandler {
     System.out.printf("[%s 상세보기]\n", this.title);
     System.out.println();
 
-    int boardNo = Prompt.inputInt("조회할 게시글 번호? "); 
+    int boardNo = Prompt111.inputInt("조회할 게시글 번호? "); 
 
     //해당 번호의 게시글이 몇 번 배열에 들어 있는지 알아내기
-    Board board = this.boardList.get(boardNo);
+    Board111 board = this.boardList.get(boardNo);
 
 
     // 사용자가 입력한 번호에 해당하는 게시글을 못찾았다면
@@ -110,11 +110,11 @@ public class BoardHandler {
     System.out.printf("[%s 등록]\n", this.title);
     System.out.println();
 
-    Board board = new Board();
-    board.title = Prompt.inputString("제목? ");
-    board.content = Prompt.inputString("내용? ");
-    board.writer = Prompt.inputString("작성자? ");
-    board.password = Prompt.inputString("암호? ");
+    Board111 board = new Board111();
+    board.title = Prompt111.inputString("제목? ");
+    board.content = Prompt111.inputString("내용? ");
+    board.writer = Prompt111.inputString("작성자? ");
+    board.password = Prompt111.inputString("암호? ");
     board.viewCount = 0;
     board.createdDate = System.currentTimeMillis();
 
@@ -128,7 +128,7 @@ public class BoardHandler {
     System.out.printf("[%s 삭제]\n", this.title);
     System.out.println();
 
-    int boardNo = Prompt.inputInt("삭제할 게시글 번호? "); 
+    int boardNo = Prompt111.inputInt("삭제할 게시글 번호? "); 
 
     if (boardList.remove(boardNo)) {
       System.out.println("삭제하였습니다.");
@@ -141,19 +141,19 @@ public class BoardHandler {
     System.out.printf("[%s 변경]\n", this.title);
     System.out.println();
 
-    int boardNo = Prompt.inputInt("변경할 게시글 번호? "); 
+    int boardNo = Prompt111.inputInt("변경할 게시글 번호? "); 
 
-    Board board = this.boardList.get(boardNo);
+    Board111 board = this.boardList.get(boardNo);
 
     if(board == null) {
       System.out.println("해당 번호의 게시글이 없습니다!");
       return;
     }
 
-    String newTitle = Prompt.inputString("제목?(" + board.title +") ");
-    String newContent = Prompt.inputString(String.format("내용?(%s) ", board.content));
+    String newTitle = Prompt111.inputString("제목?(" + board.title +") ");
+    String newContent = Prompt111.inputString(String.format("내용?(%s) ", board.content));
 
-    String input = Prompt.inputString("변경하시겠습니까?(y/n)");
+    String input = Prompt111.inputString("변경하시겠습니까?(y/n)");
     if (input.equals("y")) {
       board.title = newTitle;
       board.content = newContent;

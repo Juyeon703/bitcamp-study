@@ -9,12 +9,12 @@ public class App {
   public static void main(String[] args) {
     welcome();
 
-    BoardHandler boardHandler = new BoardHandler("게시판");
-    BoardHandler readingHandler = new BoardHandler("독서록");
-    BoardHandler visitHandler = new BoardHandler("방명록");
-    BoardHandler noticeHandler = new BoardHandler("공지사항");
-    BoardHandler diaryHandler = new BoardHandler("일기장");
-    MemberHandler memberHandler = new MemberHandler("회원");
+    BoardHandler111 boardHandler = new BoardHandler111("게시판");
+    BoardHandler111 readingHandler = new BoardHandler111("독서록");
+    BoardHandler111 visitHandler = new BoardHandler111("방명록");
+    BoardHandler111 noticeHandler = new BoardHandler111("공지사항");
+    BoardHandler111 diaryHandler = new BoardHandler111("일기장");
+    MemberHandler111 memberHandler = new MemberHandler111("회원");
 
     loop : while (true) {
       // 메인 메뉴 출력
@@ -25,7 +25,7 @@ public class App {
       System.out.println("  4: 공지사항");
       System.out.println("  5: 일기장");
       System.out.println("  6: 회원");
-      int mainMenuNo = Prompt.inputInt("메뉴를 선택하세요[1..6](0: 종료) ");
+      int mainMenuNo = Prompt111.inputInt("메뉴를 선택하세요[1..6](0: 종료) ");
       switch (mainMenuNo) {
         case 0 : break loop;
         case 1 : boardHandler.execute(); break;
@@ -38,7 +38,7 @@ public class App {
       }
     } // while 
     System.out.println("안녕히 가세요!");
-    Prompt.close();
+    Prompt111.close();
   } //main
 
 

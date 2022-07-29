@@ -10,7 +10,7 @@ public class MemberHandler {
   String title;
 
   //게시글 목록을 관리할 객체 준비
-  MemberList memberList = new MemberList();  
+  MemberList111 memberList = new MemberList111();  
  
   // 제목을 입력 받는 생성자
   MemberHandler(String title) {
@@ -28,7 +28,7 @@ public class MemberHandler {
       System.out.println("  4: 삭제");
       System.out.println("  5: 변경");
       System.out.println();
-      int menuNo = Prompt.inputInt("메뉴를 선택하세요[1..5](0: 이전) ");
+      int menuNo = Prompt111.inputInt("메뉴를 선택하세요[1..5](0: 이전) ");
       displayHeadLine();
 
       switch (menuNo) {
@@ -57,9 +57,9 @@ public class MemberHandler {
     System.out.println("번호  이름  이메일");
 
 
-    Member[] list = this.memberList.toArray();
+    Member111[] list = this.memberList.toArray();
 
-    for (Member member : list) {
+    for (Member111 member : list) {
       System.out.printf("%d\t%s\t%s\n", // 포멧에 따라 출력
           member.no, member.name, member.email);
     }
@@ -70,9 +70,9 @@ public class MemberHandler {
     System.out.printf("[%s 상세보기]\n", this.title);
     System.out.println();
 
-    int memberNo = Prompt.inputInt("조회할 회원 번호? "); 
+    int memberNo = Prompt111.inputInt("조회할 회원 번호? "); 
 
-    Member member = this.memberList.get(memberNo);
+    Member111 member = this.memberList.get(memberNo);
 
 
     if(member == null) {
@@ -93,10 +93,10 @@ public class MemberHandler {
     System.out.printf("[%s 등록]\n", this.title);
     System.out.println();
 
-    Member member = new Member();
-    member.name = Prompt.inputString("이름? ");
-    member.email = Prompt.inputString("이메일? ");
-    member.password = Prompt.inputString("암호? ");
+    Member111 member = new Member111();
+    member.name = Prompt111.inputString("이름? ");
+    member.email = Prompt111.inputString("이메일? ");
+    member.password = Prompt111.inputString("암호? ");
     member.createdDate = System.currentTimeMillis();
 
     this.memberList.add(member);
@@ -108,7 +108,7 @@ public class MemberHandler {
     System.out.printf("[%s 삭제]\n", this.title);
     System.out.println();
 
-    int memberNo = Prompt.inputInt("삭제할 회원 번호? "); 
+    int memberNo = Prompt111.inputInt("삭제할 회원 번호? "); 
 
     if (memberList.remove(memberNo)) {
       System.out.println("삭제하였습니다.");
@@ -121,19 +121,19 @@ public class MemberHandler {
     System.out.printf("[%s 변경]\n", this.title);
     System.out.println();
 
-    int memberNo = Prompt.inputInt("변경할 회원 번호? "); 
+    int memberNo = Prompt111.inputInt("변경할 회원 번호? "); 
 
-    Member member = this.memberList.get(memberNo);
+    Member111 member = this.memberList.get(memberNo);
 
     if(member == null) {
       System.out.println("해당 번호의 회원이 없습니다!");
       return;
     }
 
-    String newName = Prompt.inputString("이름?(" + member.name +") ");
-    String newEmail = Prompt.inputString(String.format("이메일?(%s) ", member.email));
+    String newName = Prompt111.inputString("이름?(" + member.name +") ");
+    String newEmail = Prompt111.inputString(String.format("이메일?(%s) ", member.email));
 
-    String input = Prompt.inputString("변경하시겠습니까?(y/n)");
+    String input = Prompt111.inputString("변경하시겠습니까?(y/n)");
     if (input.equals("y")) {
       member.name = newName;
       member.email = newEmail;

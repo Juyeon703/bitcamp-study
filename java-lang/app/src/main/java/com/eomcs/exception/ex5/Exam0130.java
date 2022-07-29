@@ -28,7 +28,7 @@ public class Exam0130 {
       return board;
     } catch (Exception 원본오류) {
       // 예외가 발생되면 원본 예외를 그대로 던지지 말고,
-      // 예외를 직관적으로 알아볼 수 있는 예외 객체를 던진다.
+      // 예외의 의미를 직관적으로 파악할 수 있도록 예외 객체를 만들어 던진다.
       // 즉 게시물 관리 작업을 하다가 오류가 발생했음을
       // 직관적으로 알게 한다.
       // 어떤 방법?
@@ -41,6 +41,7 @@ public class Exam0130 {
 
   public static void main(String[] args) {
     Board board = read();
+    // read() 메서드의 선언부를 보면 BoardException 던진다고 되어있다.
     System.out.println("---------------------");
     System.out.printf("번호: %d\n", board.getNo());
     System.out.printf("제목: %s\n", board.getTitle());

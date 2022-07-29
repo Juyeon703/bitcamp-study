@@ -25,7 +25,7 @@ public class BoardHandler {
   static long[] createdDate = new long[SIZE]; */
 
   //Board 인스턴스의 주소를 저장할 레퍼런스 배열을 만든다.
-  Board[] boards;
+  Board111[] boards;
   String title;
 
   // 클래스 생성자가 정의되어 있지 않으면
@@ -35,17 +35,17 @@ public class BoardHandler {
   //  - 메서드 몸체는 비어 있다.
   //  - 메서드의 접근 범위는 무조건 public이다.
   public BoardHandler() {
-    this.boards = new Board[DEFAULT_SIZE];
+    this.boards = new Board111[DEFAULT_SIZE];
     this.title = "게시판";
   }
   // 제목을 입력 받는 생성자
   BoardHandler(String title) {
-    this.boards = new Board[DEFAULT_SIZE];
+    this.boards = new Board111[DEFAULT_SIZE];
     this.title = title;
   }
   // 배열의 기본 크기를 설정하는 생성자
   BoardHandler(int initSize) {
-    this.boards = new Board[initSize];
+    this.boards = new Board111[initSize];
     this.title = "게시판";
   }
 
@@ -61,7 +61,7 @@ public class BoardHandler {
       System.out.println("  4: 삭제");
       System.out.println("  5: 변경");
       System.out.println();
-      int menuNo = Prompt.inputInt("메뉴를 선택하세요[1..5](0: 이전) ");
+      int menuNo = Prompt111.inputInt("메뉴를 선택하세요[1..5](0: 이전) ");
       displayHeadLine();
 
       // 다른 인스턴스 메서드를 호출할 때 this에 보관된 인스턴스 주소를 사용한다.
@@ -96,7 +96,7 @@ public class BoardHandler {
     System.out.println("번호  제목  조회수  작성자  등록일");
 
     for (int i = 0; i < this.boardCount; i++) {
-      Board board = this.boards[i];
+      Board111 board = this.boards[i];
       // 밀리초 데이터 => Date 도구함으로 날짜 정보를 설정
       Date date = new Date(board.createdDate);
 
@@ -113,10 +113,10 @@ public class BoardHandler {
     System.out.printf("[%s 상세보기]\n", this.title);
     System.out.println();
 
-    int boardNo = Prompt.inputInt("조회할 게시글 번호? "); 
+    int boardNo = Prompt111.inputInt("조회할 게시글 번호? "); 
 
     //해당 번호의 게시글이 몇 번 배열에 들어 있는지 알아내기
-    Board board = null;
+    Board111 board = null;
     for (int i = 0; i < this.boardCount; i++) {
       if (this.boards[i].no == boardNo) {
         board = this.boards[i];
@@ -158,7 +158,7 @@ public class BoardHandler {
       // 새로만들 배열의 크기를 계산한다.
       int newSize = this.boards.length + (this.boards.length >> 1);
       // 새 배열 준비
-      Board[] newArray = new Board[newSize];
+      Board111[] newArray = new Board111[newSize];
 
       //기존 배열의 값을 새 배열에 넣는다.
       for (int i = 0; i < this.boards.length; i++) {
@@ -168,11 +168,11 @@ public class BoardHandler {
       this.boards = newArray;
     }
 
-    Board board = new Board();
-    board.title = Prompt.inputString("제목? ");
-    board.content = Prompt.inputString("내용? ");
-    board.writer = Prompt.inputString("작성자? ");
-    board.password = Prompt.inputString("암호? ");
+    Board111 board = new Board111();
+    board.title = Prompt111.inputString("제목? ");
+    board.content = Prompt111.inputString("내용? ");
+    board.writer = Prompt111.inputString("작성자? ");
+    board.password = Prompt111.inputString("암호? ");
 
     /*        if (boardCount == 0) {
         no[boardCount] = 1;
@@ -195,7 +195,7 @@ public class BoardHandler {
     System.out.printf("[%s 삭제]\n", this.title);
     System.out.println();
 
-    int boardNo = Prompt.inputInt("삭제할 게시글 번호? "); 
+    int boardNo = Prompt111.inputInt("삭제할 게시글 번호? "); 
 
     int boardIndex = -1;
     for (int i = 0; i < this.boardCount; i++) {
@@ -223,9 +223,9 @@ public class BoardHandler {
     System.out.printf("[%s 변경]\n", this.title);
     System.out.println();
 
-    int boardNo = Prompt.inputInt("변경할 게시글 번호? "); 
+    int boardNo = Prompt111.inputInt("변경할 게시글 번호? "); 
 
-    Board board = null;
+    Board111 board = null;
     for (int i = 0; i < this.boardCount; i++) {
       if (this.boards[i].no == boardNo) {
         board = this.boards[i];
@@ -238,10 +238,10 @@ public class BoardHandler {
       return;
     }
 
-    String newTitle = Prompt.inputString("제목?(" + board.title +") ");
-    String newContent = Prompt.inputString(String.format("내용?(%s) ", board.content));
+    String newTitle = Prompt111.inputString("제목?(" + board.title +") ");
+    String newContent = Prompt111.inputString(String.format("내용?(%s) ", board.content));
 
-    String input = Prompt.inputString("변경하시겠습니까?(y/n)");
+    String input = Prompt111.inputString("변경하시겠습니까?(y/n)");
     if (input.equals("y")) {
       board.title = newTitle;
       board.content = newContent;

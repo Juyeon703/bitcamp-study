@@ -5,21 +5,21 @@ package com.bitcamp.board;
 public class MemberList {
   static final int DEFAULT_SIZE = 3; 
   int memberCount; 
-  Member[] members;
+  Member111[] members;
   int no = 0;
 
   //생성자
   MemberList() {
-    this.members = new Member[DEFAULT_SIZE];
+    this.members = new Member111[DEFAULT_SIZE];
   }
 
   MemberList(int initCapacity) {
-    this.members = new Member[initCapacity];
+    this.members = new Member111[initCapacity];
   }
 
   //목록에 저장된 인스턴스를 꺼내서 리턴한다.
-  Member[] toArray() {
-    Member[] arr = new Member[this.memberCount];
+  Member111[] toArray() {
+    Member111[] arr = new Member111[this.memberCount];
     for (int i = 0; i < arr.length; i++) {
       arr[i] = this.members[i];
     }
@@ -27,7 +27,7 @@ public class MemberList {
   }
 
   //게시글 번호에 해당하는 Board 인스턴스를 찾아 리턴한다.
-  Member get(int memberNo) {
+  Member111 get(int memberNo) {
     for (int i = 0; i < this.memberCount; i++) {
       if (this.members[i].no == memberNo) {
         return this.members[i];
@@ -37,7 +37,7 @@ public class MemberList {
   }
 
   //Board 인스턴스를 배열에 저장한다.
-  void add(Member member) {
+  void add(Member111 member) {
     if (this.memberCount == this.members.length) {
       grow();
     }
@@ -70,7 +70,7 @@ public class MemberList {
 
   void grow() {
     int newSize = this.members.length + (this.members.length >> 1);
-    Member[] newArray = new Member[newSize];
+    Member111[] newArray = new Member111[newSize];
     for (int i = 0; i < this.members.length; i++) {
       newArray[i] = this.members[i];
     }

@@ -1,6 +1,6 @@
 package com.bitcamp.board.dao;
 
-import com.bitcamp.board.domain.Board;
+import com.bitcamp.board.domain.Board111;
 
 // 게시글 목록을 관리하는 역할
 //
@@ -11,11 +11,11 @@ public class BoardList14 extends ObjectList14{
   // 수퍼 클래스의 get() 메서드를 BoardList에 맞게 재정의 한다.
   //  => 파라미터는 인덱스가 아닌 게시글 번호가 되게 한다.
   @Override
-  public Board get(int boardNo) {
+  public Board111 get(int boardNo) {
 
     for (int i = 0; i < this.length; i++) {
       //Object 배열에 실제 들어 있는 것은 Board라고 컴파일러에게 알린다.
-      Board board = (Board) this.list[i]; 
+      Board111 board = (Board111) this.list[i]; 
       if (board.no == boardNo) {
         return board;
       }
@@ -28,7 +28,7 @@ public class BoardList14 extends ObjectList14{
   // => Overriding 이라 부른다.
   @Override
   public void add(Object obj) {
-    Board board = (Board) obj;
+    Board111 board = (Board111) obj;
     board.no = nextNo();
 
     //재정의하기 전의 수퍼 클래스의 add()를 사용하여 처리
@@ -40,7 +40,7 @@ public class BoardList14 extends ObjectList14{
   public boolean remove(int boardNo) {
     int boardIndex = -1;
     for (int i = 0; i < this.length; i++) {
-      Board board = (Board) this.list[i];
+      Board111 board = (Board111) this.list[i];
       if (board.no == boardNo) {
         boardIndex = i;
         break;
