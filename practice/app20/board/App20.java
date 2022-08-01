@@ -35,9 +35,15 @@ public class App {
       System.out.println("  6: 회원");
       System.out.println();
 
+
+      /*// 메뉴 번호를 잘못 입력하는 상황이 발생했을 때
+      //inputInt() 리턴 값은 -12121212를 리턴할 것이다.
+      // 이 경우를 고려해서 처리한다.
+      if (mainMenuNo == -12121212) {
+        continue;
+        }*/
       try {
         int mainMenuNo = Prompt.inputInt("메뉴를 선택하세요[1..6](0: 종료) ");
-
         switch (mainMenuNo) {
           case 0: break loop;
           case 1: // 게시판
@@ -61,9 +67,8 @@ public class App {
           default: System.out.println("메뉴 번호가 옳지 않습니다!");
         } // switch
       } catch (Exception ex) {
-        System.out.println("입력 값이 옳지 않습니다.");
+        System.out.println("입력 값이 옳지 않습니다!!!");
       }
-
 
     } // while
 
