@@ -5,7 +5,7 @@ public class Board111 {
   public String title;
   public String content;
   public String writer;
-  public String password;
+  public String password; 
   public int viewCount;
   public long createdDate;
 }

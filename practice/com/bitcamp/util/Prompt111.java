@@ -7,7 +7,7 @@ public class Prompt111 {
   public static int inputInt() {
     String str = keyboardInput.nextLine();
     return Integer.parseInt(str);
-  }
+  } 
 
   public static int inputInt(String title) {
     System.out.print(title);

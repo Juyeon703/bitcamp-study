@@ -20,4 +20,6 @@ public interface Worker {
   //    (규칙은 공개되어야 하니까!)
   //
   void execute();
+  // = abstract void execute();
+  // = public abstract void execute();
 }

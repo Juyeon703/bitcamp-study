@@ -9,11 +9,11 @@ public class App111 {
   public static void main(String[] args) {
     welcome();
 
-    BoardHandler111 boardHandler = new BoardHandler111();
-    BoardHandler111 readingHandler = new BoardHandler111();
-    BoardHandler111 visitHandler = new BoardHandler111();
-    BoardHandler111 noticeHandler = new BoardHandler111();
-    BoardHandler111 diaryHandler = new BoardHandler111();
+    BoardHandler111 boardHandler = new BoardHandler111("게시판");
+    BoardHandler111 readingHandler = new BoardHandler111("독서록");
+    BoardHandler111 visitHandler = new BoardHandler111("방명록");
+    BoardHandler111 noticeHandler = new BoardHandler111("공지사항");
+    BoardHandler111 diaryHandler = new BoardHandler111("일기장");
     MemberHandler111 memberHandler = new MemberHandler111();
 
     loop: while (true) {
@@ -25,16 +25,21 @@ public class App111 {
       System.out.println("  5: 일기장");
       System.out.println("  6: 회원");
       System.out.println();
-      int mainMenuNo = Prompt111.inputInt("메뉴를 선택하세요[1..6](0: 종료) ");
-      switch (mainMenuNo) {
-        case 0: break loop;
-        case 1: boardHandler.execute(); break;
-        case 2: readingHandler.execute(); break;
-        case 3: visitHandler.execute(); break;
-        case 4: noticeHandler.execute(); break;
-        case 5: diaryHandler.execute(); break;
-        case 6: memberHandler.execute(); break;
-        default: System.out.println("메뉴 번호가 옳지 않습니다!");
+
+      try {
+        int mainMenuNo = Prompt111.inputInt("메뉴를 선택하세요[1..6](0: 종료) ");
+        switch (mainMenuNo) {
+          case 0: break loop;
+          case 1: boardHandler.execute(); break;
+          case 2: readingHandler.execute(); break;
+          case 3: visitHandler.execute(); break;
+          case 4: noticeHandler.execute(); break;
+          case 5: diaryHandler.execute(); break;
+          case 6: memberHandler.execute(); break;
+          default: System.out.println("메뉴 번호가 옳지 않습니다!");
+        }
+      } catch(Exception ex) {
+        System.out.println("입력 값이 옳지 않습니다.");
       }
     } // while
 

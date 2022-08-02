@@ -5,5 +5,5 @@ public class Member111 {
   public String name;
   public String email;
   public String password;
-  public long createdDate;
+  public long createdDate; 
 }
