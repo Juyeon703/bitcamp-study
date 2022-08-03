@@ -3,11 +3,10 @@ package com.bitcamp.util;
 // LinkedList 클래스도 ObjectList처럼 List 규격에 따라 만든다.
 // 규격이 같으면 두 객체를 서로 교체할 수 있다.
 // 
-public class LinkedList implements List{
+public class LinkedList extends AbstractList{
 
   private Node head; // 첫 노드의 주소를 저장
   private Node tail; // 마지막 노드의 주소를 저장
-  private int size; // 저장된 데이터의 개수
 
   @Override
   public void add(Object value) {
@@ -123,7 +122,26 @@ public class LinkedList implements List{
 
     return arr;
   }
-}
+
+  // LinkedList 클래스에서만 사용할 클래스라면
+  // 이 클래스 안에 선언하는 것이 유지보수에 좋다.
+  // 클래스 안에 정의된 클래스를 "중첩 클래스(nested class)"라 한다.
+
+  // 특정 인스턴스에 종속되지 않는 중첩 클래스라면
+  // static nested class(스태틱 중첩 클래스)로 정의한다.
+
+  private static class Node {
+    Object value;
+    Node prev;
+    Node next;
+
+    public Node(Object v) {
+      this.value = v;
+    }
+  }
+
+
+} //LinkedList 끝
 
 
 
