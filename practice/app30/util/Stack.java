@@ -1,6 +1,6 @@
 package com.bitcamp.util;
 
-public class Stack extends LinkedList{
+public class Stack<String> extends LinkedList<>{
 
   // 비록 push()나 pop() 메서드는
   // LinkedList의 메서드를 호출하는 껍데기 불과하지만

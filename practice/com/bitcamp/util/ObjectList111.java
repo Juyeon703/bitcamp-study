@@ -1,9 +1,8 @@
 package com.bitcamp.util;
 
-public class ObjectList111 implements List111{
+public class ObjectList111 extends AbstractList111{
 
   private static final int DEFAULT_CAPACITY = 10;
-  private int size;
   private Object[] elementData;
 
   public ObjectList111() {
@@ -46,11 +45,6 @@ public class ObjectList111 implements List111{
     }
     elementData[--size] = null;
     return deleted;
-  }
-
-  @Override
-  public int size() {
-    return size;
   }
 
   private void grow() {

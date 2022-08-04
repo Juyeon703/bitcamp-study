@@ -1,15 +1,13 @@
 package com.bitcamp.util;
 
-public class LinkedList111 implements List111 {
+public class LinkedList111 extends AbstractList111 {
 
-  private Node111 head;
-  private Node111 tail;
-  private int size;
+  private Node head;
+  private Node tail;
 
   @Override
   public void add(Object value) {
-
-    Node111 node = new Node111(value);
+    Node node = new Node(value);
 
     size++;
 
@@ -30,7 +28,7 @@ public class LinkedList111 implements List111 {
       throw new ListException("인덱스의 범위를 초과했습니다!");
     }
 
-    Node111 cursor = head;
+    Node cursor = head;
 
     for (int i = 0; i < index; i++) {
       cursor = cursor.next;
@@ -54,7 +52,7 @@ public class LinkedList111 implements List111 {
       return deleted;
     }
 
-    Node111 cursor = head;
+    Node cursor = head;
 
     for (int i = 0; i < index; i++) {
       cursor = cursor.next;
@@ -83,19 +81,24 @@ public class LinkedList111 implements List111 {
   }
 
   @Override
-  public int size() {
-    return size;
-  }
-
-  @Override
   public Object[] toArray() {
     Object[] arr = new Object[size];
 
-    Node111 cursor = head;
+    Node cursor = head;
     for (int i = 0; i < size; i++) {
       arr[i] = cursor.value;
       cursor = cursor.next;
     }
     return arr;
+  }
+
+  private static class Node {
+    Object value;
+    Node prev;
+    Node next;
+
+    public Node(Object v) {
+      value = v;
+    }
   }
 }
