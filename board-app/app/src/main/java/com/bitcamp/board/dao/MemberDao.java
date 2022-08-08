@@ -13,6 +13,12 @@ public class MemberDao {
   // => 따라서 List 레퍼런스 변수에 그 주소를 저장할 수 있다.
   List<Member> list = new LinkedList<>();
 
+  String filename;
+
+  public MemberDao(String filename) {
+    this.filename = filename;
+  }
+
   public void insert(Member member) {
     list.add(member);
   }
