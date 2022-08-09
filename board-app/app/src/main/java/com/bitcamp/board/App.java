@@ -26,7 +26,7 @@ public class App {
           new BoardHandler("visit.data"), // 방명록
           new BoardHandler("notice.data"), // 공지사항
           new BoardHandler("daily.data"), // 일기장
-          new MemberHandler("member.data"), // 회원
+          new MemberHandler("member.data") // 회원
       };
 
       // 메인 메뉴의 이름을 스택에 등록한다.
@@ -38,7 +38,7 @@ public class App {
       loop: while (true) {
 
         // 메인 메뉴 출력
-        System.out.printf("%s:\n", breadcrumbMenu);
+        printTitle();
         printMenus(menus);
         System.out.println();
 
@@ -90,6 +90,17 @@ public class App {
     for (int i = 0; i < menus.length; i++) {
       System.out.printf("  %d: %s\n", i + 1, menus[i]);
     }
+  }
+
+  protected static void printTitle() {
+    StringBuilder builder = new StringBuilder();
+    for (String title : App.breadcrumbMenu) {
+      if(!builder.isEmpty()) {
+        builder.append(" > ");
+      }
+      builder.append(title);
+    }
+    System.out.printf("%s:\n", builder.toString());
   }
 }
 

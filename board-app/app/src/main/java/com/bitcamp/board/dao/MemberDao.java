@@ -1,8 +1,14 @@
 package com.bitcamp.board.dao;
 
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import com.bitcamp.board.domain.Member;
+import com.bitcamp.util.DataInputStream;
+import com.bitcamp.util.DataOutputStream;
 
 // 회원 목록을 관리하는 역할
 //
@@ -11,7 +17,7 @@ public class MemberDao {
   // MemberDao는 List 규격에 맞춰 새안한 객체를 사용할 것이다.
   // => ObjectList 클래스는 List 규격에 맞춰 메서드를 정의한 클래스이다.
   // => 따라서 List 레퍼런스 변수에 그 주소를 저장할 수 있다.
-  List<Member> list = new LinkedList<>();
+  List<Member> list = new LinkedList<Member>();
 
   String filename;
 
@@ -19,9 +25,40 @@ public class MemberDao {
     this.filename = filename;
   }
 
+  public void load() throws Exception {
+    // 이때 try는 close() 자동으로 호출하기 위함
+    try(DataInputStream in = new DataInputStream(new FileInputStream(filename))) {
+
+      int size = in.readInt();
+      for (int i = 0; i < size; i++) {
+        Member member = new Member();
+        member.no = in.readInt();
+        member.name = in.readUTF();
+        member.email = in.readUTF();
+        member.password = in.readUTF();
+        member.createdDate = in.readLong();
+        list.add(member);
+      }
+    } // try() ==> try 블록을 벗어나기 전에 in.close()가 자동으로 실행된다.
+  }
+  public void save() throws Exception {
+    try(DataOutputStream out = new DataOutputStream (new FileOutputStream(filename))) {
+      out.writeInt(list.size());
+
+      for(Member member : list) {
+        out.writeInt(member.no); 
+        out.writeUTF(member.name);
+        out.writeUTF(member.email);
+        out.writeUTF(member.password);
+        out.writeLong(member.createdDate);
+      }
+    } // try() ==> try 블록을 벗어나기 전에 out.close()가 자동으로 실행됨.
+  }
+
   public void insert(Member member) {
     list.add(member);
   }
+
 
   // MemberList 에서 MemberDao 로 바꿔는 것에 맞춰
   // 메서드의 이름도 데이터에 초점을 맞춰 변경한다.
@@ -47,7 +84,15 @@ public class MemberDao {
   }
 
   public Member[] findAll() {
-    return list.toArray(new Member[0]);
+    Iterator<Member> iterator = list.iterator();
+
+    Member[] arr = new Member[list.size()];
+
+    int i = 0;
+    while (iterator.hasNext()) {
+      arr[i++] = iterator.next(); 
+    }
+    return arr;
   }
 }
 

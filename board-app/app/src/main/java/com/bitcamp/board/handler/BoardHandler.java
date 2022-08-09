@@ -15,7 +15,7 @@ public class BoardHandler extends AbstractHandler{
   // 게시글 목록을 관리할 객체 준비
   private BoardDao boardDao;
 
-  public BoardHandler(String filename) throws Exception {
+  public BoardHandler(String filename) {
     // 수퍼 클래스의 생성자를 호출할 때 메뉴 목록을 전달한다.
     // String[] menus = new String[] {"목록", "상세보기", "등록", "삭제", "변경"};
     super(new String[] {"목록", "상세보기", "등록", "삭제", "변경"});
