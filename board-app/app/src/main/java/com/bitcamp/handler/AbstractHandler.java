@@ -46,7 +46,8 @@ public abstract class AbstractHandler implements Handler {
 
       try {
         // String str = String.format("메뉴를 선택하세요[1..%d](0: 이전) ", menus.length);
-        int menuNo = Prompt.inputInt(String.format("메뉴를 선택하세요[1..%d](0: 이전) ", menus.length));
+        int menuNo = Prompt.inputInt(String.format(
+            "메뉴를 선택하세요[1..%d](0: 이전) ", menus.length));
 
         if (menuNo < 0 || menuNo > menus.length) {
           System.out.println("메뉴 번호가 옳지 않습니다!");

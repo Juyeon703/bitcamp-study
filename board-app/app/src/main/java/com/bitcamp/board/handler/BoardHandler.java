@@ -24,6 +24,7 @@ public class BoardHandler extends AbstractHandler{
       boardDao.load();
     } catch(Exception e) {
       System.out.printf("%s 파일 로딩 중 오류 발생!\n", filename);
+      e.printStackTrace(); // 오류 발자취를 추적해서 출력하라?
     } 
   }
 

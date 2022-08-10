@@ -22,7 +22,7 @@ public class DataOutputStream implements AutoCloseable{
     out.write(value);
   }
 
-  public void writeShort(Short value) throws Exception {
+  public void writeShort(short value) throws Exception {
     out.write(value >> 8);
     out.write(value);
   }

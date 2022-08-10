@@ -24,7 +24,10 @@ public class DataInputStream implements AutoCloseable{
   }
 
   public int readInt() throws Exception {
-    return (in.read() << 24) + (in.read() << 16) + (in.read() << 8) + in.read();
+    return (in.read() << 24) 
+        + (in.read() << 16) 
+        + (in.read() << 8) 
+        + in.read();
   }
 
   public long readLong() throws Exception {
