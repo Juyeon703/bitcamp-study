@@ -1,4 +1,4 @@
-// 예외 처리 전 - 3) try - with -  자원 해제
+// 예외 처리 전 - 3) try-with-resources 를 이용하여 자원 해제를 자동화 하기
 package com.eomcs.exception.ex5;
 
 import java.sql.Date;
@@ -8,7 +8,6 @@ public class Exam0112 {
 
   static Board read() {
     try (Scanner keyScan = new Scanner(System.in)) {
-
       Board board = new Board();
 
       System.out.print("번호> ");
@@ -23,15 +22,6 @@ public class Exam0112 {
       System.out.print("등록일> ");
       board.setCreatedDate(Date.valueOf(keyScan.nextLine()));
 
-      keyScan.close(); // 개발자가 직접 자원 해제시킨다.
-      // 주의!
-      // => close()를 호출하기 전에 예외가 발생한다면,
-      // Scanner 자원이 해제되지 못하는 문제가 있다.
-      // 해결책?
-      // => 정상적으로 실행되든 예외가 발생하든지 간에
-      // 무조건 close()가 실행되게 만들라!
-      // => 어떻게?
-      // finally{}에 자원 해제시키는 코드를 담아라
       return board;
     } 
   }

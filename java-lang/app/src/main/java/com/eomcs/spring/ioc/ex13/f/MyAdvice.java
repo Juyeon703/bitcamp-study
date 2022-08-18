@@ -1,48 +1,45 @@
 // 특정 메서드 호출 전후에 실행되는 클래스
 package com.eomcs.spring.ioc.ex13.f;
 
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
-// Advice 객체를 IoC 컨테이너에 등록해야 한다.
 @Component
-
-// 이 객체가 AOP Advice를 설정하는 객체임을 표시한다.
 @Aspect
 public class MyAdvice {
 
-  // XML 설정 예:
-  // <aop:before
-  //   pointcut="execution(* com.eomcs.spring.ioc.ex13.f.X.*(..)) and args(a,b)"
-  //   method="doBefore"/>
+  // Pointcut을 미리 정의한다.
+  //  => 메서드 선언부에 붙여야 한다.
+  //  => 메서드의 파라미터는 없고, 구현을 비워둔다.
+  //  => 이 메서드는 pointcut을 지정하는 용도로만 사용한다.
   //
-  @Before("execution(* com.eomcs.spring.ioc.ex13.f.X.*(..)) and args(x,y)")
+  @Pointcut("execution(* com.eomcs.spring.ioc.ex13.f.X.*(..))")
+  public void calculatorOperation() {}
+
+  @Before("calculatorOperation() and args(x,y)")
   public void doBefore(int x, int y) {
     System.out.printf("MyAdvice.doBefore(): %d, %d\n", x, y);
   }
 
-  // XML 설정 예:
-  // <aop:after-returning 
-  //   pointcut="execution(* com.eomcs.spring.ioc.ex13.f.X.*(..))"
-  //   method="doAfterReturning" returning="returnValue"/>
-  //
-  @AfterReturning(//
-      pointcut = "execution(* com.eomcs.spring.ioc.ex13.f.X.*(..))",//
+  @After("calculatorOperation()")
+  public void doAfter() {
+    System.out.println("MyAdvice.doAfter()");
+  }
+
+  @AfterReturning(
+      pointcut = "calculatorOperation()",
       returning = "returnValue")
   public void doAfterReturning(Object returnValue) {
     System.out.printf("MyAdvice.doAfterReturning(): %d\n", returnValue);
   }
 
-  // XML 설정 예:
-  // <aop:after-throwing 
-  //   pointcut="execution(* com.eomcs.spring.ioc.ex13.f.X.*(..))"
-  //   method="doAfterThrowing" throwing="error"/>
-  //   
-  @AfterThrowing(//
-      pointcut = "execution(* com.eomcs.spring.ioc.ex13.f.X.*(..))", //
+  @AfterThrowing(
+      pointcut = "calculatorOperation()",
       throwing = "error")
   public void doAfterThrowing(Exception error) {
     System.out.printf("MyAdvice.doAfterThrowing(): %s\n", error.getMessage());

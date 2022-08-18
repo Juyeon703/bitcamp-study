@@ -50,7 +50,6 @@ public class Exam0410 {
 // - 문자를 메모리에 저장하려면
 //   2진수로 바꿀 수 있어야 한다.
 // - 문자를 2진수로 바꾸는 규칙을
-
 //   "문자집합(Character Set)"이라 한다.
 // - 문자 집합에는 여러 규칙이 있다.
 //   - 1) ASCII(7비트,American Standard Code for Information Interchange)

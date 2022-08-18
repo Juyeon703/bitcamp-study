@@ -16,12 +16,12 @@ public class Exam0930 {
     //
     // float ==> int 
     float f = 3.14f;
-    int i = (int)f;  // 소수점 이하가 제거된다. => 3
+    int i = (int)f;  // 소수점 이하가 제거된다.
     System.out.println(i);
 
     // double ==> long
     double d = 9876.56789;
-    long l = (long)d; // 소수점 이하가 제거된다. => 9876
+    long l = (long)d; // 소수점 이하가 제거된다.
     System.out.println(l);
   }
 }

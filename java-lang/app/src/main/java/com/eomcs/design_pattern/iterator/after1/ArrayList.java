@@ -97,15 +97,10 @@ public class ArrayList<E> {
   }
 
   // Iterator 구현체를 제공한다.
-  public Iterator<E> iterator(){
+  public Iterator<E> iterator() {
     return new ArrayListIterator<E>(this);
   }
-
-
 }
-
-
-
 
 
 

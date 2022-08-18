@@ -1,10 +1,12 @@
 package com.eomcs.design_pattern.iterator.after1;
 
-//LinkedList 에서 데이터를 꺼내줄 객체
-public class LinkedListIterator<E> implements Iterator<E>{
+// ListList에서 데이터를 꺼내줄 객체
+//
+public class LinkedListIterator<E> implements Iterator<E> {
 
   LinkedList<E> list;
   int index = 0;
+
   public LinkedListIterator(LinkedList<E> list) {
     this.list = list;
   }

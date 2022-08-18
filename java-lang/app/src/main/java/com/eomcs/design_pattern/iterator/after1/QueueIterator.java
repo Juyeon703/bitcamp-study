@@ -1,7 +1,8 @@
 package com.eomcs.design_pattern.iterator.after1;
 
-//Queue에서 데이터를 꺼내줄 객체
-public class QueueIterator<E> implements Iterator<E>{
+// Queue에서 데이터를 꺼내줄 객체
+//
+public class QueueIterator<E> implements Iterator<E> {
 
   Queue<E> list;
 

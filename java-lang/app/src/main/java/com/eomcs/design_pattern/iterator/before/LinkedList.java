@@ -1,4 +1,3 @@
-// 제네릭 적용하기
 package com.eomcs.design_pattern.iterator.before;
 
 public class LinkedList<E> {
@@ -159,9 +158,6 @@ public class LinkedList<E> {
     return old;
   }
 
-  // Node가 다루는 값의 타입을 제네릭(generic)으로 선언한다.
-  // => 즉 Node가 다루는 데이터의 타입을 E라고 명명하고 코드를 작성한다.
-  // => Node 클래스를 사용하는 시점에 E가 무슨 타입인지 결정될 것이다.
   private static class Node<E> {
 
     E value;
@@ -175,6 +171,7 @@ public class LinkedList<E> {
       this.value = value;
     }
   }
+
 }
 
 

@@ -1,5 +1,4 @@
-// 제네릭 적용하기
-package com.eomcs.design_pattern.iterator.after1;
+package com.eomcs.design_pattern.iterator.after2;
 
 public class LinkedList<E> {
 
@@ -159,9 +158,6 @@ public class LinkedList<E> {
     return old;
   }
 
-  // Node가 다루는 값의 타입을 제네릭(generic)으로 선언한다.
-  // => 즉 Node가 다루는 데이터의 타입을 E라고 명명하고 코드를 작성한다.
-  // => Node 클래스를 사용하는 시점에 E가 무슨 타입인지 결정될 것이다.
   private static class Node<E> {
 
     E value;
@@ -177,11 +173,35 @@ public class LinkedList<E> {
   }
 
   // Iterator 구현체를 제공한다.
-  public Iterator<E> iterator(){
+  public Iterator<E> iterator() {
     return new LinkedListIterator<E>(this);
+  }
 
+  // 스태틱 중첩 클래스로 정의한다. 
+  static class LinkedListIterator<E> implements Iterator<E> {
+
+    LinkedList<E> list;
+    int index = 0;
+
+    public LinkedListIterator(LinkedList<E> list) {
+      this.list = list;
+    }
+
+    @Override
+    public boolean hasNext() {
+      return index < list.size();
+    }
+
+    @Override
+    public E next() {
+      return list.get(index++);
+    }
   }
 }
+
+
+
+
 
 
 

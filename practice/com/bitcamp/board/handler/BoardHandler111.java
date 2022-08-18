@@ -4,54 +4,31 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import com.bitcamp.board.dao.BoardDao111;
 import com.bitcamp.board.domain.Board111;
+import com.bitcamp.handler.AbstractHandler;
 import com.bitcamp.util.Prompt111;
 
-public class BoardHandler111 {
-
-  private String title;
+public class BoardHandler111 extends AbstractHandler {
 
   private BoardDao111 boardDao = new BoardDao111();
 
-  public BoardHandler111() { 
-    title = "게시판";
+  public BoardHandler111() {
+    super(new String[] {"목록", "상세보기", "등록", "삭제", "변경"});
   }
 
-  public BoardHandler111(String title) {
-    this.title = title;
-  }
-
-  public void execute() {
-    while (true) {
-      System.out.printf("%s: \n", title);
-      System.out.println("  1: 목록");
-      System.out.println("  2: 상세보기");
-      System.out.println("  3: 등록");
-      System.out.println("  4: 삭제");
-      System.out.println("  5: 변경");
-      System.out.println();
-
-      try {
-        int menuNo = Prompt111.inputInt("메뉴를 선택하세요[1..5](0: 이전) ");
-        System.out.println("---------------------------------------------");
-        switch (menuNo) {
-          case 0: return;
-          case 1: onList(); break;
-          case 2: onDetail(); break;
-          case 3: onInput(); break;
-          case 4: onDelete(); break;
-          case 5: onUpdate(); break;
-          default: System.out.println("메뉴 번호가 옳지 않습니다!");
-        }
-      } catch (Exception ex) {
-        System.out.printf("예외 발생: %s\n", ex.getMessage());
-      }
+  @Override
+  public void service(int menuNo) {
+    switch (menuNo) {
+      case 1: onList(); break;
+      case 2: onDetail(); break;
+      case 3: onInput(); break;
+      case 4: onDelete(); break;
+      case 5: onUpdate(); break;
     }
   }
 
   private void onList() {
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-    System.out.printf("[%s 목록]\n", title);
     System.out.println("번호 제목 조회수 작성자 등록일");
 
     Board111[] boards = boardDao.findAll();
@@ -64,7 +41,6 @@ public class BoardHandler111 {
   }
 
   private void onDetail() {
-    System.out.printf("[%s 상세보기]\n", title);
     int boardNo = 0;
     while (true) {
       try {
@@ -90,7 +66,6 @@ public class BoardHandler111 {
   }
 
   private void onInput() {
-    System.out.printf("[%s 등록]\n", title);
     Board111 board = new Board111();
     board.title = Prompt111.inputString("제목? ");
     board.content = Prompt111.inputString("내용? ");
@@ -103,7 +78,6 @@ public class BoardHandler111 {
   }
 
   private void onDelete() {
-    System.out.printf("[%s 삭제]\n", title);
     int boardNo = 0;
     while (true) {
       try {
@@ -113,7 +87,6 @@ public class BoardHandler111 {
         System.out.println("입력 값이 옳지 않습니다!");
       }
     }
-
     if (boardDao.delete(boardNo)) {
       System.out.println("삭제하였습니다.");
     } else {
@@ -122,7 +95,6 @@ public class BoardHandler111 {
   }
 
   private void onUpdate() {
-    System.out.printf("[%s 변경]\n", title);
     int boardNo = 0;
     while(true) {
       try {
@@ -132,7 +104,6 @@ public class BoardHandler111 {
         System.out.println("입력 값이 옳지 않습니다!");
       }
     }
-
     Board111 board = boardDao.findByNo(boardNo);
     if (board == null) {
       System.out.println("해당 번호의 게시글이 없습니다!");

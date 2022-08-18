@@ -2,15 +2,16 @@ package com.eomcs.oop.ex02;
 
 import com.eomcs.oop.ex02.util.Calculator;
 
-//# 관련된 기능(메서드)을 묶어 분류하기 - 클래스로 분류
-//01) 분류전
-//02) 클래스로 묶어 분류하기
-//03) 클래스 변수 도입
-//04) 클래스 변수의 한계 확인
-//05) 인스턴스 변수 도입
-//06) 인스턴스 메서드 활용
-//07) 패키지 멤버 클래스로 분리
-//08) 클래스를 역할에 따라 패키지로 분류하기
+// # 관련된 기능(메서드)을 묶어 분류하기
+// 1) 분류 전
+// 2) 메서드를 클래스로 묶어 분류하기
+// 3) 클래스 변수 도입
+// 4) 클래스 변수의 한계 확인
+// 5) 인스턴스 변수 도입
+// 6) 인스턴스 메서드 활용
+// 7) 패키지 멤버 클래스로 분리
+// 8) 클래스를 역할에 따라 패키지로 분류하기
+// 
 public class Exam0280 {
 
   // Calculator 클래스를 향후 유지보수하기 쉽도록 별도의 패키지로 분류한다.
@@ -44,8 +45,8 @@ public class Exam0280 {
     c1.divide(3); // + 2 + 3 - 1 * 7 / 3 = ?
     c2.minus(5); // + 3 * 2 + 7 / 4 - 5 = ?
 
-    System.out.printf("c1.result = %d\n", c1.getResult());
-    System.out.printf("c2.result = %d\n", c2.getResult());
+    System.out.printf("c1.result = %d\n", c1.result);
+    System.out.printf("c2.result = %d\n", c2.result);
   }
 }
 

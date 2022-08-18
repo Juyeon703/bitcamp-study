@@ -95,12 +95,7 @@ public class ArrayList<E> {
     }
     arr = temp;
   }
-
-
 }
-
-
-
 
 
 

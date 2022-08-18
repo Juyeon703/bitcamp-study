@@ -2,42 +2,41 @@ package com.bitcamp.board;
 
 import com.bitcamp.board.handler.BoardHandler111;
 import com.bitcamp.board.handler.MemberHandler111;
+import com.bitcamp.handler.Handler;
 import com.bitcamp.util.Prompt111;
+import com.bitcamp.util.Stack111;
 
 public class App111 {
 
+  public static Stack111 breadcrumbMenu = new Stack111();
+
   public static void main(String[] args) {
     welcome();
-
-    BoardHandler111 boardHandler = new BoardHandler111("게시판");
-    BoardHandler111 readingHandler = new BoardHandler111("독서록");
-    BoardHandler111 visitHandler = new BoardHandler111("방명록");
-    BoardHandler111 noticeHandler = new BoardHandler111("공지사항");
-    BoardHandler111 diaryHandler = new BoardHandler111("일기장");
-    MemberHandler111 memberHandler = new MemberHandler111();
-
+    Handler[] handlers = new Handler[] { 
+        new BoardHandler111(),
+        new BoardHandler111(),
+        new BoardHandler111(),
+        new BoardHandler111(),
+        new BoardHandler111(),
+        new MemberHandler111()
+    };
+    breadcrumbMenu.push("메인");
+    String[] menus = {"게시판", "독서록", "방명록", "공지사항", "일기장", "회원"};
     loop: while (true) {
-      System.out.println("메뉴:");
-      System.out.println("  1: 게시판");
-      System.out.println("  2: 독서록");
-      System.out.println("  3: 방명록");
-      System.out.println("  4: 공지사항");
-      System.out.println("  5: 일기장");
-      System.out.println("  6: 회원");
+      System.out.printf("%s: \n", breadcrumbMenu);
+      printMenus(menus);
       System.out.println();
-
       try {
         int mainMenuNo = Prompt111.inputInt("메뉴를 선택하세요[1..6](0: 종료) ");
-        switch (mainMenuNo) {
-          case 0: break loop;
-          case 1: boardHandler.execute(); break;
-          case 2: readingHandler.execute(); break;
-          case 3: visitHandler.execute(); break;
-          case 4: noticeHandler.execute(); break;
-          case 5: diaryHandler.execute(); break;
-          case 6: memberHandler.execute(); break;
-          default: System.out.println("메뉴 번호가 옳지 않습니다!");
+        if (mainMenuNo < 0 || mainMenuNo > menus.length) {
+          System.out.println("메뉴 번호가 옳지 않습니다!");
+          continue;
+        } else if (mainMenuNo == 0) {
+          break loop;
         }
+        breadcrumbMenu.push(menus[mainMenuNo - 1]);
+        handlers[mainMenuNo - 1].execute();
+        breadcrumbMenu.pop();
       } catch(Exception ex) {
         System.out.println("입력 값이 옳지 않습니다.");
       }
@@ -52,5 +51,11 @@ public class App111 {
     System.out.println();
     System.out.println("환영합니다!");
     System.out.println();
+  }
+
+  static void printMenus(String[] menus) {
+    for (int i = 0; i < menus.length; i++) {
+      System.out.printf("  %d: %s\n", i + 1, menus[i]);
+    }
   }
 }

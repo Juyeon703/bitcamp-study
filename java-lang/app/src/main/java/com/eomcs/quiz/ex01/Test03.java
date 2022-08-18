@@ -10,7 +10,8 @@ package com.eomcs.quiz.ex01;
 // - 관계 연산자 및 비트 연산자, 비트 이동 연산자 활용
 // - 반복문 활용
 // - 메서드 파라미터 및 리턴 값 다루기
-//
+// [시간 복잡도]
+// - ?
 public class Test03 {
 
   public static void main(String[] args) {
@@ -23,7 +24,7 @@ public class Test03 {
 
   static int swapBits(int value, int i, int j) {
     // 이 메서드를 완성하시오!
-    return 0;
+    return value;
   }
 
 }
