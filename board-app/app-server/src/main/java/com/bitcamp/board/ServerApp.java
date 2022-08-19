@@ -65,37 +65,35 @@ public class ServerApp {
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());) {
           System.out.println("클라이언트와 연결 되었음!");
 
-          while (true) {
-            // 클라이언트와 서버 사이에 정해진 규칙(protocol)에 따라 데이터를 주고 받는다.
-            String dataName = in.readUTF(); // 클라이언트에서 문자열이 올때까지 기다림?
+          // 클라이언트와 서버 사이에 정해진 규칙(protocol)에 따라 데이터를 주고 받는다.
+          String dataName = in.readUTF(); // 클라이언트에서 문자열이 올때까지 기다림?
 
-            if (dataName.equals("exit")) {
-              break;
-            }
-
-            Servlet servlet = servletMap.get(dataName);
-            if (servlet != null) {
-              servlet.service(in, out);
-            } else {
-              out.writeUTF("fail");
-            }
+          if (dataName.equals("exit")) {
+            break;
           }
-          //          switch (dataName) {
-          //            case "board" : boardServlet.service(in, out); break;
-          //            case "reading" : readingServlet.service(in, out); break;
-          //            case "visit" : visitServlet.service(in, out); break;
-          //            case "notice" : noticeServlet.service(in, out); break;
-          //            case "daily" : dailyServlet.service(in, out); break;
-          //            case "member" : memberServlet.service(in, out); break;
-          //            default :
-          //              out.writeUTF("fail");
-          //          }
-          //            // 네트워크 종료
-          //            // => 더이상 클리아언트와 연결하고 싶지 않다면 네트워크를 종료한다.
-          //            serverSocket.close();
+
+          Servlet servlet = servletMap.get(dataName);
+          if (servlet != null) {
+            servlet.service(in, out);
+          } else {
+            out.writeUTF("fail");
+          }
           System.out.println("클라이언트와 연결 끊었음!");
         } // 안쪽 try
-      } // while문
+        //          switch (dataName) {
+        //            case "board" : boardServlet.service(in, out); break;
+        //            case "reading" : readingServlet.service(in, out); break;
+        //            case "visit" : visitServlet.service(in, out); break;
+        //            case "notice" : noticeServlet.service(in, out); break;
+        //            case "daily" : dailyServlet.service(in, out); break;
+        //            case "member" : memberServlet.service(in, out); break;
+        //            default :
+        //              out.writeUTF("fail");
+        //          }
+        //            // 네트워크 종료
+        //            // => 더이상 클리아언트와 연결하고 싶지 않다면 네트워크를 종료한다.
+        //            serverSocket.close();
+      } 
     } catch (Exception e) {
       e.printStackTrace();
     } // 바깥쪽 try
