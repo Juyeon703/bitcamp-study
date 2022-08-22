@@ -27,11 +27,12 @@ public class Sender {
     System.out.println("서버와 데이터를 송수신할 스트림 준비!");
 
     // 3) 상대편으로 문자열을 한 줄 보낸다.
-    out.println("엄진영입니다. 안녕하세요!");
+    out.println("엄진영입니다! 안녕하세요.");
 
     // 4) 상대편에서 보낸 문자열을 한 줄 읽는다.
     // => 상대편이 한 줄 데이터를 보낼 때까지 리턴하지 않는다.
     // => 이런 메서드를 블로킹 메서드라 부른다.
+
     String str = in.nextLine();
     System.out.println(str);
 
