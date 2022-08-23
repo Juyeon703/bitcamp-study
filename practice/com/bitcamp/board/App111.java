@@ -1,14 +1,14 @@
 package com.bitcamp.board;
 
+import java.util.Stack;
 import com.bitcamp.board.handler.BoardHandler111;
 import com.bitcamp.board.handler.MemberHandler111;
 import com.bitcamp.handler.Handler;
 import com.bitcamp.util.Prompt111;
-import com.bitcamp.util.Stack111;
 
 public class App111 {
 
-  public static Stack111 breadcrumbMenu = new Stack111();
+  public static Stack<String> breadcrumbMenu = new Stack<>();
 
   public static void main(String[] args) {
     welcome();

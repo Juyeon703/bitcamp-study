@@ -9,11 +9,19 @@ import com.bitcamp.util.Prompt111;
 
 public class BoardHandler111 extends AbstractHandler {
 
-  private BoardDao111 boardDao = new BoardDao111();
+  private BoardDao111 boardDao;
 
-  public BoardHandler111() {
+  public BoardHandler111(String filename) {
     super(new String[] {"목록", "상세보기", "등록", "삭제", "변경"});
+
+    boardDao = new BoardDao111(filename);
+    try {
+      boardDao.load();
+    } catch (Exception e) {
+      System.out.printf("%s 파일 로딩 중 오류 발생!\n", filename);
+    }
   }
+
 
   @Override
   public void service(int menuNo) {
