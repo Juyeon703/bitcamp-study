@@ -8,20 +8,31 @@ import com.bitcamp.util.Prompt111;
 
 public class MemberHandler111 extends AbstractHandler {
 
-  private MemberDao111 memberDao = new MemberDao111();
+  private MemberDao111 memberDao;
 
-  public MemberHandler111 () {
+  public MemberHandler111 (String filename) {
     super(new String[] {"목록", "상세보기", "등록", "삭제", "변경"});
+
+    memberDao = new MemberDao111(filename);
+    try {
+      memberDao.load();
+    } catch (Exception e) {
+      System.out.printf("%s 파일 로딩 중 오류 발생!\n", filename);
+    }
   }
 
   @Override
   public void service(int menuNo) { 
-    switch (menuNo) {
-      case 1: onList(); break;
-      case 2: onDetail(); break;
-      case 3: onInput(); break;
-      case 4: onDelete(); break;
-      case 5: onUpdate(); break;
+    try {
+      switch (menuNo) {
+        case 1: onList(); break;
+        case 2: onDetail(); break;
+        case 3: onInput(); break;
+        case 4: onDelete(); break;
+        case 5: onUpdate(); break;
+      }
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -48,27 +59,29 @@ public class MemberHandler111 extends AbstractHandler {
     System.out.printf("등록일: %tY-%1$tm-%1$td %1$tH:%1$tM\n", date);
   }
 
-  private void onInput() {
+  private void onInput() throws Exception {
     Member111 member = new Member111();
     member.name = Prompt111.inputString("이름? ");
     member.email = Prompt111.inputString("이메일? ");
     member.password = Prompt111.inputString("암호? ");
     member.createdDate = System.currentTimeMillis();
     memberDao.insert(member);
+    memberDao.save();
     System.out.println("회원을 등록했습니다.");
   }
 
-  private void onDelete() {
+  private void onDelete() throws Exception {
     String email = Prompt111.inputString("삭제할 회원 이메일? ");
 
     if (memberDao.delete(email)) {
+      memberDao.save();
       System.out.println("삭제하였습니다.");
     } else {
       System.out.println("해당 이메일의 회원이 없습니다!");
     }
   }
 
-  private void onUpdate() {
+  private void onUpdate() throws Exception {
     String email = Prompt111.inputString("변경할 회원 이메일? ");
     Member111 member = memberDao.findByEmail(email);
     if (member == null) {
@@ -81,6 +94,7 @@ public class MemberHandler111 extends AbstractHandler {
     if (input.equals("y")) {
       member.name = newName;
       member.email = newEmail;
+      memberDao.save();
       System.out.println("변경했습니다.");
     } else {
       System.out.println("변경 취소했습니다.");

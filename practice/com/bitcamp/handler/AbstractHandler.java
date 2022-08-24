@@ -17,8 +17,16 @@ public abstract class AbstractHandler implements Handler {
     }
   }
 
+  //System.out.printf("%s:\n", App111.breadcrumbMenu);
   protected static void printTitle() {
-    System.out.printf("%s:\n", App111.breadcrumbMenu);
+    StringBuilder builder = new StringBuilder();
+    for (String title : App111.breadcrumbMenu) {
+      if (!builder.isEmpty()) {
+        builder.append(" > ");
+      }
+      builder.append(title);
+    }
+    System.out.printf("%s:\n", builder.toString());
   }
 
   @Override

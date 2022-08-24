@@ -25,12 +25,16 @@ public class BoardHandler111 extends AbstractHandler {
 
   @Override
   public void service(int menuNo) {
-    switch (menuNo) {
-      case 1: onList(); break;
-      case 2: onDetail(); break;
-      case 3: onInput(); break;
-      case 4: onDelete(); break;
-      case 5: onUpdate(); break;
+    try {
+      switch (menuNo) {
+        case 1: onList(); break;
+        case 2: onDetail(); break;
+        case 3: onInput(); break;
+        case 4: onDelete(); break;
+        case 5: onUpdate(); break;
+      }
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -73,7 +77,7 @@ public class BoardHandler111 extends AbstractHandler {
     System.out.printf("등록일: %tY-%1$tm-%1$td %1$tH:%1$tM\n", date);
   }
 
-  private void onInput() {
+  private void onInput() throws Exception{
     Board111 board = new Board111();
     board.title = Prompt111.inputString("제목? ");
     board.content = Prompt111.inputString("내용? ");
@@ -82,10 +86,11 @@ public class BoardHandler111 extends AbstractHandler {
     board.viewCount = 0;
     board.createdDate = System.currentTimeMillis();
     boardDao.insert(board);
+    boardDao.save();
     System.out.println("게시글을 등록했습니다.");
   }
 
-  private void onDelete() {
+  private void onDelete() throws Exception{
     int boardNo = 0;
     while (true) {
       try {
@@ -96,13 +101,14 @@ public class BoardHandler111 extends AbstractHandler {
       }
     }
     if (boardDao.delete(boardNo)) {
+      boardDao.save();
       System.out.println("삭제하였습니다.");
     } else {
       System.out.println("해당 번호의 게시글이 없습니다!");
     }
   }
 
-  private void onUpdate() {
+  private void onUpdate() throws Exception{
     int boardNo = 0;
     while(true) {
       try {
@@ -123,6 +129,7 @@ public class BoardHandler111 extends AbstractHandler {
     if (input.equals("y")) {
       board.title = newTitle;
       board.content = newContent;
+      boardDao.save();
       System.out.println("변경했습니다.");
     } else {
       System.out.println("변경 취소했습니다.");
