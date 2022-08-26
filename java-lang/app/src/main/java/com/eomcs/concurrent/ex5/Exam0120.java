@@ -19,7 +19,7 @@ public class Exam0120 {
     // 
     // 다음 메서드를 동기화 처리해 보자.
     // => synchronized
-    //    - 이 키워드가 붙은 블록은 오직 한 번에 한 개의 스레드만이 접근할 수 있다.
+    //    - 크리티컬 섹션 구간에 이 키워드를 붙인 블록은 오직 한 번에 한 개의 스레드만이 접근할 수 있다.
     //    - 먼저 접근한 스레드가 나가야만 다음 스레드가 진입할 수 있다.
     //
     synchronized public void add(int value) {
@@ -61,6 +61,12 @@ public class Exam0120 {
     public void run() {
       for (int i = 0; i < 20; i++) {
         list.add(value);
+
+        // add() 호출 후 다른 스레드에게 CPU 사용권을 뺏길 기회를 만들자!
+        int count = (int)(Math.random() * 1000);
+        for (int x = 0; x < count; x++) {
+          Math.atan(34.1234);
+        }
       }
     }
   }

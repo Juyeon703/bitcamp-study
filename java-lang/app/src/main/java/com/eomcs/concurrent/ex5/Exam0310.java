@@ -59,7 +59,7 @@ public class Exam0310 {
 
     @Override
     public void run() {
-      print3(this.getName(), counter);
+      print1(this.getName(), counter);
     }
   }
 
