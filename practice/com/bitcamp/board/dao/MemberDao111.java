@@ -2,6 +2,8 @@ package com.bitcamp.board.dao;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,87 +19,22 @@ public class MemberDao111 {
   }
 
   public void load() throws Exception {
-    try (FileInputStream in = new FileInputStream(filename)) {
-
-      int size = (in.read() << 24) + (in.read() << 16) + (in.read() << 8) + in.read();
+    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+      int size = in.readInt();
 
       for (int i = 0; i < size; i++) {
-        Member111 member = new Member111();
-        member.no = (in.read() << 24) + (in.read() << 16) + (in.read() << 8) + in.read();
-
-        int len = (in.read() << 24) + (in.read() << 16) + (in.read() << 8) + in.read();
-        byte[] bytes = new byte[len];
-        in.read(bytes);
-        member.name = new String(bytes, "UTF-8");
-
-        len = (in.read() << 24) + (in.read() << 16) + (in.read() << 8) + in.read();
-        bytes = new byte[len];
-        in.read(bytes);
-        member.email = new String(bytes, "UTF-8");
-
-        len = (in.read() << 24) + (in.read() << 16) + (in.read() << 8) + in.read();
-        bytes = new byte[len];
-        in.read(bytes);
-        member.password = new String(bytes, "UTF-8");
-
-        member.createdDate = 
-            (((long)in.read()) << 56) + 
-            (((long)in.read()) << 48) +
-            (((long)in.read()) << 40) +
-            (((long)in.read()) << 32) +
-            (((long)in.read()) << 24) +
-            (((long)in.read()) << 16) +
-            (((long)in.read()) << 8) +
-            ((in.read()));
-
+        Member111 member = (Member111) in.readObject();
         list.add(member);
       }
     } 
   }
 
   public void save() throws Exception {
-    try (FileOutputStream out = new FileOutputStream(filename)) {
-
-      out.write(list.size() >> 24);  
-      out.write(list.size() >> 16);
-      out.write(list.size() >> 8);
-      out.write(list.size());
+    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
+      out.writeInt(list.size());
 
       for (Member111 member : list) {
-        out.write(member.no >> 24);  
-        out.write(member.no >> 16);
-        out.write(member.no >> 8);
-        out.write(member.no);
-
-        byte[] bytes = member.name.getBytes("UTF-8"); 
-        out.write(bytes.length >> 24);
-        out.write(bytes.length >> 16);
-        out.write(bytes.length >> 8);
-        out.write(bytes.length);
-        out.write(bytes);
-
-        bytes = member.email.getBytes("UTF-8"); 
-        out.write(bytes.length >> 24);
-        out.write(bytes.length >> 16);
-        out.write(bytes.length >> 8);
-        out.write(bytes.length);
-        out.write(bytes);
-
-        bytes = member.password.getBytes("UTF-8"); 
-        out.write(bytes.length >> 24);
-        out.write(bytes.length >> 16);
-        out.write(bytes.length >> 8);
-        out.write(bytes.length);
-        out.write(bytes);
-
-        out.write((int)(member.createdDate >> 56));
-        out.write((int)(member.createdDate >> 48));
-        out.write((int)(member.createdDate >> 40));
-        out.write((int)(member.createdDate >> 32));
-        out.write((int)(member.createdDate >> 24));
-        out.write((int)(member.createdDate >> 16));
-        out.write((int)(member.createdDate >> 8));
-        out.write((int)(member.createdDate));
+        out.writeObject(member);
       }
     }
   }

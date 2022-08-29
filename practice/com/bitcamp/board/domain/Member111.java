@@ -1,6 +1,11 @@
 package com.bitcamp.board.domain;
 
-public class Member111 {
+import java.io.Serializable;
+
+public class Member111 implements Serializable{
+
+  private static final long serialVersionUID = 1L;
+
   public int no;
   public String name;
   public String email;
