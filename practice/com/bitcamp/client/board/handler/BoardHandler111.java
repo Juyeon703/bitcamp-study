@@ -1,13 +1,13 @@
-package com.bitcamp.board.handler;
+package com.bitcamp.client.board.handler;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import com.bitcamp.board.dao.BoardDao111;
-import com.bitcamp.board.domain.Board111;
-import com.bitcamp.handler.AbstractHandler;
-import com.bitcamp.util.Prompt111;
+import com.bitcamp.client.board.domain.Board111;
+import com.bitcamp.client.handler.AbstractHandler111;
+import com.bitcamp.client.util.Prompt111;
+import com.bitcamp.server.board.dao.BoardDao111;
 
-public class BoardHandler111 extends AbstractHandler {
+public class BoardHandler111 extends AbstractHandler111 {
 
   private BoardDao111 boardDao;
 

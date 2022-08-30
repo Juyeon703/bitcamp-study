@@ -1,4 +1,4 @@
-package com.bitcamp.util;
+package com.bitcamp.client.util;
 
 public class Prompt111 {
 

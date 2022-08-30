@@ -1,25 +1,27 @@
-package com.bitcamp.board;
+package com.bitcamp.client.board;
 
 import java.util.Stack;
-import com.bitcamp.board.handler.BoardHandler111;
-import com.bitcamp.board.handler.MemberHandler111;
-import com.bitcamp.handler.Handler;
-import com.bitcamp.util.Prompt111;
+import com.bitcamp.client.board.handler.BoardHandler111;
+import com.bitcamp.client.board.handler.MemberHandler111;
+import com.bitcamp.client.handler.Handler111;
+import com.bitcamp.client.util.Prompt111;
 
-public class App111 {
+public class ClientApp111 {
 
   public static Stack<String> breadcrumbMenu = new Stack<>();
 
   public static void main(String[] args) {
+    System.out.println("[게시글 관리 클라이언트]");
+
     try { 
       welcome();
-      Handler[] handlers = new Handler[] { 
-          new BoardHandler111("board.data"),
-          new BoardHandler111("reading.data"),
-          new BoardHandler111("visit.data"),
-          new BoardHandler111("notice.data"),
-          new BoardHandler111("daily.data"),
-          new MemberHandler111("member.data")
+      Handler111[] handlers = new Handler111[] { 
+          new BoardHandler111("board.json"),
+          new BoardHandler111("reading.json"),
+          new BoardHandler111("visit.json"),
+          new BoardHandler111("notice.json"),
+          new BoardHandler111("daily.json"),
+          new MemberHandler111("member.json")
       };
       breadcrumbMenu.push("메인");
       String[] menus = {"게시판", "독서록", "방명록", "공지사항", "일기장", "회원"};
@@ -66,7 +68,7 @@ public class App111 {
 
   protected static void printTitle() {
     StringBuilder builder = new StringBuilder();
-    for (String title : App111.breadcrumbMenu) {
+    for (String title : breadcrumbMenu) {
       if (!builder.isEmpty()) {
         builder.append(" > ");
       }

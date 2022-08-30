@@ -1,13 +1,13 @@
-package com.bitcamp.handler;
+package com.bitcamp.client.handler;
 
 import com.bitcamp.board.App111;
-import com.bitcamp.util.Prompt111;
+import com.bitcamp.client.util.Prompt111;
 
-public abstract class AbstractHandler implements Handler {
+public abstract class AbstractHandler111 implements Handler111 {
 
   private String[] menus;
 
-  public AbstractHandler(String[] menus) {
+  public AbstractHandler111(String[] menus) {
     this.menus = menus;
   }
 

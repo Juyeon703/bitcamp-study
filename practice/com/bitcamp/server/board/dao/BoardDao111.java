@@ -1,13 +1,12 @@
-package com.bitcamp.board.dao;
+package com.bitcamp.server.board.dao;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import com.bitcamp.board.domain.Board111;
+import com.bitcamp.server.board.domain.Board111;
 
 
 public class BoardDao111 {
@@ -22,22 +21,23 @@ public class BoardDao111 {
   }
 
   public void load() throws Exception {
-    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
-      int size = in.readInt();
-      for (int i = 0; i < size; i++) {
-        Board111 board = (Board111) in.readObject();
-        list.add(board);
-        boardNo = board.no;
+    try (BufferedReader in = new BufferedReader(new FileReader(filename))) {
+      StringBuilder strBuilder = new StringBuilder();
+      String str;
+      while ((str = in.readLine()) != null) {
+        strBuilder.append(str);
+      }
+      Board111[] arr = new Gson().fromJson(strBuilder.toString(), Board111[].class);
+      for (int i = 0; i < arr.length; i++) {
+        list.add(arr[i]);
       }
     }
   }
 
   public void save() throws Exception {
-    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
-      out.writeInt(list.size());
-      for (Board111 board : list) {
-        out.writeObject(board);
-      }
+    try (FileWriter out = new FileWriter(filename)) {
+      Board111[] boards = list.toArray(new Board111[0]);
+      out.write(new Gson().toJson(boards));
     }
   }
 
