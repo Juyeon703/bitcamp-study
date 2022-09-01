@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import com.bitcamp.server.board.domain.Member111;
+import com.google.gson.Gson;
 
 public class MemberDao111 {
 
@@ -50,6 +51,17 @@ public class MemberDao111 {
       }
     }
     return null;
+  }
+
+  public boolean update(Member111 member) {
+    for (int i = 0; i < list.size(); i++) {
+      Member111 m = list.get(i);
+      if (m.email.equals(member.email)) {
+        list.set(i, member);
+        return true;
+      }
+    }
+    return false;
   }
 
   public boolean delete(String email) {

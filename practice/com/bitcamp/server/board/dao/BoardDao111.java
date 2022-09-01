@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import com.bitcamp.server.board.domain.Board111;
+import com.google.gson.Gson;
 
 
 public class BoardDao111 {
@@ -31,6 +32,7 @@ public class BoardDao111 {
       for (int i = 0; i < arr.length; i++) {
         list.add(arr[i]);
       }
+      boardNo = arr[arr.length - 1].no;
     }
   }
 
@@ -44,6 +46,17 @@ public class BoardDao111 {
   public void insert(Board111 board) {
     board.no = nextNo();
     list.add(board);
+  }
+
+  public boolean update(Board111 board) {
+    for (int i = 0; i < list.size(); i++) {
+      Board111 b = list.get(i);
+      if (b.no == board.no) {
+        list.set(i, board);
+        return true;
+      }
+    }
+    return false;
   }
 
   public Board111 findByNo(int boardNo) {

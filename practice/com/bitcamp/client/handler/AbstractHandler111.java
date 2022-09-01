@@ -1,6 +1,6 @@
 package com.bitcamp.client.handler;
 
-import com.bitcamp.board.App111;
+import com.bitcamp.client.board.ClientApp111;
 import com.bitcamp.client.util.Prompt111;
 
 public abstract class AbstractHandler111 implements Handler111 {
@@ -19,7 +19,7 @@ public abstract class AbstractHandler111 implements Handler111 {
 
   protected static void printTitle() {
     StringBuilder builder = new StringBuilder();
-    for (String title : App111.breadcrumbMenu) {
+    for (String title : ClientApp111.breadcrumbMenu) {
       if (!builder.isEmpty()) {
         builder.append(" > ");
       }
@@ -43,11 +43,11 @@ public abstract class AbstractHandler111 implements Handler111 {
         } else if (menuNo == 0) {
           return;
         }
-        App111.breadcrumbMenu.push(menus[menuNo - 1]);
+        ClientApp111.breadcrumbMenu.push(menus[menuNo - 1]);
         System.out.println("---------------------------------------------");
         printTitle();
         service(menuNo);
-        App111.breadcrumbMenu.pop();
+        ClientApp111.breadcrumbMenu.pop();
       } catch (Exception ex) {
         System.out.printf("예외 발생: %s\n", ex.getMessage());
       }

@@ -1,5 +1,8 @@
 package com.bitcamp.client.board;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.Socket;
 import java.util.Stack;
 import com.bitcamp.client.board.handler.BoardHandler111;
 import com.bitcamp.client.board.handler.MemberHandler111;
@@ -12,16 +15,20 @@ public class ClientApp111 {
 
   public static void main(String[] args) {
     System.out.println("[게시글 관리 클라이언트]");
+    try(
+        Socket socket = new Socket("127.0.0.1", 8888);
+        DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+        DataInputStream in = new DataInputStream(socket.getInputStream());) {
+      System.out.println("연결 되었음!");
 
-    try { 
       welcome();
       Handler111[] handlers = new Handler111[] { 
-          new BoardHandler111("board.json"),
-          new BoardHandler111("reading.json"),
-          new BoardHandler111("visit.json"),
-          new BoardHandler111("notice.json"),
-          new BoardHandler111("daily.json"),
-          new MemberHandler111("member.json")
+          new BoardHandler111("board", in, out),
+          new BoardHandler111("reading", in, out),
+          new BoardHandler111("visit", in, out),
+          new BoardHandler111("notice", in, out),
+          new BoardHandler111("daily", in, out),
+          new MemberHandler111("member", in, out)
       };
       breadcrumbMenu.push("메인");
       String[] menus = {"게시판", "독서록", "방명록", "공지사항", "일기장", "회원"};
@@ -35,6 +42,7 @@ public class ClientApp111 {
             System.out.println("메뉴 번호가 옳지 않습니다!");
             continue;
           } else if (mainMenuNo == 0) {
+            out.writeUTF("exit");
             break loop;
           }
           breadcrumbMenu.push(menus[mainMenuNo - 1]);
@@ -45,13 +53,13 @@ public class ClientApp111 {
         }
       } // while
       Prompt111.close();
+
     } catch (Exception e) {
-      System.out.printf("실행 오류 발생! - %s:%s\n", 
-          e.getClass().getName(), 
-          e.getMessage() != null ? e.getMessage() : "");
+      e.printStackTrace();
     }
-    System.out.println("안녕히 가세요!");
+    System.out.println("종료!");
   } // main
+
 
   static void welcome() {
     System.out.println("[게시판 애플리케이션]");
