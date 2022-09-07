@@ -70,6 +70,7 @@ public abstract class AbstractHandler implements Handler {
         ClientApp.breadcrumbMenu.pop();
       } catch (Exception ex) {
         System.out.printf("예외 발생: %s\n", ex.getMessage());
+        ex.printStackTrace();
       }
     } // while
   }

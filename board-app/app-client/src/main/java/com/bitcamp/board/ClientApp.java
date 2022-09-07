@@ -14,9 +14,8 @@ public class ClientApp {
 
   public static void main(String[] args) {
     System.out.println("[게시글 관리 클라이언트]");
-    String ip = "127.0.0.1";
-    int port = 8888;
-    //
+    //    String ip = "127.0.0.1";
+    //    int port = 8888;
     //    try (
     //        // 네트워크 준비
     //        // => 정상적으로 연결되었으면 Socket 객체를 리턴한다.
@@ -29,12 +28,8 @@ public class ClientApp {
     welcome();
     // 핸들러를 담을 컬렉션을 준비한다.
     ArrayList<Handler> handlers = new ArrayList<>();
-    handlers.add(new BoardHandler("board", ip, port));
-    handlers.add(new BoardHandler("reading", ip, port));
-    handlers.add(new BoardHandler("visit", ip, port));
-    handlers.add(new BoardHandler("notice", ip, port));
-    handlers.add(new BoardHandler("daily", ip, port));
-    handlers.add(new MemberHandler("member", ip, port));
+    handlers.add(new BoardHandler());
+    handlers.add(new MemberHandler());
 
     //      // 핸들러를 담을 레퍼런스 배열을 준비한다.
     //      Handler[] handlers = new Handler[] {
@@ -50,7 +45,7 @@ public class ClientApp {
     breadcrumbMenu.push("메인");
 
     // 메뉴명을 저장할 배열을 준비한다.
-    String[] menus = {"게시판", "독서록", "방명록", "공지사항", "일기장", "회원"};
+    String[] menus = {"게시판", "회원"};
 
     loop: while (true) {
 
