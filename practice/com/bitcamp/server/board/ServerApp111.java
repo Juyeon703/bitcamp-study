@@ -4,8 +4,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Hashtable;
 import com.bitcamp.server.board.handler.BoardServlet111;
 import com.bitcamp.server.board.handler.MemberServlet111;
+import com.bitcamp.server.servlet.Servlet;
 
 public class ServerApp111 {
 
@@ -15,39 +17,38 @@ public class ServerApp111 {
     try (ServerSocket serverSocket = new ServerSocket(8888)) {
       System.out.println(" 서버 소켓 준비 완료!");
 
-      try (Socket socket = serverSocket.accept();
-          DataInputStream in = new DataInputStream(socket.getInputStream());
-          DataOutputStream out = new DataOutputStream(socket.getOutputStream());) {
-        System.out.println("클라이언트와 연결 되었음!");
+      Hashtable<String,Servlet> servletMap = new Hashtable<>();
+      servletMap.put("board", new BoardServlet111("board"));
+      servletMap.put("reading", new BoardServlet111("reading"));
+      servletMap.put("visit", new BoardServlet111("visit"));
+      servletMap.put("notice", new BoardServlet111("notice"));
+      servletMap.put("daily", new BoardServlet111("daily"));
+      servletMap.put("member", new MemberServlet111("member"));
 
-        BoardServlet111 boardServlet = new BoardServlet111("board");
-        BoardServlet111 readingServlet = new BoardServlet111("reading");
-        BoardServlet111 visitServlet = new BoardServlet111("visit");
-        BoardServlet111 noticeServlet = new BoardServlet111("notice");
-        BoardServlet111 dailyServlet = new BoardServlet111("daily");
-        MemberServlet111 memberServlet = new MemberServlet111("member");
+      while (true) {
+        try (Socket socket = serverSocket.accept();
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());) {
+          System.out.println("클라이언트와 연결 되었음!");
 
-        while (true) {
-          String dataName = in.readUTF();
+          while (true) {
+            String dataName = in.readUTF();
 
-          if (dataName.equals("exit")) {
-            break;
-          }
+            if (dataName.equals("exit")) {
+              break;
+            }
 
-          switch (dataName) {
-            case "board": boardServlet.service(in, out); break;
-            case "reading": readingServlet.service(in, out); break;
-            case "visit": visitServlet.service(in, out); break;
-            case "notice": noticeServlet.service(in, out); break;
-            case "daily": dailyServlet.service(in, out); break;
-            case "member": memberServlet.service(in, out); break;
-            default:
+            Servlet servlet = servletMap.get(dataName);
+            if (servlet != null) {
+              servlet.service(in, out);
+            } else {
               out.writeUTF("fail");
-          }
-        } 
+            }
+          } 
 
-        System.out.println("클라이언트와 연결 끊었음!");
-      } 
+          System.out.println("클라이언트와 연결 끊었음!");
+        } 
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }

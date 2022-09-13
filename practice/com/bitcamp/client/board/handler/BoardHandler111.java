@@ -4,23 +4,19 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import com.bitcamp.client.board.domain.Board111;
+import com.bitcamp.client.board.dao.BoardDaoProxy111;
 import com.bitcamp.client.handler.AbstractHandler111;
 import com.bitcamp.client.util.Prompt111;
-import com.google.gson.Gson;
+import com.bitcamp.server.board.domain.Board111;
 
 public class BoardHandler111 extends AbstractHandler111 {
 
-  private String dataName;
-  private DataInputStream in;
-  private DataOutputStream out;
+  private BoardDaoProxy111 boardDao;
 
   public BoardHandler111(String dataName, DataInputStream in, DataOutputStream out) {
     super(new String[] {"목록", "상세보기", "등록", "삭제", "변경"});
 
-    this.dataName = dataName;
-    this.in = in;
-    this.out = out;
+    boardDao = new BoardDaoProxy111(dataName, in, out);
   }
 
 
@@ -40,16 +36,12 @@ public class BoardHandler111 extends AbstractHandler111 {
   }
 
   private void onList() throws Exception{
-    out.writeUTF(dataName);
-    out.writeUTF("findAll");
+    Board111[] boards = boardDao.findAll();
 
-    if (in.readUTF().equals("fail")) {
+    if (boards == null) {
       System.out.println("목록을 가져오는데 실패했습니다!");
       return;
     }
-
-    String json = in.readUTF();
-    Board111[] boards = new Gson().fromJson(json, Board111[].class);
 
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -73,17 +65,12 @@ public class BoardHandler111 extends AbstractHandler111 {
       }
     }
 
-    out.writeUTF(dataName);
-    out.writeUTF("findByNo");
-    out.writeInt(boardNo);
+    Board111 board = boardDao.findByNo(boardNo);
 
-    if (in.readUTF().equals("fail")) {
+    if (board == null) {
       System.out.println("해당 번호의 게시글이 없습니다!");
       return;
     }
-
-    String json = in.readUTF();
-    Board111 board = new Gson().fromJson(json, Board111.class);
 
     System.out.printf("번호: %d\n", board.no);
     System.out.printf("제목: %s\n", board.title);
@@ -102,12 +89,8 @@ public class BoardHandler111 extends AbstractHandler111 {
     board.password = Prompt111.inputString("암호? ");
     board.viewCount = 0;
     board.createdDate = System.currentTimeMillis();
-    out.writeUTF(dataName);
-    out.writeUTF("insert");
-    String json = new Gson().toJson(board);
-    out.writeUTF(json);
 
-    if (in.readUTF().equals("success")) {
+    if (boardDao.insert(board)) {
       System.out.println("게시글을 등록했습니다.");
     } else {
       System.out.println("게시글 등록에 실패했습니다!");
@@ -124,11 +107,8 @@ public class BoardHandler111 extends AbstractHandler111 {
         System.out.println("입력 값이 옳지 않습니다!");
       }
     }
-    out.writeUTF(dataName);
-    out.writeUTF("delete");
-    out.writeInt(boardNo);
 
-    if (in.readUTF().equals("success")) {
+    if (boardDao.delete(boardNo)) {
       System.out.println("삭제하였습니다.");
     } else {
       System.out.println("해당 번호의 게시글이 없습니다!");
@@ -145,27 +125,19 @@ public class BoardHandler111 extends AbstractHandler111 {
         System.out.println("입력 값이 옳지 않습니다!");
       }
     }
-    out.writeUTF(dataName);
-    out.writeUTF("findByNo");
-    out.writeInt(boardNo);
+    Board111 board = boardDao.findByNo(boardNo);
 
-    if (in.readUTF().equals("fail")) {
+    if (board == null) {
       System.out.println("해당 번호의 게시글이 없습니다!");
       return;
     }
-
-    String json = in.readUTF();
-    Board111 board = new Gson().fromJson(json, Board111.class);
 
     board.title = Prompt111.inputString("제목?(" + board.title +")");
     board.content = Prompt111.inputString("내용?(" + board.content +")");
     String input = Prompt111.inputString("변경하시겠습니까?(y/n) ");
     if (input.equals("y")) {
-      out.writeUTF(dataName);
-      out.writeUTF("update");
-      out.writeUTF(new Gson().toJson(board));
 
-      if (in.readUTF().equals("success")) {
+      if (boardDao.update(board)) {
         System.out.println("변경했습니다.");
       } else {
         System.out.println("변경 실패입니다!");

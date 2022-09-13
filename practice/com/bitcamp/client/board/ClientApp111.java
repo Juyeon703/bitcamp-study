@@ -3,6 +3,7 @@ package com.bitcamp.client.board;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Stack;
 import com.bitcamp.client.board.handler.BoardHandler111;
 import com.bitcamp.client.board.handler.MemberHandler111;
@@ -22,14 +23,14 @@ public class ClientApp111 {
       System.out.println("연결 되었음!");
 
       welcome();
-      Handler111[] handlers = new Handler111[] { 
-          new BoardHandler111("board", in, out),
-          new BoardHandler111("reading", in, out),
-          new BoardHandler111("visit", in, out),
-          new BoardHandler111("notice", in, out),
-          new BoardHandler111("daily", in, out),
-          new MemberHandler111("member", in, out)
-      };
+      ArrayList<Handler111> handlers = new ArrayList<>();
+      handlers.add(new BoardHandler111("board", in, out));
+      handlers.add(new BoardHandler111("reading", in, out));
+      handlers.add(new BoardHandler111("visit", in, out));
+      handlers.add(new BoardHandler111("notice", in, out));
+      handlers.add(new BoardHandler111("daily", in, out));
+      handlers.add(new MemberHandler111("member", in, out));
+
       breadcrumbMenu.push("메인");
       String[] menus = {"게시판", "독서록", "방명록", "공지사항", "일기장", "회원"};
       loop: while (true) {
@@ -46,14 +47,14 @@ public class ClientApp111 {
             break loop;
           }
           breadcrumbMenu.push(menus[mainMenuNo - 1]);
-          handlers[mainMenuNo - 1].execute();
+          handlers.get(mainMenuNo - 1).execute();
           breadcrumbMenu.pop();
         } catch(Exception ex) {
           System.out.println("입력 값이 옳지 않습니다.");
         }
       } // while
       Prompt111.close();
-
+      System.out.println("연결을 끊었음!");
     } catch (Exception e) {
       e.printStackTrace();
     }

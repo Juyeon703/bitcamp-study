@@ -3,23 +3,19 @@ package com.bitcamp.client.board.handler;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.util.Date;
-import com.bitcamp.client.board.domain.Member111;
+import com.bitcamp.client.board.dao.MemberDaoProxy111;
 import com.bitcamp.client.handler.AbstractHandler111;
 import com.bitcamp.client.util.Prompt111;
-import com.google.gson.Gson;
+import com.bitcamp.server.board.domain.Member111;
 
 public class MemberHandler111 extends AbstractHandler111 {
 
-  private String dataName;
-  private DataInputStream in;
-  private DataOutputStream out;
+  private MemberDaoProxy111 memberDao;
 
   public MemberHandler111(String dataName, DataInputStream in, DataOutputStream out) {
     super(new String[] {"목록", "상세보기", "등록", "삭제", "변경"});
 
-    this.dataName = dataName;
-    this.in = in;
-    this.out = out;
+    memberDao = new MemberDaoProxy111(dataName, in, out);
   }
 
   @Override
@@ -38,16 +34,12 @@ public class MemberHandler111 extends AbstractHandler111 {
   }
 
   private void onList() throws Exception{
-    out.writeUTF(dataName);
-    out.writeUTF("findAll");
+    Member111[] members = memberDao.findAll();
 
-    if (in.readUTF().equals("fail")) {
+    if (members == null) {
       System.out.println("목록을 가져오는데 실패했습니다!");
       return;
     }
-
-    String json = in.readUTF();
-    Member111[] members = new Gson().fromJson(json, Member111[].class);
 
     System.out.println("이메일 이름");
 
@@ -58,17 +50,13 @@ public class MemberHandler111 extends AbstractHandler111 {
 
   private void onDetail() throws Exception{
     String email = Prompt111.inputString("조회할 회원 이메일? ");
-    out.writeUTF(dataName);
-    out.writeUTF("findByEmail");
-    out.writeUTF(email);
 
-    if (in.readUTF().equals("fail")) {
+    Member111 member = memberDao.findByEmail(email);
+
+    if (member == null) {
       System.out.println("해당 이메일의 회원이 없습니다!");
       return;
     }
-
-    String json = in.readUTF();
-    Member111 member = new Gson().fromJson(json, Member111.class);
 
     System.out.printf("이름: %s\n", member.name);
     System.out.printf("이메일: %s\n", member.email);
@@ -82,12 +70,8 @@ public class MemberHandler111 extends AbstractHandler111 {
     member.email = Prompt111.inputString("이메일? ");
     member.password = Prompt111.inputString("암호? ");
     member.createdDate = System.currentTimeMillis();
-    out.writeUTF(dataName);
-    out.writeUTF("insert");
-    String json = new Gson().toJson(member);
-    out.writeUTF(json);
 
-    if (in.readUTF().equals("success")) {
+    if (memberDao.insert(member)) {
       System.out.println("회원을 등록했습니다.");
     } else {
       System.out.println("회원 등록에 실패했습니다!");
@@ -97,11 +81,7 @@ public class MemberHandler111 extends AbstractHandler111 {
   private void onDelete() throws Exception {
     String email = Prompt111.inputString("삭제할 회원 이메일? ");
 
-    out.writeUTF(dataName);
-    out.writeUTF("delete");
-    out.writeUTF(email);
-
-    if (in.readUTF().equals("success")) {
+    if (memberDao.delete(email)) {
       System.out.println("삭제하였습니다.");
     } else {
       System.out.println("해당 이메일의 회원이 없습니다!");
@@ -110,27 +90,20 @@ public class MemberHandler111 extends AbstractHandler111 {
 
   private void onUpdate() throws Exception {
     String email = Prompt111.inputString("변경할 회원 이메일? ");
-    out.writeUTF(dataName);
-    out.writeUTF("findByEmail");
-    out.writeUTF(email);
 
-    if (in.readUTF().equals("fail")) {
+    Member111 member = memberDao.findByEmail(email);
+
+    if (member == null) {
       System.out.println("해당 이메일의 회원이 없습니다!");
       return;
     }
-
-    String json = in.readUTF();
-    Member111 member = new Gson().fromJson(json, Member111.class);
 
     member.name = Prompt111.inputString("이름?(" + member.name +")");
 
     String input = Prompt111.inputString("변경하시겠습니까?(y/n) ");
     if (input.equals("y")) {
-      out.writeUTF(dataName);
-      out.writeUTF("update");
-      out.writeUTF(new Gson().toJson(member));
 
-      if (in.readUTF().equals("success")) {
+      if (memberDao.update(member)) {
         System.out.println("변경했습니다.");
       } else {
         System.out.println("변경 실패입니다!");
