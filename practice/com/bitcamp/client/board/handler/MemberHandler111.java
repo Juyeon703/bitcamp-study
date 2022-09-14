@@ -1,21 +1,19 @@
 package com.bitcamp.client.board.handler;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.util.Date;
-import com.bitcamp.client.board.dao.MemberDaoProxy111;
+import java.util.List;
+import com.bitcamp.client.board.dao.MariaDBMemberDao;
 import com.bitcamp.client.handler.AbstractHandler111;
 import com.bitcamp.client.util.Prompt111;
-import com.bitcamp.server.board.domain.Member111;
+import com.bitcamp.common.board.domain.Member111;
 
 public class MemberHandler111 extends AbstractHandler111 {
 
-  private MemberDaoProxy111 memberDao;
+  private MariaDBMemberDao memberDao;
 
-  public MemberHandler111(String dataName, DataInputStream in, DataOutputStream out) {
+  public MemberHandler111() {
     super(new String[] {"목록", "상세보기", "등록", "삭제", "변경"});
 
-    memberDao = new MemberDaoProxy111(dataName, in, out);
+    memberDao = new MariaDBMemberDao();
   }
 
   @Override
@@ -34,24 +32,20 @@ public class MemberHandler111 extends AbstractHandler111 {
   }
 
   private void onList() throws Exception{
-    Member111[] members = memberDao.findAll();
+    List<Member111> members = memberDao.findAll();
 
-    if (members == null) {
-      System.out.println("목록을 가져오는데 실패했습니다!");
-      return;
-    }
-
-    System.out.println("이메일 이름");
+    System.out.println("번호\t이름\t이메일");
 
     for (Member111 member : members) {
-      System.out.printf("%s\t%s\n", member.email, member.name);
+      System.out.printf("%d\t%s\t%s\n", 
+          member.no, member.name, member.email);
     }
   }
 
   private void onDetail() throws Exception{
-    String email = Prompt111.inputString("조회할 회원 이메일? ");
+    int no = Prompt111.inputInt("조회할 회원 번호? ");
 
-    Member111 member = memberDao.findByEmail(email);
+    Member111 member = memberDao.findByNo(no);
 
     if (member == null) {
       System.out.println("해당 이메일의 회원이 없습니다!");
@@ -60,8 +54,7 @@ public class MemberHandler111 extends AbstractHandler111 {
 
     System.out.printf("이름: %s\n", member.name);
     System.out.printf("이메일: %s\n", member.email);
-    Date date = new Date(member.createdDate);
-    System.out.printf("등록일: %tY-%1$tm-%1$td %1$tH:%1$tM\n", date);
+    System.out.printf("등록일: %tY-%1$tm-%1$td %1$tH:%1$tM\n", member.createdDate);
   }
 
   private void onInput() throws Exception {
@@ -69,19 +62,15 @@ public class MemberHandler111 extends AbstractHandler111 {
     member.name = Prompt111.inputString("이름? ");
     member.email = Prompt111.inputString("이메일? ");
     member.password = Prompt111.inputString("암호? ");
-    member.createdDate = System.currentTimeMillis();
 
-    if (memberDao.insert(member)) {
-      System.out.println("회원을 등록했습니다.");
-    } else {
-      System.out.println("회원 등록에 실패했습니다!");
-    }
+    memberDao.insert(member);
+    System.out.println("회원을 등록했습니다.");
   }
 
   private void onDelete() throws Exception {
-    String email = Prompt111.inputString("삭제할 회원 이메일? ");
+    int no = Prompt111.inputInt("삭제할 회원 번호? ");
 
-    if (memberDao.delete(email)) {
+    if (memberDao.delete(no) == 1) {
       System.out.println("삭제하였습니다.");
     } else {
       System.out.println("해당 이메일의 회원이 없습니다!");
@@ -89,26 +78,26 @@ public class MemberHandler111 extends AbstractHandler111 {
   }
 
   private void onUpdate() throws Exception {
-    String email = Prompt111.inputString("변경할 회원 이메일? ");
+    int no = Prompt111.inputInt("변경할 회원 번호? ");
 
-    Member111 member = memberDao.findByEmail(email);
+    Member111 member = memberDao.findByNo(no);
 
     if (member == null) {
-      System.out.println("해당 이메일의 회원이 없습니다!");
+      System.out.println("해당 번호의 회원이 없습니다!");
       return;
     }
 
-    member.name = Prompt111.inputString("이름?(" + member.name +")");
+    member.name = Prompt111.inputString("이름?(" + member.name + ") ");
+    member.email = Prompt111.inputString("이메일?(" + member.email + ") ");
+    member.password = Prompt111.inputString("암호?");
 
     String input = Prompt111.inputString("변경하시겠습니까?(y/n) ");
     if (input.equals("y")) {
-
-      if (memberDao.update(member)) {
+      if (memberDao.update(member) == 1) {
         System.out.println("변경했습니다.");
       } else {
         System.out.println("변경 실패입니다!");
       }
-
     } else {
       System.out.println("변경 취소했습니다.");
     }

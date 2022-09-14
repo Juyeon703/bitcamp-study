@@ -2,8 +2,8 @@ package com.bitcamp.server.board.handler;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import com.bitcamp.common.board.domain.Member111;
 import com.bitcamp.server.board.dao.MemberDao111;
-import com.bitcamp.server.board.domain.Member111;
 import com.bitcamp.server.servlet.Servlet;
 import com.google.gson.Gson;
 

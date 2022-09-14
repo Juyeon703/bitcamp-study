@@ -1,22 +1,19 @@
 package com.bitcamp.client.board.handler;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import com.bitcamp.client.board.dao.BoardDaoProxy111;
+import java.util.List;
+import com.bitcamp.client.board.dao.MariaDBBoardDao;
 import com.bitcamp.client.handler.AbstractHandler111;
 import com.bitcamp.client.util.Prompt111;
-import com.bitcamp.server.board.domain.Board111;
+import com.bitcamp.common.board.domain.Board111;
 
 public class BoardHandler111 extends AbstractHandler111 {
 
-  private BoardDaoProxy111 boardDao;
+  private MariaDBBoardDao boardDao;
 
-  public BoardHandler111(String dataName, DataInputStream in, DataOutputStream out) {
+  public BoardHandler111() {
     super(new String[] {"목록", "상세보기", "등록", "삭제", "변경"});
 
-    boardDao = new BoardDaoProxy111(dataName, in, out);
+    boardDao = new MariaDBBoardDao();
   }
 
 
@@ -36,21 +33,12 @@ public class BoardHandler111 extends AbstractHandler111 {
   }
 
   private void onList() throws Exception{
-    Board111[] boards = boardDao.findAll();
-
-    if (boards == null) {
-      System.out.println("목록을 가져오는데 실패했습니다!");
-      return;
-    }
-
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    List<Board111> boards = boardDao.findAll();
 
     System.out.println("번호 제목 조회수 작성자 등록일");
-
     for (Board111 board : boards) {
-      Date date = new Date(board.createdDate);
-      String dateStr = formatter.format(date); 
-      System.out.printf("%d\t%s\t%d\t%s\t%s\n", board.no, board.title, board.viewCount, board.writer, dateStr);
+      System.out.printf("%d\t%s\t%d\t%d\t%s\n", 
+          board.no, board.title, board.viewCount, board.memberNo, board.createdDate);
     }
   }
 
@@ -76,25 +64,18 @@ public class BoardHandler111 extends AbstractHandler111 {
     System.out.printf("제목: %s\n", board.title);
     System.out.printf("내용: %s\n", board.content);
     System.out.printf("조회수: %d\n", board.viewCount);
-    System.out.printf("작성자: %s\n", board.writer);
-    Date date = new Date(board.createdDate);
-    System.out.printf("등록일: %tY-%1$tm-%1$td %1$tH:%1$tM\n", date);
+    System.out.printf("작성자: %s\n", board.memberNo);
+    System.out.printf("등록일: %s\n", board.createdDate);
   }
 
   private void onInput() throws Exception{
     Board111 board = new Board111();
     board.title = Prompt111.inputString("제목? ");
     board.content = Prompt111.inputString("내용? ");
-    board.writer = Prompt111.inputString("작성자? ");
-    board.password = Prompt111.inputString("암호? ");
-    board.viewCount = 0;
-    board.createdDate = System.currentTimeMillis();
+    board.memberNo = Prompt111.inputInt("작성자? ");
 
-    if (boardDao.insert(board)) {
-      System.out.println("게시글을 등록했습니다.");
-    } else {
-      System.out.println("게시글 등록에 실패했습니다!");
-    }
+    boardDao.insert(board);
+    System.out.println("게시글을 등록했습니다.");
   }
 
   private void onDelete() throws Exception{
@@ -108,7 +89,7 @@ public class BoardHandler111 extends AbstractHandler111 {
       }
     }
 
-    if (boardDao.delete(boardNo)) {
+    if (boardDao.delete(boardNo) == 1) {
       System.out.println("삭제하였습니다.");
     } else {
       System.out.println("해당 번호의 게시글이 없습니다!");
@@ -126,7 +107,6 @@ public class BoardHandler111 extends AbstractHandler111 {
       }
     }
     Board111 board = boardDao.findByNo(boardNo);
-
     if (board == null) {
       System.out.println("해당 번호의 게시글이 없습니다!");
       return;
@@ -134,10 +114,10 @@ public class BoardHandler111 extends AbstractHandler111 {
 
     board.title = Prompt111.inputString("제목?(" + board.title +")");
     board.content = Prompt111.inputString("내용?(" + board.content +")");
+
     String input = Prompt111.inputString("변경하시겠습니까?(y/n) ");
     if (input.equals("y")) {
-
-      if (boardDao.update(board)) {
+      if (boardDao.update(board) == 1) {
         System.out.println("변경했습니다.");
       } else {
         System.out.println("변경 실패입니다!");

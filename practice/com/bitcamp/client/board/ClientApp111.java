@@ -1,8 +1,5 @@
 package com.bitcamp.client.board;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Stack;
 import com.bitcamp.client.board.handler.BoardHandler111;
@@ -16,48 +13,35 @@ public class ClientApp111 {
 
   public static void main(String[] args) {
     System.out.println("[게시글 관리 클라이언트]");
-    try(
-        Socket socket = new Socket("127.0.0.1", 8888);
-        DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-        DataInputStream in = new DataInputStream(socket.getInputStream());) {
-      System.out.println("연결 되었음!");
 
-      welcome();
-      ArrayList<Handler111> handlers = new ArrayList<>();
-      handlers.add(new BoardHandler111("board", in, out));
-      handlers.add(new BoardHandler111("reading", in, out));
-      handlers.add(new BoardHandler111("visit", in, out));
-      handlers.add(new BoardHandler111("notice", in, out));
-      handlers.add(new BoardHandler111("daily", in, out));
-      handlers.add(new MemberHandler111("member", in, out));
+    welcome();
+    ArrayList<Handler111> handlers = new ArrayList<>();
+    handlers.add(new BoardHandler111());
+    handlers.add(new MemberHandler111());
 
-      breadcrumbMenu.push("메인");
-      String[] menus = {"게시판", "독서록", "방명록", "공지사항", "일기장", "회원"};
-      loop: while (true) {
-        printTitle();
-        printMenus(menus);
-        System.out.println();
-        try {
-          int mainMenuNo = Prompt111.inputInt("메뉴를 선택하세요[1..6](0: 종료) ");
-          if (mainMenuNo < 0 || mainMenuNo > menus.length) {
-            System.out.println("메뉴 번호가 옳지 않습니다!");
-            continue;
-          } else if (mainMenuNo == 0) {
-            out.writeUTF("exit");
-            break loop;
-          }
-          breadcrumbMenu.push(menus[mainMenuNo - 1]);
-          handlers.get(mainMenuNo - 1).execute();
-          breadcrumbMenu.pop();
-        } catch(Exception ex) {
-          System.out.println("입력 값이 옳지 않습니다.");
+    breadcrumbMenu.push("메인");
+    String[] menus = {"게시판", "회원"};
+    loop: while (true) {
+      printTitle();
+      printMenus(menus);
+      System.out.println();
+      try {
+        int mainMenuNo = Prompt111.inputInt(String.format(
+            "메뉴를 선택하세요[1..%d](0: 종료) ", handlers.size()));
+        if (mainMenuNo < 0 || mainMenuNo > menus.length) {
+          System.out.println("메뉴 번호가 옳지 않습니다!");
+          continue;
+        } else if (mainMenuNo == 0) {
+          break loop;
         }
-      } // while
-      Prompt111.close();
-      System.out.println("연결을 끊었음!");
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+        breadcrumbMenu.push(menus[mainMenuNo - 1]);
+        handlers.get(mainMenuNo - 1).execute();
+        breadcrumbMenu.pop();
+      } catch(Exception ex) {
+        System.out.println("입력 값이 옳지 않습니다.");
+      }
+    } // while
+    Prompt111.close();
     System.out.println("종료!");
   } // main
 

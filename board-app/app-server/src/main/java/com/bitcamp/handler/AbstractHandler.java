@@ -24,77 +24,68 @@ public abstract class AbstractHandler implements Handler {
   // 다만 서브 클래스에서 출력 형식을 바꾸기 위해 오버라이딩 할 수 있도록
   // 접근 범위를 protected로 설정한다.
   // 인스턴스 변수를 사용하기 위해 인스턴스 메서드 하여야하므로 static 제거
-  protected void printMenus(PrintWriter out) {
-    for (int i = 0; i < menus.length; i++) {
-      out.printf("  %d: %s\n", i + 1, menus[i]);
+  protected void printMenus(DataOutputStream out) throws Exception {
+    try (StringWriter strOut = new StringWriter();
+        PrintWriter tempOut = new PrintWriter(strOut);) {
+
+      tempOut.println(BreadCrumb.getBreadCrumboOfCurrentThread().toString());
+
+      for (int i = 0; i < menus.length; i++) {
+        tempOut.printf("  %d: %s\n", i + 1, menus[i]);
+      }
+      tempOut.printf("메뉴를 선택하세요[1..%d](0: 이전) ", menus.length);
+      out.writeUTF(strOut.toString()); // 한덩어리의 문자열로 뽑아내서 클라이언트에게 한번에 전송
     }
-    out.printf("메뉴를 선택하세요[1..%d](0: 이전) ", menus.length);
+  }
+  static void error(DataOutputStream out, Exception e) {
+    try (StringWriter strOut = new StringWriter();
+        PrintWriter tempOut = new PrintWriter(strOut);) {
+      tempOut.printf("실행 오류: %s\n", e.getMessage());
+      out.writeUTF(strOut.toString());
+    } catch (Exception e2) {
+      e2.printStackTrace();
+    }
   }
 
   @Override
   public void execute(DataInputStream in, DataOutputStream out) throws Exception{
-    // 현재 스레드를 위해 보관된 Breadcrumb 객체를 꺼낸다.
-    BreadCrumb breadcrumb = BreadCrumb.getBreadCrumboOfCurrentThread();
-    // 핸들러의 메뉴를 클라이언트에게 보낸다.
-    try (StringWriter strOut = new StringWriter();
-        PrintWriter tempOut = new PrintWriter(strOut)) {
-      tempOut.println(breadcrumb.toString());
-      printMenus(tempOut);
-      out.writeUTF(strOut.toString());
-    }
+
+    printMenus(out);
+
     while (true) {
       // 클라이언트가 보낸 요청을 읽는다.
       String request = in.readUTF();
       if(request.equals("0")) {
         break;
+      } else if (request.equals("menu")) {
+        printMenus(out);
+        continue;
       }
 
-      try (StringWriter strOut = new StringWriter();
-          PrintWriter tempOut = new PrintWriter(strOut)) {
-
-        tempOut.println("해당 메뉴를 준비 중입니다.");
-        printBlankLine(tempOut);
-        tempOut.println(breadcrumb.toString());
-        printMenus(tempOut);
-        out.writeUTF(strOut.toString());
-      }
-
-
-      /*
       try {
-        // String str = String.format("메뉴를 선택하세요[1..%d](0: 이전) ", menus.length);
-
-
-        if (menuNo < 0 || menuNo > menus.length) {
-          System.out.println("메뉴 번호가 옳지 않습니다!");
-          continue; // while문의 조건 검사로 보낸다.
-        } else if (menuNo == 0) {
-          return; // 메인 메뉴로 돌아간다.
+        int menuNo = Integer.parseInt(request);
+        if (menuNo < 1 || menuNo > menus.length) {
+          throw new Exception("메뉴 번호가 옳지 않습니다.");
         }
 
-        // 메뉴에 진입할 때
-        ServerApp.breadcrumbMenu.push(menus[menuNo -1]);
-        printHeadline(out);
-
-        // 서브 메뉴의 제목을 출력한다.
-        printTitle(out);
+        // 메뉴에 진입할 때 breadcrumb 메뉴바에 그 메뉴를 등록한다.
+        BreadCrumb.getBreadCrumboOfCurrentThread().put(menus[menuNo - 1]);
 
         //사용자가 입력한 메뉴 번호에 대해 작업을 수행한다.
-        service(menuNo);
+        service(menuNo, in, out);
 
-        printBlankLine(out);
-        ServerApp.breadcrumbMenu.pop();
-      } catch (Exception ex) {
-        System.out.printf("예외 발생: %s\n", ex.getMessage());
-        ex.printStackTrace();
-      } */
-    } // while
+        // 메뉴에 나올 때 breadcrumb 메뉴바에 그 메뉴를 제거한다.
+        BreadCrumb.getBreadCrumboOfCurrentThread().pickUp();
+      } catch (Exception e) {
+        error(out, e);
+      }
+    }
   }
 
   // 서브 클래스가 반드시 만들어야 할 메서드
   // => 메뉴 번호를 받으면 그 메뉴에 해당하는 작업을 수행한다.
   // => 서브 클래스에게 구현을 강제하기 위해 추상 메서드로 선언한다.
-  public abstract void service(int menuNo);
+  public abstract void service(int menuNo, DataInputStream in, DataOutputStream out);
 
   protected static void printHeadline(PrintWriter out) {
     out.println("=========================================");

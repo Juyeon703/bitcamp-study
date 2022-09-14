@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import com.bitcamp.server.board.domain.Member111;
+import com.bitcamp.common.board.domain.Member111;
 import com.google.gson.Gson;
 
 public class MemberDao111 {
