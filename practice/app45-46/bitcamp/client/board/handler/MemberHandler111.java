@@ -1,20 +1,19 @@
 package com.bitcamp.client.board.handler;
 
-import java.sql.Connection;
 import java.util.List;
 import com.bitcamp.client.board.dao.MariaDBMemberDao;
 import com.bitcamp.client.handler.AbstractHandler111;
-import com.bitcamp.client.util.Prompt;
+import com.bitcamp.client.util.Prompt111;
 import com.bitcamp.common.board.domain.Member111;
 
 public class MemberHandler111 extends AbstractHandler111 {
 
   private MariaDBMemberDao memberDao;
 
-  public MemberHandler111(Connection con) {
+  public MemberHandler111() {
     super(new String[] {"목록", "상세보기", "등록", "삭제", "변경"});
 
-    memberDao = new MariaDBMemberDao(con);
+    memberDao = new MariaDBMemberDao();
   }
 
   @Override
@@ -44,7 +43,7 @@ public class MemberHandler111 extends AbstractHandler111 {
   }
 
   private void onDetail() throws Exception{
-    int no = Prompt.inputInt("조회할 회원 번호? ");
+    int no = Prompt111.inputInt("조회할 회원 번호? ");
 
     Member111 member = memberDao.findByNo(no);
 
@@ -60,26 +59,26 @@ public class MemberHandler111 extends AbstractHandler111 {
 
   private void onInput() throws Exception {
     Member111 member = new Member111();
-    member.name = Prompt.inputString("이름? ");
-    member.email = Prompt.inputString("이메일? ");
-    member.password = Prompt.inputString("암호? ");
+    member.name = Prompt111.inputString("이름? ");
+    member.email = Prompt111.inputString("이메일? ");
+    member.password = Prompt111.inputString("암호? ");
 
     memberDao.insert(member);
     System.out.println("회원을 등록했습니다.");
   }
 
   private void onDelete() throws Exception {
-    int no = Prompt.inputInt("삭제할 회원 번호? ");
+    int no = Prompt111.inputInt("삭제할 회원 번호? ");
 
     if (memberDao.delete(no) == 1) {
       System.out.println("삭제하였습니다.");
     } else {
-      System.out.println("해당 번호의 회원이 없습니다!");
+      System.out.println("해당 이메일의 회원이 없습니다!");
     }
   }
 
   private void onUpdate() throws Exception {
-    int no = Prompt.inputInt("변경할 회원 번호? ");
+    int no = Prompt111.inputInt("변경할 회원 번호? ");
 
     Member111 member = memberDao.findByNo(no);
 
@@ -88,11 +87,11 @@ public class MemberHandler111 extends AbstractHandler111 {
       return;
     }
 
-    member.name = Prompt.inputString("이름?(" + member.name + ") ");
-    member.email = Prompt.inputString("이메일?(" + member.email + ") ");
-    member.password = Prompt.inputString("암호?");
+    member.name = Prompt111.inputString("이름?(" + member.name + ") ");
+    member.email = Prompt111.inputString("이메일?(" + member.email + ") ");
+    member.password = Prompt111.inputString("암호?");
 
-    String input = Prompt.inputString("변경하시겠습니까?(y/n) ");
+    String input = Prompt111.inputString("변경하시겠습니까?(y/n) ");
     if (input.equals("y")) {
       if (memberDao.update(member) == 1) {
         System.out.println("변경했습니다.");

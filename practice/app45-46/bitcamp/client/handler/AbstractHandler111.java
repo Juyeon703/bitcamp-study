@@ -1,7 +1,7 @@
 package com.bitcamp.client.handler;
 
 import com.bitcamp.client.board.ClientApp111;
-import com.bitcamp.client.util.Prompt;
+import com.bitcamp.client.util.Prompt111;
 
 public abstract class AbstractHandler111 implements Handler111 {
 
@@ -35,7 +35,7 @@ public abstract class AbstractHandler111 implements Handler111 {
       printMenus();
       System.out.println();
       try {
-        int menuNo = Prompt.inputInt(String.format(
+        int menuNo = Prompt111.inputInt(String.format(
             "메뉴를 선택하세요[1..%d](0: 이전) ", menus.length));
         if (menuNo < 0 || menuNo > menus.length) {
           System.out.println("메뉴 번호가 옳지 않습니다!");
@@ -50,7 +50,6 @@ public abstract class AbstractHandler111 implements Handler111 {
         ClientApp111.breadcrumbMenu.pop();
       } catch (Exception ex) {
         System.out.printf("예외 발생: %s\n", ex.getMessage());
-        ex.printStackTrace();
       }
     }
   }

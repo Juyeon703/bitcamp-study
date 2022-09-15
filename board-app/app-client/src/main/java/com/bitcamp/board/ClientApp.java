@@ -42,6 +42,7 @@ public class ClientApp {
       System.out.println("서버와 통신 중 오류 발생!");
       e.printStackTrace();
     }
+    Prompt.close();
     System.out.println("종료!");
   }
 }

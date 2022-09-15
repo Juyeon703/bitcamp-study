@@ -31,10 +31,8 @@ import com.bitcamp.util.BreadCrumb;
 // 10) breadcrumb 기능을 객체로 분리한다.
 //      - BreadCrumb 클래스를 정의한다.
 // 11) 코드 리팩토링
-//      - execute() 메서드의 
-// 11) 클라이언트에게 응답 메시지를 보내는 기능을 별도의 객체로 분리하여 캡슐화한다.
-//      - Response 클래스 
-// 11) "menu" 요청이 들어 왔을 때 클라이언트에게 
+//      - execute() 메서드 정의: main() 메서드의 코드를 옮긴다.
+// 12) DB 연동
 
 public class ServerApp {
 

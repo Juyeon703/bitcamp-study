@@ -1,6 +1,7 @@
 package com.bitcamp.client.board.dao;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -9,15 +10,11 @@ import com.bitcamp.common.board.domain.Member111;
 
 public class MariaDBMemberDao {
 
-  Connection con;
-
-  public MariaDBMemberDao(Connection con) {
-    this.con = con;
-  }
-
   public int insert(Member111 member) throws Exception {
-    try (PreparedStatement pstmt = con.prepareStatement(
-        "insert into app_member(name,email,pwd) values(?,?,sha2(?,256))")) {
+    try (Connection con = DriverManager.getConnection(
+        "jdbc:mariadb://localhost:3306/studydb","study","1111");
+        PreparedStatement pstmt = con.prepareStatement(
+            "insert into app_member(name,email,pwd) values(?,?,sha2(?,256))")) {
 
       pstmt.setString(1, member.name);
       pstmt.setString(2, member.email);
@@ -28,8 +25,10 @@ public class MariaDBMemberDao {
   }
 
   public Member111 findByNo(int no) throws Exception {
-    try (PreparedStatement pstmt = con.prepareStatement(
-        "select mno,name,email,cdt from app_member where mno=" + no);
+    try (Connection con = DriverManager.getConnection(
+        "jdbc:mariadb://localhost:3306/studydb","study","1111");
+        PreparedStatement pstmt = con.prepareStatement(
+            "select mno,name,email,cdt from app_member where mno=" + no);
         ResultSet rs = pstmt.executeQuery()) {
 
       if (!rs.next()) {
@@ -46,8 +45,10 @@ public class MariaDBMemberDao {
   }
 
   public int update(Member111 member) throws Exception {
-    try (PreparedStatement pstmt = con.prepareStatement(
-        "update app_member set name=?, email=?, pwd=sha2(?,256) where mno=?")) {
+    try (Connection con = DriverManager.getConnection(
+        "jdbc:mariadb://localhost:3306/studydb","study","1111");
+        PreparedStatement pstmt = con.prepareStatement(
+            "update app_member set name=?, email=?, pwd=sha2(?,256) where mno=?")) {
 
       pstmt.setString(1, member.name);
       pstmt.setString(2, member.email);
@@ -59,7 +60,9 @@ public class MariaDBMemberDao {
   }
 
   public int delete(int no) throws Exception {
-    try (PreparedStatement pstmt1 = con.prepareStatement("delete from app_board where mno=?");
+    try (Connection con = DriverManager.getConnection(
+        "jdbc:mariadb://localhost:3306/studydb","study","1111");
+        PreparedStatement pstmt1 = con.prepareStatement("delete from app_board where mno=?");
         PreparedStatement pstmt2 = con.prepareStatement("delete from app_member where mno=?")) {
 
       pstmt1.setInt(1, no);
@@ -71,8 +74,10 @@ public class MariaDBMemberDao {
   }
 
   public List<Member111> findAll() throws Exception {
-    try (PreparedStatement pstmt = con.prepareStatement(
-        "select mno,name,email from app_member");
+    try (Connection con = DriverManager.getConnection(
+        "jdbc:mariadb://localhost:3306/studydb","study","1111");
+        PreparedStatement pstmt = con.prepareStatement(
+            "select mno,name,email from app_member");
         ResultSet rs = pstmt.executeQuery()) {
 
       ArrayList<Member111> list = new ArrayList<>();
