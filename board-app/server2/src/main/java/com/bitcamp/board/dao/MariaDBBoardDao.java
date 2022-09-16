@@ -7,11 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import com.bitcamp.board.domain.Board;
 
-public class MariaDBBoardDao implements BoardDao {
+// 게시글 목록을 관리하는 역할
+//
+public class MariaDBBoardDao implements BoardDao{
 
   Connection con;
 
-  //DAO가 사용할 의존 객체 Connection을 생성자의 파라미터로 받는다.
   public MariaDBBoardDao(Connection con) {
     this.con = con;
   }
@@ -28,7 +29,7 @@ public class MariaDBBoardDao implements BoardDao {
   }
 
   @Override
-  public Board findByNo(int no) throws Exception {
+  public Board findByNo(int no) throws Exception{
     try (PreparedStatement pstmt = con.prepareStatement(
         "select bno,title,cont,mno,cdt,vw_cnt from app_board where bno=" + no);
         ResultSet rs = pstmt.executeQuery()) {
@@ -36,7 +37,6 @@ public class MariaDBBoardDao implements BoardDao {
       if (!rs.next()) {
         return null;
       }
-
       Board board = new Board();
       board.no = rs.getInt("bno");
       board.title = rs.getString("title");
@@ -50,7 +50,7 @@ public class MariaDBBoardDao implements BoardDao {
   }
 
   @Override
-  public int update(Board board) throws Exception {
+  public int update(Board board) throws Exception{
     try (PreparedStatement pstmt = con.prepareStatement(
         "update app_board set title=?, cont=? where bno=?")) {
 
@@ -60,10 +60,10 @@ public class MariaDBBoardDao implements BoardDao {
 
       return pstmt.executeUpdate();
     }
-  }
+  } 
 
   @Override
-  public int delete(int no) throws Exception {
+  public int delete(int no) throws Exception{
     try (PreparedStatement pstmt = con.prepareStatement("delete from app_board where bno=?")) {
 
       pstmt.setInt(1, no);
@@ -72,9 +72,8 @@ public class MariaDBBoardDao implements BoardDao {
   }
 
   @Override
-  public List<Board> findAll() throws Exception {
-    try (PreparedStatement pstmt = con.prepareStatement(
-        "select bno,title,mno,cdt,vw_cnt from app_board");
+  public List<Board> findAll() throws Exception{
+    try (PreparedStatement pstmt = con.prepareStatement("select bno,title,mno,cdt,vw_cnt from app_board");
         ResultSet rs = pstmt.executeQuery()) {
 
       ArrayList<Board> list = new ArrayList<>();
@@ -89,22 +88,7 @@ public class MariaDBBoardDao implements BoardDao {
 
         list.add(board);
       }
-
       return list;
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

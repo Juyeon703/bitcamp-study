@@ -15,17 +15,3 @@ public interface MemberDao {
 
   List<Member> findAll() throws Exception;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

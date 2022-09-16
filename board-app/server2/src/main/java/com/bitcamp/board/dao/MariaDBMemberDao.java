@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import com.bitcamp.board.domain.Member;
 
-public class MariaDBMemberDao implements MemberDao {
+// 게시글 목록을 관리하는 역할
+//
+public class MariaDBMemberDao implements MemberDao{
 
   Connection con;
 
-  // DAO가 사용할 의존 객체 Connection을 생성자의 파라미터로 받는다.
+  //DAO가 사용할 의존 객체 Connection을 생성자의 파라미터로 받는다.
   public MariaDBMemberDao(Connection con) {
     this.con = con;
   }
@@ -30,27 +32,29 @@ public class MariaDBMemberDao implements MemberDao {
   }
 
   @Override
-  public Member findByNo(int no) throws Exception {
-
+  public Member findByNo(int no) throws Exception{
     try (PreparedStatement pstmt = con.prepareStatement(
-        "select mno,name,email,cdt from app_member where mno=" + no);
-        ResultSet rs = pstmt.executeQuery()) {
+        "select mno,name,email,cdt from app_member where mno=?")) {
 
-      if (!rs.next()) {
-        return null;
+      pstmt.setInt(1, no); // try 문을 합치면 안되는 이유 -> try문 사이에 이런 일반적인 문장을 둘 수 없어 try문안에 try문이 생긴 형태가 된거임
+
+      try(ResultSet rs = pstmt.executeQuery()) {
+        if (!rs.next()) {
+          return null;
+        }
+        Member member = new Member();
+        member.no = rs.getInt("mno");
+        member.name = rs.getString("name");
+        member.email = rs.getString("email");
+        member.createdDate = rs.getDate("cdt");
+
+        return member;
       }
-
-      Member member = new Member();
-      member.no = rs.getInt("mno");
-      member.name = rs.getString("name");
-      member.email = rs.getString("email");
-      member.createdDate = rs.getDate("cdt");
-      return member;
     }
   }
 
   @Override
-  public int update(Member member) throws Exception {
+  public int update(Member member) throws Exception{
     try (PreparedStatement pstmt = con.prepareStatement(
         "update app_member set name=?, email=?, pwd=sha2(?,256) where mno=?")) {
 
@@ -61,10 +65,10 @@ public class MariaDBMemberDao implements MemberDao {
 
       return pstmt.executeUpdate();
     }
-  }
+  } 
 
   @Override
-  public int delete(int no) throws Exception {
+  public int delete(int no) throws Exception{
     try (PreparedStatement pstmt1 = con.prepareStatement("delete from app_board where mno=?");
         PreparedStatement pstmt2 = con.prepareStatement("delete from app_member where mno=?")) {
 
@@ -81,17 +85,14 @@ public class MariaDBMemberDao implements MemberDao {
 
       // 현재까지 작업한 데이터 변경 결과를 실제 테이블에 적용해 달라고 요청한다.
       con.commit();
-
       return count;
-
     } catch (Exception e) {
       // 예외가 발생하면 마지막 커밋 상태로 돌린다.
       // => 임시 데이터베이스에 보관된 이전 작업 결과를 모두 취소한다.
       con.rollback();
 
-      // 예외 발생 사실을 호출자에게 전달한다.
-      throw e;
-
+      //예외 발생 사실을 호출자에게 전달한다.
+      throw e; //catch한건 예외처리한것이 아니고 롤백을 하기위해 한것이기 때문에 발생한 예외를 호출자에게 보고한다.
     } finally {
       // 삭제 작업 후 자동 커밋 상태로 전환한다.
       con.setAutoCommit(true);
@@ -99,9 +100,8 @@ public class MariaDBMemberDao implements MemberDao {
   }
 
   @Override
-  public List<Member> findAll() throws Exception {
-    try (PreparedStatement pstmt = con.prepareStatement(
-        "select mno,name,email from app_member");
+  public List<Member> findAll() throws Exception{
+    try (PreparedStatement pstmt = con.prepareStatement("select mno,name,email from app_member");
         ResultSet rs = pstmt.executeQuery()) {
 
       ArrayList<Member> list = new ArrayList<>();
@@ -111,25 +111,9 @@ public class MariaDBMemberDao implements MemberDao {
         member.no = rs.getInt("mno");
         member.name = rs.getString("name");
         member.email = rs.getString("email");
-
         list.add(member);
       }
-
       return list;
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

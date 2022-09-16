@@ -15,17 +15,3 @@ public interface BoardDao {
 
   List<Board> findAll() throws Exception;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

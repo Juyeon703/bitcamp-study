@@ -57,6 +57,7 @@ public class BoardHandler {
 
     out.println("<body>");
     out.println("<h1>게시글</h1>");
+    out.println("<a href='form'>새 글</a>");
     out.println("<table border='1'>");
     out.println("  <tr> ");
     out.println("    <th>번호</th>");
@@ -79,6 +80,7 @@ public class BoardHandler {
       out.println("  </tr>");
     }
     out.println("</table>");
+    out.println("<p><a href='/'>메인</a></p>");
     out.println("</body>");
     out.println("</html>");
   }
@@ -163,42 +165,6 @@ public class BoardHandler {
   //      out.writeUTF(strOut.toString());
   //    }
   //  }
-
-
-  public void input(Map<String, String> paramMap, PrintWriter out) throws Exception{
-    out.println("<!DOCTYPE html>");
-    out.println("<html>");
-    out.println("<head>");
-    out.println("<meta charset=\"UTF-8\">");
-    out.println("<title>bitcamp</title>");
-    out.println("<meta http-equiv='Refresh' content='3; url=list'>"); // 시간지나면 목록페이지로 넘어가도록
-    out.println("</head>");
-
-    out.println("<body>");
-    out.println("<h1>게시글 등록</h1>");
-
-    Board board = new Board();
-    board.no = Integer.parseInt(paramMap.get("no"));
-    board.title = paramMap.get("title");
-    board.content = paramMap.get("content");
-
-    if (boardDao.insert(board) == 0) {
-      out.println("<p>해당 번호의 게시글이 없습니다!</p>");
-    } else {
-      out.println("<p>해당 게시글을 등록했습니다!</p>");
-    }
-    out.println("</body>");
-    out.println("</html>");
-  }
-  //    Prompt prompt = new Prompt(in, out);
-  //    Board board = new Board();
-  //
-  //    board.title = prompt.inputString("제목? ");
-  //    board.content = prompt.inputString("내용? ");
-  //    board.memberNo = prompt.inputInt("작성자? ");
-  //
-  //    boardDao.insert(board);
-  //    out.writeUTF("게시글을 등록했습니다.");
 
   public void delete(Map<String, String> paramMap, PrintWriter out) throws Exception{
     out.println("<!DOCTYPE html>");
@@ -297,6 +263,76 @@ public class BoardHandler {
   //      out.writeUTF("변경 취소했습니다.");
   //    } 
   //  }
+
+  public void form(Map<String, String> paramMap, PrintWriter out) {
+    out.println("<!DOCTYPE html>");
+    out.println("<html>");
+    out.println("<head>");
+    out.println("<meta charset=\"UTF-8\">");
+    out.println("<title>bitcamp</title>");
+    out.println("</head>");
+
+    out.println("<body>");
+    out.println("<h1>게시글 입력</h1>");
+
+    out.println("<form action='add'>");
+
+    out.println("<table border='1'>");
+    out.println("  <tr> ");
+    out.println("    <th>제목</th><td><input name='title' type='text' size='60'></td>");
+    out.println("  </tr>");
+    out.println("  <tr> ");
+    out.println("    <th>내용</th><td><textarea name='content' rows='10' cols='60'></textarea></td>");
+    out.println("  </tr>");
+    out.println("  <tr> ");
+    out.println("    <th>작성자</th><td><input name='writerNo' type='number' size='5'></td>");
+    out.println("  </tr>");
+    out.println("</table>");
+
+    out.println("<p>");
+    out.println("<button type='submit'>등록</button>");
+    out.println("<a href='list'>목록</a>");
+    out.println("</p>");
+    out.println("</form>");
+
+    out.println("</body>");
+    out.println("</html>");
+  }
+
+  public void add(Map<String, String> paramMap, PrintWriter out) throws Exception{
+    out.println("<!DOCTYPE html>");
+    out.println("<html>");
+    out.println("<head>");
+    out.println("<meta charset=\"UTF-8\">");
+    out.println("<title>bitcamp</title>");
+    out.println("<meta http-equiv='Refresh' content='3; url=list'>"); // 시간지나면 목록페이지로 넘어가도록
+    out.println("</head>");
+
+    out.println("<body>");
+    out.println("<h1>게시글 등록</h1>");
+
+    Board board = new Board();
+    board.title = paramMap.get("title");
+    board.content = paramMap.get("content");
+    board.memberNo = Integer.parseInt(paramMap.get("writerNo"));
+
+    if (boardDao.insert(board) == 0) {
+      out.println("<p>게시글을 등록할 수 없습니다!</p>");
+    } else {
+      out.println("<p>게시글을 등록했습니다!</p>");
+    }
+    out.println("</body>");
+    out.println("</html>");
+  }
+  //    Prompt prompt = new Prompt(in, out);
+  //    Board board = new Board();
+  //
+  //    board.title = prompt.inputString("제목? ");
+  //    board.content = prompt.inputString("내용? ");
+  //    board.memberNo = prompt.inputInt("작성자? ");
+  //
+  //    boardDao.insert(board);
+  //    out.writeUTF("게시글을 등록했습니다.");
 }
 
 
