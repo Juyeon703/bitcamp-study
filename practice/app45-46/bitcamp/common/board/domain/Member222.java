@@ -2,7 +2,7 @@ package com.bitcamp.common.board.domain;
 
 import java.sql.Date;
 
-public class Member111 {
+public class Member222 {
 
   public int no;
   public String name;

@@ -7,14 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 import com.bitcamp.common.board.domain.Member111;
 
-public class MariaDBMemberDao {
 
+public class MariaDBMemberDao111 implements MemberDao111{
   Connection con;
 
-  public MariaDBMemberDao(Connection con) {
+  public MariaDBMemberDao111(Connection con) {
     this.con = con;
   }
 
+  @Override
   public int insert(Member111 member) throws Exception {
     try (PreparedStatement pstmt = con.prepareStatement(
         "insert into app_member(name,email,pwd) values(?,?,sha2(?,256))")) {
@@ -27,6 +28,7 @@ public class MariaDBMemberDao {
     }
   }
 
+  @Override
   public Member111 findByNo(int no) throws Exception {
     try (PreparedStatement pstmt = con.prepareStatement(
         "select mno,name,email,cdt from app_member where mno=" + no);
@@ -45,6 +47,7 @@ public class MariaDBMemberDao {
     }
   }
 
+  @Override
   public int update(Member111 member) throws Exception {
     try (PreparedStatement pstmt = con.prepareStatement(
         "update app_member set name=?, email=?, pwd=sha2(?,256) where mno=?")) {
@@ -58,6 +61,7 @@ public class MariaDBMemberDao {
     }
   }
 
+  @Override
   public int delete(int no) throws Exception {
     try (PreparedStatement pstmt1 = con.prepareStatement("delete from app_board where mno=?");
         PreparedStatement pstmt2 = con.prepareStatement("delete from app_member where mno=?")) {
@@ -70,6 +74,7 @@ public class MariaDBMemberDao {
     }
   }
 
+  @Override
   public List<Member111> findAll() throws Exception {
     try (PreparedStatement pstmt = con.prepareStatement(
         "select mno,name,email from app_member");

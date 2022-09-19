@@ -3,7 +3,7 @@ package com.bitcamp.client.handler;
 import com.bitcamp.client.board.ClientApp111;
 import com.bitcamp.client.util.Prompt111;
 
-public abstract class AbstractHandler111 implements Handler111 {
+public abstract class AbstractHandler222 implements Handler111 {
 
   private String[] menus;
 

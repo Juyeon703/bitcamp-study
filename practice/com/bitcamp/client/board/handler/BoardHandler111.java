@@ -1,20 +1,19 @@
 package com.bitcamp.client.board.handler;
 
-import java.sql.Connection;
 import java.util.List;
+import com.bitcamp.client.board.dao.BoardDao111;
 import com.bitcamp.client.handler.AbstractHandler111;
 import com.bitcamp.client.util.Prompt;
 import com.bitcamp.common.board.domain.Board111;
-import app30.board.dao.BoardDao;
 
 public class BoardHandler111 extends AbstractHandler111 {
 
-  private BoardDao boardDao;
+  private BoardDao111 boardDao;
 
-  public BoardHandler111(Connection con) {
+  public BoardHandler111(BoardDao111 boardDao) {
     super(new String[] {"목록", "상세보기", "등록", "삭제", "변경"});
 
-    boardDao = new BoardDao(con);
+    this.boardDao = boardDao;
   }
 
 

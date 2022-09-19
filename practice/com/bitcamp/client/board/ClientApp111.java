@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Stack;
+import com.bitcamp.client.board.dao.MariaDBBoardDao111;
+import com.bitcamp.client.board.dao.MariaDBMemberDao111;
 import com.bitcamp.client.board.handler.BoardHandler111;
 import com.bitcamp.client.board.handler.MemberHandler111;
 import com.bitcamp.client.handler.Handler111;
@@ -20,10 +22,12 @@ public class ClientApp111 {
 
       welcome();
 
+      MariaDBMemberDao111 memberDao = new MariaDBMemberDao111(con);
+      MariaDBBoardDao111 boardDao = new MariaDBBoardDao111(con);
 
       ArrayList<Handler111> handlers = new ArrayList<>();
-      handlers.add(new BoardHandler111(con));
-      handlers.add(new MemberHandler111(con));
+      handlers.add(new BoardHandler111(boardDao));
+      handlers.add(new MemberHandler111(memberDao));
 
       breadcrumbMenu.push("메인");
       String[] menus = {"게시판", "회원"};

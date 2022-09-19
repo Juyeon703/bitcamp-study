@@ -1,20 +1,19 @@
 package com.bitcamp.client.board.handler;
 
-import java.sql.Connection;
 import java.util.List;
-import com.bitcamp.client.board.dao.MariaDBMemberDao;
+import com.bitcamp.client.board.dao.MemberDao111;
 import com.bitcamp.client.handler.AbstractHandler111;
 import com.bitcamp.client.util.Prompt;
 import com.bitcamp.common.board.domain.Member111;
 
 public class MemberHandler111 extends AbstractHandler111 {
 
-  private MariaDBMemberDao memberDao;
+  private MemberDao111 memberDao;
 
-  public MemberHandler111(Connection con) {
+  public MemberHandler111(MemberDao111 memberDao) {
     super(new String[] {"목록", "상세보기", "등록", "삭제", "변경"});
 
-    memberDao = new MariaDBMemberDao(con);
+    this.memberDao = memberDao;
   }
 
   @Override

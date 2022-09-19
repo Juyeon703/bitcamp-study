@@ -7,7 +7,7 @@ import com.bitcamp.client.board.handler.MemberHandler111;
 import com.bitcamp.client.handler.Handler111;
 import com.bitcamp.client.util.Prompt111;
 
-public class ClientApp111 {
+public class ClientApp222 {
 
   public static Stack<String> breadcrumbMenu = new Stack<>();
 

@@ -3,7 +3,7 @@ package com.bitcamp.client.board.dao;
 import java.util.List;
 import com.bitcamp.common.board.domain.Member111;
 
-public interface MemberDao {
+public interface MemberDao111 {
   int insert(Member111 member) throws Exception;
 
   Member111 findByNo(int no) throws Exception;

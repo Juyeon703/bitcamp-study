@@ -6,14 +6,14 @@ import com.bitcamp.client.handler.AbstractHandler111;
 import com.bitcamp.client.util.Prompt111;
 import com.bitcamp.common.board.domain.Member111;
 
-public class MemberHandler111 extends AbstractHandler111 {
+public class MemberHandler222 extends AbstractHandler111 {
 
-  private MariaDBMemberDao memberDao;
+  private MariaDBMemberDao222 memberDao;
 
-  public MemberHandler111() {
+  public MemberHandler222() {
     super(new String[] {"목록", "상세보기", "등록", "삭제", "변경"});
 
-    memberDao = new MariaDBMemberDao();
+    memberDao = new MariaDBMemberDao222();
   }
 
   @Override
