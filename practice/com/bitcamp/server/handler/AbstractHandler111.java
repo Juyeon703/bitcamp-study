@@ -1,4 +1,4 @@
-package com.bitcamp.client.handler;
+package com.bitcamp.server.handler;
 
 import com.bitcamp.client.board.ClientApp111;
 import com.bitcamp.client.util.Prompt;

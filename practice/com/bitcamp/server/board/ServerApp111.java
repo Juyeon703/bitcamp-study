@@ -1,4 +1,4 @@
-package com.bitcamp.client.board;
+package com.bitcamp.server.board;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +11,7 @@ import com.bitcamp.server.board.handler.BoardHandler111;
 import com.bitcamp.server.board.handler.MemberHandler111;
 import com.bitcamp.server.handler.Handler111;
 
-public class ClientApp111 {
+public class ServerApp111 {
 
   public static Stack<String> breadcrumbMenu = new Stack<>();
 

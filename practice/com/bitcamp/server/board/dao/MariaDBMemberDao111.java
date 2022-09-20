@@ -1,4 +1,4 @@
-package com.bitcamp.client.board.dao;
+package com.bitcamp.server.board.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -66,11 +66,21 @@ public class MariaDBMemberDao111 implements MemberDao111{
     try (PreparedStatement pstmt1 = con.prepareStatement("delete from app_board where mno=?");
         PreparedStatement pstmt2 = con.prepareStatement("delete from app_member where mno=?")) {
 
+      con.setAutoCommit(false);
+
       pstmt1.setInt(1, no);
       pstmt1.executeUpdate();
 
       pstmt2.setInt(1, no);
-      return pstmt2.executeUpdate();
+      int count = pstmt2.executeUpdate();
+
+      con.commit();
+      return count;
+    } catch (Exception e) {
+      con.rollback();
+      throw e;
+    } finally {
+      con.setAutoCommit(true);
     }
   }
 

@@ -1,4 +1,4 @@
-package com.bitcamp.client.board.dao;
+package com.bitcamp.server.board.dao;
 
 import java.util.List;
 import com.bitcamp.common.board.domain.Member111;
