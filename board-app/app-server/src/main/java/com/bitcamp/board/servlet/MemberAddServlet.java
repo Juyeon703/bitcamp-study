@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.bitcamp.board.dao.MemberDao;
 import com.bitcamp.board.domain.Member;
 
 @WebServlet(value="/member/add")
@@ -24,6 +25,12 @@ public class MemberAddServlet extends HttpServlet{
   //
   //    memberDao = new MariaDBMemberDao(con);
   //  }
+  MemberDao memberDao;
+
+  @Override
+  public void init() throws ServletException {
+    memberDao = (MemberDao) this.getServletContext().getAttribute("memberDao");
+  }
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -48,7 +55,7 @@ public class MemberAddServlet extends HttpServlet{
       member.email = req.getParameter("email");
       member.password = req.getParameter("password");
 
-      if (AppInitServlet.memberDao.insert(member) == 0) {
+      if (memberDao.insert(member) == 0) {
         out.println("<p>회원을 등록할 수 없습니다!</p>");
 
       } else {

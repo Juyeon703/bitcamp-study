@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.bitcamp.board.dao.MemberDao;
 import com.bitcamp.board.domain.Member;
 
 @WebServlet(value="/member/list")
@@ -25,7 +26,12 @@ public class MemberListServlet extends HttpServlet{
   //
   //    memberDao = new MariaDBMemberDao(con);
   //  }
+  MemberDao memberDao;
 
+  @Override
+  public void init() throws ServletException {
+    memberDao = (MemberDao) this.getServletContext().getAttribute("memberDao");
+  }
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
@@ -50,7 +56,7 @@ public class MemberListServlet extends HttpServlet{
     out.println("<a href='form'>새 회원</a>");
 
     try {
-      List<Member> members = AppInitServlet.memberDao.findAll();
+      List<Member> members = memberDao.findAll();
       out.println("<table border='1'>");
       out.println("  <tr>");
       out.println("    <th>번호</th>");
