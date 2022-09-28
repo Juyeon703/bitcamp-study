@@ -26,9 +26,9 @@ public class MemberAddController extends HttpServlet{
 
     try {
       Member member = new Member();
-      member.name = request.getParameter("name");
-      member.email = request.getParameter("email");
-      member.password = request.getParameter("password");
+      member.setName(request.getParameter("name"));
+      member.setEmail(request.getParameter("email"));
+      member.setPassword(request.getParameter("password"));
 
       if (memberDao.insert(member) == 0) {
         throw new Exception("회원을 등록할 수 없습니다!");

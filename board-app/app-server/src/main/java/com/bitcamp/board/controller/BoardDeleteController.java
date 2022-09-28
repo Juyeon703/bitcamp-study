@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.bitcamp.board.dao.BoardDao;
+import com.bitcamp.board.domain.Member;
 
 @WebServlet("/board/delete")
 public class BoardDeleteController extends HttpServlet{
@@ -25,6 +26,12 @@ public class BoardDeleteController extends HttpServlet{
 
     try {
       int no = Integer.parseInt(request.getParameter("no"));
+
+      // 작성자만 삭제할 수 있도록
+      Member loginMember = (Member) request.getSession().getAttribute("loginMember");
+      if (boardDao.findByNo(no).getWriter().getNo() != loginMember.getNo()) {
+        throw new Exception("게시글 작성자가 아닙니다.");
+      }
 
       if (boardDao.delete(no) == 0) {
         throw new Exception("게시글 삭제 실패!");

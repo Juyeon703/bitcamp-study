@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import com.bitcamp.board.domain.Board;
+import com.bitcamp.board.domain.Member;
 
 public class MariaDBBoardDao implements BoardDao {
 
@@ -20,9 +21,9 @@ public class MariaDBBoardDao implements BoardDao {
   public int insert(Board board) throws Exception {
     try (PreparedStatement pstmt = con.prepareStatement(
         "insert into app_board(title,cont,mno) values(?,?,?)")) {
-      pstmt.setString(1, board.title);
-      pstmt.setString(2, board.content);
-      pstmt.setInt(3, board.memberNo);
+      pstmt.setString(1, board.getTitle());
+      pstmt.setString(2, board.getContent());
+      pstmt.setInt(3, board.getWriter().getNo());
       return pstmt.executeUpdate();
     }
   }
@@ -30,7 +31,8 @@ public class MariaDBBoardDao implements BoardDao {
   @Override
   public Board findByNo(int no) throws Exception {
     try (PreparedStatement pstmt = con.prepareStatement(
-        "select bno,title,cont,mno,cdt,vw_cnt from app_board where bno=" + no);
+        "select b.bno, b.title, b.cont, m.mno, m.name, b.cdt, b.vw_cnt "
+            + "from app_board b inner join app_member m on b.mno = m.mno where b.bno=" + no);
         ResultSet rs = pstmt.executeQuery()) {
 
       if (!rs.next()) {
@@ -38,12 +40,16 @@ public class MariaDBBoardDao implements BoardDao {
       }
 
       Board board = new Board();
-      board.no = rs.getInt("bno");
-      board.title = rs.getString("title");
-      board.content = rs.getString("cont");
-      board.memberNo = rs.getInt("mno");
-      board.createdDate = rs.getDate("cdt");
-      board.viewCount = rs.getInt("vw_cnt");
+      board.setNo(rs.getInt("bno"));
+      board.setTitle(rs.getString("title"));
+      board.setContent(rs.getString("cont"));
+      board.setCreatedDate(rs.getDate("cdt"));
+      board.setViewCount(rs.getInt("vw_cnt"));
+
+      Member writer = new Member();
+      writer.setNo(rs.getInt("mno"));
+      writer.setName(rs.getString("name"));
+      board.setWriter (writer);
 
       return board;
     }
@@ -54,9 +60,9 @@ public class MariaDBBoardDao implements BoardDao {
     try (PreparedStatement pstmt = con.prepareStatement(
         "update app_board set title=?, cont=? where bno=?")) {
 
-      pstmt.setString(1, board.title);
-      pstmt.setString(2, board.content);
-      pstmt.setInt(3, board.no);
+      pstmt.setString(1, board.getTitle());
+      pstmt.setString(2, board.getContent());
+      pstmt.setInt(3, board.getNo());
 
       return pstmt.executeUpdate();
     }
@@ -74,18 +80,24 @@ public class MariaDBBoardDao implements BoardDao {
   @Override
   public List<Board> findAll() throws Exception {
     try (PreparedStatement pstmt = con.prepareStatement(
-        "select bno,title,mno,cdt,vw_cnt from app_board");
+        "select b.bno, b.title, m.mno, m.name, b.cdt, b.vw_cnt "
+            + "from app_board b inner join app_member m on b.mno = m.mno" );
         ResultSet rs = pstmt.executeQuery()) {
 
       ArrayList<Board> list = new ArrayList<>();
 
       while (rs.next()) {
         Board board = new Board();
-        board.no = rs.getInt("bno");
-        board.title = rs.getString("title");
-        board.memberNo = rs.getInt("mno");
-        board.createdDate = rs.getDate("cdt");
-        board.viewCount = rs.getInt("vw_cnt");
+        // 값을 넣고 뺄때는 setter getter를 사용해야함
+        board.setNo(rs.getInt("bno"));
+        board.setTitle(rs.getString("title"));
+        board.setCreatedDate(rs.getDate("cdt"));
+        board.setViewCount(rs.getInt("vw_cnt"));
+
+        Member writer = new Member();
+        writer.setNo(rs.getInt("mno"));
+        writer.setName(rs.getString("name"));
+        board.setWriter (writer);
 
         list.add(board);
       }
