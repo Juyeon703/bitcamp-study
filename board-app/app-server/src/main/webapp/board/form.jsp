@@ -9,7 +9,7 @@
 <body>
   <h1>게시글 입력-JSP</h1>
 
-  <form action='add'>
+  <form action='add' method="post">
   
     <table border='1'>
     

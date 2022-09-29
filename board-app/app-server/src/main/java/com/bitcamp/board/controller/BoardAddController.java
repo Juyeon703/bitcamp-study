@@ -22,10 +22,19 @@ public class BoardAddController extends HttpServlet{
   }
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
     try {
+
+      // URL 디코딩 한 바이트를 UTF-16으로 변환하기 전에
+      // 그 바이트의 characterset이 무엇인지 알려줘야 한다.
+      // 안 알려주면 그 디코딩 바이트가 ASCII코드라고 간주한다.
+      // UTF-8코드를 ASCII 잘못 판단하니까 UTF-16으로 바꿀 때 오류가 발생하는 것이다.
+      // 물론 영어나 숫자는 ASCII코드와 UTF-16코드가 같기 때문에 UTF-16으로 변환하더라도 문제가 되지않는다.
+      // 그러나 한글은 UTF-8코드의 3바이트를 묶어서 UTF-16의 2바이트로 변환해야 하는데
+      // 영어라고 간주하고 각각의 1바이트를 2바이트로 변환하니까 문제가 발생하는 것이다.
+      request.setCharacterEncoding("UTF-8");
       Board board = new Board();
       board.setTitle(request.getParameter("title"));
       board.setContent(request.getParameter("content"));
@@ -44,9 +53,9 @@ public class BoardAddController extends HttpServlet{
       // Refresh:
       // - 응답 헤더 또는 HTML 문서에 refresh를 삽입할 수 있다.
 
-      response.setHeader("Refresh", "1;url=list"); // 응답 헤더에 refresh 명령 삽입
-      response.setContentType("text/html; charset=UTF-8"); // JSP가 출력할 콘텐트의 MIME 타입 설정
-      request.getRequestDispatcher("/board/add.jsp").include(request, response); //JSP를 실행한 후 리턴된다.
+      //      response.setHeader("Refresh", "1;url=list"); // 응답 헤더에 refresh 명령 삽입
+      //      response.setContentType("text/html; charset=UTF-8"); // JSP가 출력할 콘텐트의 MIME 타입 설정
+      //      request.getRequestDispatcher("/board/add.jsp").include(request, response); //JSP를 실행한 후 리턴된다.
 
       // Redirect:
       // - 클라이언트에게 콘텐트를 보내지 않는다.
@@ -59,7 +68,7 @@ public class BoardAddController extends HttpServlet{
 
       // (콘텐트 없음)
       // 자바 코드 
-      //      response.sendRedirect("list");
+      response.sendRedirect("list");
     } catch (Exception e) {
       request.setAttribute("exception", e);
       request.getRequestDispatcher("/error.jsp").forward(request, response); //JSP를 실행한 후 리턴된다.

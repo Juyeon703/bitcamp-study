@@ -22,10 +22,11 @@ public class BoardUpdateController extends HttpServlet{
   }
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
     try {
+      request.setCharacterEncoding("UTF-8");
       Board board = new Board();
       board.setNo(Integer.parseInt(request.getParameter("no")));
       board.setTitle(request.getParameter("title"));
@@ -63,9 +64,10 @@ public class BoardUpdateController extends HttpServlet{
       //      </html>
 
       // 자바코드 :
-      response.setHeader("Refresh", "1;url=list"); // 응답 헤더에 refresh 명령 삽입
-      response.setContentType("text/html; charset=UTF-8"); // JSP가 출력할 콘텐트의 MIME 타입 설정
-      request.getRequestDispatcher("/board/update.jsp").include(request, response); //JSP를 실행한 후 리턴된다.
+      //      response.setHeader("Refresh", "1;url=list"); // 응답 헤더에 refresh 명령 삽입
+      //      response.setContentType("text/html; charset=UTF-8"); // JSP가 출력할 콘텐트의 MIME 타입 설정
+      //      request.getRequestDispatcher("/board/update.jsp").include(request, response); //JSP를 실행한 후 리턴된다.
+      response.sendRedirect("list");
 
     } catch (Exception e) {
       request.setAttribute("exception", e);

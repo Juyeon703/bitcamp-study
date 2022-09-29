@@ -81,7 +81,7 @@ public class MariaDBBoardDao implements BoardDao {
   public List<Board> findAll() throws Exception {
     try (PreparedStatement pstmt = con.prepareStatement(
         "select b.bno, b.title, m.mno, m.name, b.cdt, b.vw_cnt "
-            + "from app_board b inner join app_member m on b.mno = m.mno" );
+            + "from app_board b inner join app_member m on b.mno = m.mno order by bno desc" );
         ResultSet rs = pstmt.executeQuery()) {
 
       ArrayList<Board> list = new ArrayList<>();
