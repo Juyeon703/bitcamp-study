@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
   pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,12 +10,11 @@
 <body>
   <h1>게시글 상세 정보(JSP+Servlet+EL)</h1>
   
-  <form action='update' method="post">
+  <form action='update' method="post" enctype="multipart/form-data">
     <table border='1'>
       <tr>
         <th>번호</th>
-        <td><input name='no' type='number' value='${board.no}'
-          readonly></td>
+        <td><input name='no' type='number' value='${board.no}' readonly></td>
       </tr>
       <tr>
         <th>제목</th>
@@ -37,10 +37,24 @@
         <th>등록일</th>
         <td>${board.createdDate}</td>
       </tr>
+      <tr>
+        <th>첨부파일</th>
+        <td><ul>
+        <c:forEach items="${board.attachedFiles}" var="file">
+        <li>
+        <a href="files/${file.filepath}">${file.filepath}</a>
+        [<a href="fileDelete?no=${file.no}">삭제</a>]
+        </li>
+        </c:forEach>
+        </ul>
+        파일추가: <input name='files' type='file' multiple>
+        </td>
+      </tr>
     </table>
     <p>
       <button type='submit'>변경</button>
       <a href='delete?no=${board.no}'>삭제</a>
+      <a href='list'>목록</a>
     </p>
   </form>
 </body>
