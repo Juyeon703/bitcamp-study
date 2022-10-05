@@ -1,23 +1,25 @@
 package com.bitcamp.board.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.bitcamp.board.dao.MemberDao;
+
 import com.bitcamp.board.domain.Member;
+import com.bitcamp.board.service.DefaultMemberService;
 
 @WebServlet("/member/add")
 public class MemberAddController extends HttpServlet{
   private static final long serialVersionUID = 1L;
 
-  MemberDao memberDao;
+  DefaultMemberService memberService;
 
   @Override
   public void init() {
-    memberDao = (MemberDao) this.getServletContext().getAttribute("memberDao");
+    memberService = (DefaultMemberService) this.getServletContext().getAttribute("memberService");
   }
 
   @Override
@@ -31,9 +33,8 @@ public class MemberAddController extends HttpServlet{
       member.setEmail(request.getParameter("email"));
       member.setPassword(request.getParameter("password"));
 
-      if (memberDao.insert(member) == 0) {
-        throw new Exception("회원을 등록할 수 없습니다!");
-      }
+      memberService.add(member);
+
       // Redirect:
       // - 클라이언트에게 콘텐트를 보내지 않는다.
       // - 응답 프로토콜

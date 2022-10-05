@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.bitcamp.board.domain.AttachedFile;
 import com.bitcamp.board.domain.Board;
 import com.bitcamp.board.domain.Member;
@@ -36,7 +37,7 @@ public class MariaDBBoardDao implements BoardDao {
         rs.next();
         board.setNo(rs.getInt(1));
       }
-      insertFiles(board);
+      //      insertFiles(board);
       return count;
     }
   }
@@ -91,13 +92,7 @@ public class MariaDBBoardDao implements BoardDao {
       pstmt.setString(2, board.getContent());
       pstmt.setInt(3, board.getNo());
 
-      int count = pstmt.executeUpdate();
-
-      // 게시글을 변경했다면 첨부파일 이름을 추갛ㄴ다.
-      if (count > 0) {
-        insertFiles(board);       
-      }
-      return count;
+      return pstmt.executeUpdate();
     }
   }
 
@@ -105,8 +100,8 @@ public class MariaDBBoardDao implements BoardDao {
   public int delete(int no) throws Exception {
     try (PreparedStatement pstmt = con.prepareStatement("delete from app_board where bno=?")) {
 
-      // 게시글의 첨부파일을 먼저 삭제한다.
-      deleteFiles(no);
+      //      // 게시글의 첨부파일을 먼저 삭제한다.
+      //      deleteFiles(no);
 
       pstmt.setInt(1, no);
       return pstmt.executeUpdate();

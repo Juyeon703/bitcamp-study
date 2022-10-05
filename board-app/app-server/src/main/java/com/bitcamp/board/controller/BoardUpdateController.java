@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -12,21 +13,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import com.bitcamp.board.dao.BoardDao;
+
 import com.bitcamp.board.domain.AttachedFile;
 import com.bitcamp.board.domain.Board;
 import com.bitcamp.board.domain.Member;
+import com.bitcamp.board.service.BoardService;
 
 @MultipartConfig(maxFileSize = 1024 * 1024 * 10) // 최대 10MB까지 업로드 허용
 @WebServlet("/board/update")
 public class BoardUpdateController extends HttpServlet{
   private static final long serialVersionUID = 1L;
 
-  BoardDao boardDao;
+  BoardService boardService;
 
   @Override
   public void init() {
-    boardDao = (BoardDao) this.getServletContext().getAttribute("boardDao");
+    boardService = (BoardService) this.getServletContext().getAttribute("boardService");
   }
 
   @Override
@@ -64,7 +66,7 @@ public class BoardUpdateController extends HttpServlet{
       Collection<Part> parts = request.getParts(); // 첨부파일만 넘어오는것이 아님
 
       for(Part part : parts) {
-        if (!part.getName().equals("files")) {
+        if (!part.getName().equals("files") || part.getSize() == 0) {
           continue;
         }
         // = if (part.getName().equals("files")) continue;
@@ -118,14 +120,20 @@ public class BoardUpdateController extends HttpServlet{
 
       // 게시글 작성자인지 검사한다.
       Member loginMember = (Member) request.getSession().getAttribute("loginMember");
-      if (boardDao.findByNo(board.getNo()).getWriter().getNo() != loginMember.getNo()) {
+      if (boardService.get(board.getNo()).getWriter().getNo() != loginMember.getNo()) {
         throw new Exception("게시글 작성자가 아닙니다.");
       }
 
-      if (boardDao.update(board) == 0) {
-        throw new Exception("게시글 변경 실패!");
+      //      // 게시글 변경
+      //      if (boardDao.update(board) == 0) {
+      //        throw new Exception("게시글 변경 실패!");
+      //      }
+      //
+      //      // 첨부파일 추가
+      //      boardDao.insertFiles(board);
+      if (!boardService.update(board)) {
+        throw new Exception("게시글 변경할 수 없습니다!");
       }
-
       // Refresh:
       // - 응답 헤더 또는 HTML 문서에 refresh를 삽입할 수 있다.
       // - 응답 프로토콜

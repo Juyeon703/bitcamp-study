@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -12,10 +13,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import com.bitcamp.board.dao.BoardDao;
+
 import com.bitcamp.board.domain.AttachedFile;
 import com.bitcamp.board.domain.Board;
 import com.bitcamp.board.domain.Member;
+import com.bitcamp.board.service.BoardService;
 
 // Servlet API에서 제공하는 multipart/form-data 처리기를 사용하려면
 // 서블릿에 다음 애노테이션으로 설정해야한다.
@@ -24,11 +26,11 @@ import com.bitcamp.board.domain.Member;
 public class BoardAddController extends HttpServlet{
   private static final long serialVersionUID = 1L;
 
-  BoardDao boardDao;
+  BoardService boardService;
 
   @Override
   public void init() {
-    boardDao = (BoardDao) this.getServletContext().getAttribute("boardDao");
+    boardService = (BoardService) this.getServletContext().getAttribute("boardService");
   }
 
   @Override
@@ -77,7 +79,7 @@ public class BoardAddController extends HttpServlet{
       Collection<Part> parts = request.getParts(); // 첨부파일만 넘어오는것이 아님
 
       for(Part part : parts) {
-        if (!part.getName().equals("files")) {
+        if (!part.getName().equals("files") || part.getSize() == 0) {
           continue;
         }
         // 다른 클라이언트가 보낸 파일명과 중복되지 않도록 임의의 새 파일명을 생성한다.
@@ -102,9 +104,15 @@ public class BoardAddController extends HttpServlet{
       Member loginMember = (Member)request.getSession().getAttribute("loginMember");
       board.setWriter(loginMember);
 
-      if (boardDao.insert(board) == 0) {
-        throw new Exception("게시글 등록 실패!");
-      }
+      //      if (boardDao.insert(board) == 0) {
+      //        throw new Exception("게시글 등록 실패!");
+      //      }
+      //
+      //      // 첨부파일 등록
+      //      boardDao.insertFiles(board);
+
+      // 서비스 객체에 업무를 맡긴다.
+      boardService.add(board);
 
       //JSP에게 UI생성을 위임한다.
       // Refresh:

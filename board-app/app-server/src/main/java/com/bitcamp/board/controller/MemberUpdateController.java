@@ -1,23 +1,25 @@
 package com.bitcamp.board.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.bitcamp.board.dao.MemberDao;
+
 import com.bitcamp.board.domain.Member;
+import com.bitcamp.board.service.DefaultMemberService;
 
 @WebServlet("/member/update")
 public class MemberUpdateController extends HttpServlet{
   private static final long serialVersionUID = 1L;
 
-  MemberDao memberDao;
+  DefaultMemberService memberService;
 
   @Override
   public void init() {
-    memberDao = (MemberDao) this.getServletContext().getAttribute("memberDao");
+    memberService = (DefaultMemberService) this.getServletContext().getAttribute("memberService");
   }
 
   @Override
@@ -32,7 +34,7 @@ public class MemberUpdateController extends HttpServlet{
       member.setEmail(request.getParameter("email"));
       member.setPassword(request.getParameter("password"));
 
-      if (memberDao.update(member) == 0) {
+      if (!memberService.update(member)) {
         throw new Exception("해당 번호의 회원이 없습니다.");
       }
       // Redirect:

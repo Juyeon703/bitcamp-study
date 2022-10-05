@@ -1,23 +1,25 @@
 package com.bitcamp.board.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.bitcamp.board.dao.BoardDao;
+
 import com.bitcamp.board.domain.Member;
+import com.bitcamp.board.service.BoardService;
 
 @WebServlet("/board/delete")
 public class BoardDeleteController extends HttpServlet{
   private static final long serialVersionUID = 1L;
 
-  BoardDao boardDao;
+  BoardService boardService;
 
   @Override
   public void init() {
-    boardDao = (BoardDao) this.getServletContext().getAttribute("boardDao");
+    boardService = (BoardService) this.getServletContext().getAttribute("boardService");
   }
 
   @Override
@@ -29,12 +31,20 @@ public class BoardDeleteController extends HttpServlet{
 
       // 작성자만 삭제할 수 있도록
       Member loginMember = (Member) request.getSession().getAttribute("loginMember");
-      if (boardDao.findByNo(no).getWriter().getNo() != loginMember.getNo()) {
+      if (boardService.get(no).getWriter().getNo() != loginMember.getNo()) {
         throw new Exception("게시글 작성자가 아닙니다.");
       }
 
-      if (boardDao.delete(no) == 0) {
-        throw new Exception("게시글 삭제 실패!");
+      //      // 첨부파일 삭제
+      //      boardDao.deleteFiles(no);
+      //
+      //      // 게시글 삭제 
+      //      if (boardDao.delete(no) == 0) {
+      //        throw new Exception("게시글 삭제 실패!");
+      //      }
+
+      if (!boardService.delete(no)) {
+        throw new Exception("게시글을 삭제할 수 없습니다!");
       }
 
       // Redirect:
