@@ -1,6 +1,7 @@
 package com.bitcamp.board.filter;
 
 import java.io.IOException;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -10,9 +11,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.bitcamp.board.domain.Member;
 
-@WebFilter("/member/*")
+@WebFilter("/service/member/*")
 public class AdminCheckFilter implements Filter{
 
   @Override

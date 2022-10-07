@@ -1,6 +1,7 @@
 package com.bitcamp.board.filter;
 
 import java.io.IOException;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -10,9 +11,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.bitcamp.board.domain.Member;
 
-@WebFilter("*")
+@WebFilter("/service/*")
 public class LoginCheckFilter implements Filter{
 
   @Override
@@ -42,7 +44,11 @@ public class LoginCheckFilter implements Filter{
     // 예) 요청 URL : http://localhost:8888/app/board/add?title=aaa&content=bbb
     //     서블릿 경로 : /board/add <== 웹 애플리케이션 경로
     //                          (http://localhost:8888/app, ?title=aaa&content=bbb)는 뺀다.
-    String servletPath = httpRequest.getServletPath();
+
+    //    String servletPath = httpRequest.getServletPath();
+    // URL 매핑이 "/service/*" 형식으로 되어 있을 때
+    // * 경로를 알아내려면 다음의 메서드를 호출해야 한다.
+    String servletPath = httpRequest.getPathInfo();
     //    System.out.println(servletPath);
 
     // 콘텐트를 등록, 변경, 삭제하는 경우 로그인 여부를 확인한다.
@@ -51,7 +57,7 @@ public class LoginCheckFilter implements Filter{
         servletPath.endsWith("delete")) {
       Member loginMember = (Member) httpRequest.getSession().getAttribute("loginMember");
       if (loginMember == null) { // 로그인 하지 않았다면
-        httpResponse.sendRedirect(httpRequest.getContextPath()/*/app 이름이 바뀔 경우가 있기 때문*/ +"/auth/form.jsp");
+        httpResponse.sendRedirect(httpRequest.getContextPath()/*/app 이름이 바뀔 경우가 있기 때문*/ +"/service/auth/form");
         return;
       }
     }

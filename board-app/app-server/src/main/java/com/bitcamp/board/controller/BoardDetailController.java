@@ -1,48 +1,33 @@
 package com.bitcamp.board.controller;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bitcamp.board.domain.Board;
 import com.bitcamp.board.service.BoardService;
+import com.bitcamp.servlet.Controller;
 
-@WebServlet("/board/detail")
-public class BoardDetailController extends HttpServlet{
-  private static final long serialVersionUID = 1L;
+public class BoardDetailController implements Controller{
 
   BoardService boardService;
 
-  @Override
-  public void init() {
-    boardService = (BoardService) this.getServletContext().getAttribute("boardService");
+  public BoardDetailController(BoardService boardService) {
+    this.boardService = boardService;
   }
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    try {
-      int boardNo = Integer.parseInt(request.getParameter("no"));
+  public String execute(HttpServletRequest request, HttpServletResponse response)
+      throws Exception {
+    int boardNo = Integer.parseInt(request.getParameter("no"));
 
-      Board board = boardService.get(boardNo);
+    Board board = boardService.get(boardNo);
 
-      if (board == null) {
-        throw new Exception ("해당 번호의 게시글이 없습니다");
-      }
-      // JSP가 사용할 수 있도록 ServletRequest 보관소에 저장한다.
-      request.setAttribute("board", board);
-
-      //JSP에게 UI생성을 위임한다.
-      response.setContentType("text/html; charset=UTF-8"); // JSP가 출력할 콘텐트의 MIME 타입 설정
-      request.getRequestDispatcher("/board/detail.jsp").include(request, response); //JSP를 실행한 후 리턴된다.
-
-    } catch (Exception e) {
-      request.setAttribute("exception", e);
-      request.getRequestDispatcher("/error.jsp").forward(request, response); //JSP를 실행한 후 리턴된다.
+    if (board == null) {
+      throw new Exception ("해당 번호의 게시글이 없습니다");
     }
+    // JSP가 사용할 수 있도록 ServletRequest 보관소에 저장한다.
+    request.setAttribute("board", board);
+
+    return "/board/detail.jsp";
   }
 }
