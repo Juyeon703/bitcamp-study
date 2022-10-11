@@ -5,14 +5,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.bitcamp.board.domain.Member;
 import com.bitcamp.board.service.MemberService;
-import com.bitcamp.servlet.Controller;
 
-@Component("/auth/login")
-public class LoginController implements Controller {
+@Controller // 페이지 컨트롤러에 붙이는 애노테이션
+public class LoginController {
 
   MemberService memberService;
 
@@ -20,7 +20,7 @@ public class LoginController implements Controller {
     this.memberService = memberService;
   }
 
-  @Override
+  @PostMapping("/auth/login") // 요청이 들어 왔을 때 호출될 메서드에 붙이는 애노테이션
   public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
     String email = request.getParameter("email");
     String password = request.getParameter("password");

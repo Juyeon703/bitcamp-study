@@ -2,16 +2,13 @@ package com.bitcamp.board.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.bitcamp.board.dao.MemberDao;
 import com.bitcamp.board.domain.Member;
 
-@Component  
-//- 이 애노테이션을 붙이면 Spring IoC 컨테이너가 객체를 자동 생성한다.
-//- 객체의 이름을 명시하지 않으면 클래스 이름(첫 알파벳은 소문자 예) "defaultMemberService")을 사용하여 저장한다.
-//- 물론 생성자의 파라미터 값을 자동으로 주입한다.
-//- 파라미터에 해당하는 객체가 없다면 생성 오류가 발생한다.
+@Service
+//@Component를 DAO 역할을 수행하는 객체에 붙이는 애노테이션으로 변경한다.
 public class DefaultMemberService implements MemberService {
   MemberDao memberDao;
 
