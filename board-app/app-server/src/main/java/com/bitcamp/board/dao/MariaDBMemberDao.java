@@ -5,16 +5,23 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bitcamp.board.domain.Member;
-import com.bitcamp.sql.DataSource;
+import javax.sql.DataSource;
 
+import org.springframework.stereotype.Component;
+
+import com.bitcamp.board.domain.Member;
+
+@Component  
+//- 이 애노테이션을 붙이면 Spring IoC 컨테이너가 객체를 자동 생성한다.
+//- 객체의 이름을 명시하지 않으면 클래스 이름(첫 알파벳은 소문자 예) "mariaDBMemberDao")을 사용하여 저장한다.
+//- 물론 생성자의 파라미터 값을 자동으로 주입한다.
+//- 파라미터에 해당하는 객체가 없다면 생성 오류가 발생한다.
 public class MariaDBMemberDao implements MemberDao {
 
-  //  Connection con;
   DataSource ds;
 
-  // DAO가 사용할 의존 객체 Connection을 생성자의 파라미터로 받는다.
   public MariaDBMemberDao(DataSource ds) {
+    System.out.println("MariaDBMemberDao() 호출됨!");
     this.ds = ds;
   }
 
@@ -121,12 +128,11 @@ public class MariaDBMemberDao implements MemberDao {
     }
   }
 
-
   @Override
-  public Member findByEmailPassword(String email, String password) throws Exception{
+  public Member findByEmailPassword(String email, String password) throws Exception {
     try (PreparedStatement pstmt = ds.getConnection().prepareStatement(
-        "select mno,name,email,cdt from app_member where email=? and pwd=sha2(?,256)");
-        ) {
+        "select mno,name,email,cdt from app_member where email=? and pwd=sha2(?,256)")) {
+
       pstmt.setString(1, email);
       pstmt.setString(2, password);
 

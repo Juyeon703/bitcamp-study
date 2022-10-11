@@ -52,9 +52,9 @@ public class LoginCheckFilter implements Filter{
     //    System.out.println(servletPath);
 
     // 콘텐트를 등록, 변경, 삭제하는 경우 로그인 여부를 확인한다.
-    if (servletPath.endsWith("add") || // 경로 끝이 add, update, delete으로 끝난다면
-        servletPath.endsWith("update") ||
-        servletPath.endsWith("delete")) {
+    if (servletPath.toLowerCase().endsWith("add") || // 경로 끝이 add, update, delete으로 끝난다면
+        servletPath.toLowerCase().endsWith("update") ||
+        servletPath.toLowerCase().endsWith("delete")) {
       Member loginMember = (Member) httpRequest.getSession().getAttribute("loginMember");
       if (loginMember == null) { // 로그인 하지 않았다면
         httpResponse.sendRedirect(httpRequest.getContextPath()/*/app 이름이 바뀔 경우가 있기 때문*/ +"/service/auth/form");

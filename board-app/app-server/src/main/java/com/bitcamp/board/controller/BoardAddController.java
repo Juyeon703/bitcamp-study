@@ -5,10 +5,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+
+import org.springframework.stereotype.Component;
 
 import com.bitcamp.board.domain.AttachedFile;
 import com.bitcamp.board.domain.Board;
@@ -18,7 +19,11 @@ import com.bitcamp.servlet.Controller;
 
 // Servlet API에서 제공하는 multipart/form-data 처리기를 사용하려면
 // 서블릿에 다음 애노테이션으로 설정해야한다.
-@MultipartConfig(maxFileSize = 1024 * 1024 * 10) // 최대 10MB까지 업로드 허용
+//@MultipartConfig(maxFileSize = 1024 * 1024 * 10) // 최대 10MB까지 업로드 허용
+@Component("/board/add")
+// 애노테이션을 붙일 때 객체 이름을 명시하면 그 이름으로 저장한다.
+// 프론트 컨트롤러는 페이지 컨트롤러를 찾을 때 이 이름으로 찾을 것이다.
+// value 값을 한개만 지정할 때는 생략할 수 있다.
 public class BoardAddController implements Controller{
 
   BoardService boardService;

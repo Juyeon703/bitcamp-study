@@ -3,9 +3,12 @@ package com.bitcamp.board.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.stereotype.Component;
+
 import com.bitcamp.board.service.MemberService;
 import com.bitcamp.servlet.Controller;
 
+@Component("/member/delete")
 public class MemberDeleteController implements Controller{
 
   MemberService memberService;

@@ -5,10 +5,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.stereotype.Component;
+
 import com.bitcamp.board.domain.Member;
 import com.bitcamp.board.service.MemberService;
 import com.bitcamp.servlet.Controller;
 
+@Component("/member/list")
 public class MemberListController implements Controller{
   MemberService memberService;
 
