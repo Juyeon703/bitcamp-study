@@ -1,22 +1,22 @@
 package com.bitcamp.board.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import com.bitcamp.board.domain.AttachedFile;
 import com.bitcamp.board.domain.Board;
 import com.bitcamp.board.domain.Member;
@@ -27,10 +27,13 @@ import com.bitcamp.board.service.BoardService;
 @RequestMapping("/board/")
 public class BoardController {
 
+  // 서블릿 컨텍스트는 파라미터로 주입받을 수 없고 생성자를 통해 주입받는다.
+  ServletContext sc;
   BoardService boardService;
 
-  public BoardController(BoardService boardService) {
+  public BoardController(BoardService boardService, ServletContext sc) {
     this.boardService = boardService;
+    this.sc = sc;
   }
 
   @GetMapping("form") // 요청이 들어 왔을 때 호출될 메서드에 붙이는 애노테이션
@@ -40,15 +43,17 @@ public class BoardController {
 
   @PostMapping("add") 
   public String add(
-      @RequestParam("title") String title, 
-      @RequestParam("content") String content, 
-      HttpServletRequest request,
+      //@RequestParam("title") String title, 파라미터명과 변수명이 같다면? 생략 가능
+      //      String title,
+      //      String content, 
+      Board board,
+      @RequestParam("files") MultipartFile[] files,
       HttpSession session) throws Exception {
 
-    Board board = new Board();
-    board.setTitle(title);
-    board.setContent(content);
-    board.setAttachedFiles(saveAttachedfiles(request));
+    //    Board board = new Board();
+    //    board.setTitle(title);
+    //    board.setContent(content);
+    board.setAttachedFiles(saveAttachedfiles(files));
     board.setWriter((Member) session.getAttribute("loginMember"));
 
     boardService.add(board);
@@ -57,11 +62,10 @@ public class BoardController {
 
   }
 
-  private List<AttachedFile> saveAttachedfiles(HttpServletRequest request) throws IOException, ServletException {
+  private List<AttachedFile> saveAttachedfiles(Part[] files) throws IOException, ServletException {
     List<AttachedFile> attachedFiles = new ArrayList<>();
-    String dirPath = request.getServletContext().getRealPath("/board/files");
-    Collection<Part> parts = request.getParts(); 
-    for(Part part : parts) {
+    String dirPath = sc.getRealPath("/board/files");
+    for(Part part : files) {
       if (!part.getName().equals("files") || part.getSize() == 0) {
         continue;
       }
@@ -72,42 +76,54 @@ public class BoardController {
     return attachedFiles;
   }
 
+  private List<AttachedFile> saveAttachedfiles(MultipartFile[] files) throws IOException, ServletException {
+    List<AttachedFile> attachedFiles = new ArrayList<>();
+    String dirPath = sc.getRealPath("/board/files");
+    for(MultipartFile part : files) {
+      if (part.isEmpty()) {
+        continue;
+      }
+      String filename = UUID.randomUUID().toString();
+      part.transferTo(new File(dirPath + "/" + filename));
+      attachedFiles.add(new AttachedFile(filename));
+    }
+    return attachedFiles;
+  }
+
   @GetMapping("list") // 요청이 들어 왔을 때 호출될 메서드에 붙이는 애노테이션
-  public String list(HttpServletRequest req)
-      throws Exception {
-    req.setAttribute("boards", boardService.list());
-    return "/board/list.jsp";
+  public ModelAndView list() throws Exception {
+    ModelAndView mv = new ModelAndView();
+    mv.addObject("boards", boardService.list());
+    mv.setViewName("/board/list.jsp");
+    return mv;
   }
 
   @GetMapping("detail") // 요청이 들어 왔을 때 호출될 메서드에 붙이는 애노테이션
-  public String detail(
-      @RequestParam("no") int no,
-      HttpServletRequest request)
-          throws Exception {
+  public ModelAndView detail(int no) throws Exception {
 
     Board board = boardService.get(no);
 
     if (board == null) {
       throw new Exception ("해당 번호의 게시글이 없습니다");
     }
-    // JSP가 사용할 수 있도록 ServletRequest 보관소에 저장한다.
-    request.setAttribute("board", board);
-
-    return "/board/detail.jsp";
+    ModelAndView mv = new ModelAndView();
+    mv.addObject("board", board);
+    mv.setViewName("/board/detail.jsp");
+    return mv;
   }
 
   @PostMapping("update") // 요청이 들어 왔을 때 호출될 메서드에 붙이는 애노테이션
   public String update(
-      @RequestParam("no") int no,
-      @RequestParam("title") String title,
-      @RequestParam("content") String content,
-      HttpServletRequest request,
+      int no,
+      String title,
+      String content,
+      Part[] files,
       HttpSession session) throws Exception {
     Board board = new Board();
     board.setNo(no);
     board.setTitle(title);
     board.setContent(content);
-    board.setAttachedFiles(saveAttachedfiles(request));
+    board.setAttachedFiles(saveAttachedfiles(files));
 
     checkOwner(board.getNo(), session);
 
@@ -126,7 +142,7 @@ public class BoardController {
 
   @GetMapping("delete") // 요청이 들어왔을 때 호출될 메서드에 붙이는 애노테이션
   public String delete(
-      @RequestParam("no") int no,
+      int no,
       HttpServletRequest request,
       HttpSession session) throws Exception {
 
@@ -140,7 +156,7 @@ public class BoardController {
 
   @GetMapping("fileDelete") // 요청이 들어 왔을 때 호출될 메서드에 붙이는 애노테이션
   public String fileDelete(
-      @RequestParam("no") int no,
+      int no,
       HttpServletRequest request,
       HttpSession session) throws Exception {
 

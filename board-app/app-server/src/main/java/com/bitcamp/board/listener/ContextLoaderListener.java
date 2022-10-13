@@ -34,7 +34,8 @@ public class ContextLoaderListener implements ServletContextListener {
       AnnotationConfigWebApplicationContext iocContainer = 
           new AnnotationConfigWebApplicationContext();
       iocContainer.register(AppConfig.class);
-      iocContainer.refresh(); // 자바 config 클래스(AppConfig)에 설정된 대로 객체를 설정한다.
+      //iocContainer.refresh(); // 자바 config 클래스(AppConfig)에 설정된 대로 객체를 설정한다.
+      // refresh는 webcontext가 아닌 그냥 context 사용시 필요했던거임
       ServletContext ctx = sce.getServletContext();
 
       // 자바 코드로 서블릿 객체를 직접 생성하여 서버에 등록하기
