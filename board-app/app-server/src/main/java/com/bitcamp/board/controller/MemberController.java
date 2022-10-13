@@ -1,5 +1,6 @@
 package com.bitcamp.board.controller;
 
+import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +20,7 @@ public class MemberController {
   }
 
   @GetMapping("form") // 요청이 들어 왔을 때 호출될 메서드에 붙이는 애노테이션
-  public String form() throws Exception {
-    return "/member/form.jsp";
+  public void form() throws Exception {
   }
 
   @PostMapping("add") // 요청이 들어 왔을 때 호출될 메서드에 붙이는 애노테이션
@@ -36,7 +36,7 @@ public class MemberController {
   }
 
   @GetMapping("list") // 요청이 들어 왔을 때 호출될 메서드에 붙이는 애노테이션
-  public String list(Model model) throws Exception {
+  public void list(Model model) throws Exception {
     // 프론트 컨트롤러가 건네준 Model 객체에 작업 결과를 담아 두면
     // 핸들러 호출이 끝났을 때  JSP를 실행하기 전에
     // 먼저 Model 객체에 담아둔 값을 ServletRequest 보관소로 옮긴다.
@@ -44,12 +44,10 @@ public class MemberController {
     //    List<Member> members = memberService.list();
     //    // JSP가 사용할 수 있도록 ServletRequest 보관소에 저장한다.
     //    request.setAttribute("members", members);
-
-    return "/member/list.jsp";
   }
 
   @GetMapping("detail") // 요청이 들어 왔을 때 호출될 메서드에 붙이는 애노테이션
-  public String detail(int no, Model model) throws Exception {
+  public void detail(int no, Map map) throws Exception {
     //    int no = Integer.parseInt(request.getParameter("no"));
     Member member = memberService.get(no);
 
@@ -57,9 +55,7 @@ public class MemberController {
       throw new Exception("해당 번호의 회원이 없습니다.");
     }
     // JSP가 사용할 수 있도록 ServletRequest 보관소에 저장한다.
-    model.addAttribute("member", member);
-
-    return "/member/detail.jsp";
+    map.put("member", member);
   }
 
   @PostMapping("update") // 요청이 들어 왔을 때 호출될 메서드에 붙이는 애노테이션

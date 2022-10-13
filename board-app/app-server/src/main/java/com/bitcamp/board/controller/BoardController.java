@@ -3,7 +3,9 @@ package com.bitcamp.board.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -11,12 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import com.bitcamp.board.domain.AttachedFile;
 import com.bitcamp.board.domain.Board;
 import com.bitcamp.board.domain.Member;
@@ -36,9 +38,15 @@ public class BoardController {
     this.sc = sc;
   }
 
+  // InternalResourceViewResolver  사용 전
+  //  @GetMapping("form") // 요청이 들어 왔을 때 호출될 메서드에 붙이는 애노테이션
+  //  public String form() throws Exception {
+  //    return "board/form";
+  //  }
+
+  // InternalResourceViewResolver  사용 후
   @GetMapping("form") // 요청이 들어 왔을 때 호출될 메서드에 붙이는 애노테이션
-  public String form() throws Exception {
-    return "/board/form.jsp";
+  public void form() throws Exception {
   }
 
   @PostMapping("add") 
@@ -91,25 +99,22 @@ public class BoardController {
   }
 
   @GetMapping("list") // 요청이 들어 왔을 때 호출될 메서드에 붙이는 애노테이션
-  public ModelAndView list() throws Exception {
-    ModelAndView mv = new ModelAndView();
-    mv.addObject("boards", boardService.list());
-    mv.setViewName("/board/list.jsp");
-    return mv;
+  public void list(Model model) throws Exception {
+    model.addAttribute("boards", boardService.list());
+    //mv.setViewName("board/list");
   }
 
   @GetMapping("detail") // 요청이 들어 왔을 때 호출될 메서드에 붙이는 애노테이션
-  public ModelAndView detail(int no) throws Exception {
+  public Map detail(int no) throws Exception {
 
     Board board = boardService.get(no);
 
     if (board == null) {
       throw new Exception ("해당 번호의 게시글이 없습니다");
     }
-    ModelAndView mv = new ModelAndView();
-    mv.addObject("board", board);
-    mv.setViewName("/board/detail.jsp");
-    return mv;
+    Map map = new HashMap();
+    map.put("board", board);
+    return map;
   }
 
   @PostMapping("update") // 요청이 들어 왔을 때 호출될 메서드에 붙이는 애노테이션
