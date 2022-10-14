@@ -6,14 +6,12 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletRegistration.Dynamic;
 import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebListener;
-
-import com.bitcamp.servlet.DispatcherServlet;
+import org.springframework.web.servlet.DispatcherServlet;
 
 // 웹애플리케이션이 시작되었을 때 공유할 자원을 준비시키거나 해제하는 일을 한다.
-@WebListener
+//@WebListener
 @MultipartConfig(maxFileSize = 1024 * 1024 * 10)
-public class ContextLoaderListener implements ServletContextListener {
+public class ContextLoaderListener2 implements ServletContextListener {
 
   @Override
   public void contextInitialized(ServletContextEvent sce) {
