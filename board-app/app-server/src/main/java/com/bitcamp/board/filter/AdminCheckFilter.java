@@ -32,15 +32,15 @@ public class AdminCheckFilter implements Filter{
     // 요청 URL에 따라 필터가 동작하도록 설정할 수 없다.
     // 필터 코드 안에서 URL을 제어해야 한다.
     // 그래서 다음 코드에 if() {} 문이 있는 것이다.
-    if (httpRequest.getPathInfo().startsWith("/member")) { 
-      System.out.println("AdminCheckFilter.doFilter() 실행");
-      Member loginMember = (Member) httpRequest.getSession().getAttribute("loginMember");
-      // filter 순서는 제어할 수 없음
-      if (loginMember == null || !loginMember.getEmail().equals("admin@test.com")) { // 로그인이 안되었거나 관리자가 아니라면
-        httpResponse.sendRedirect(httpRequest.getContextPath() +"/");
-        return;
-      }
+    //     if (httpRequest.getPathInfo().startsWith("/member")) { // 프론트 컨트롤러를 쪼개서 이제 무조건 실행하면 되기 때문에 삭제
+    System.out.println("AdminCheckFilter.doFilter() 실행");
+    Member loginMember = (Member) httpRequest.getSession().getAttribute("loginMember");
+    // filter 순서는 제어할 수 없음
+    if (loginMember == null || !loginMember.getEmail().equals("admin@test.com")) { // 로그인이 안되었거나 관리자가 아니라면
+      httpResponse.sendRedirect(httpRequest.getContextPath() +"/");
+      return;
     }
+
 
     chain.doFilter(request, response);
   }

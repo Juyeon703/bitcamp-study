@@ -15,7 +15,7 @@
 <!-- <c:set  var="contextPath" value="${pageContext.servletContext.contextPath}"/> -->
 <ul>
   <li><a href='${contextPath}/app/board/list'>게시글</a></li>
-  <li><a href='${contextPath}/app/member/list'>회원</a></li>
+  <li><a href='${contextPath}/admin/member/list'>회원</a></li>
   <!-- 
   HttpSession clientSession = request.getSession();
   Member member = (Member) clientSession.getAttribute("loginMember");

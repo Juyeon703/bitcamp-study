@@ -21,8 +21,8 @@ public class AppWebApplicationInitializer extends AbstractAnnotationConfigDispat
   // 그럼 우리가 해야 할 일은 그 컨테이너가 사용할 클래스 정보만 알려주면 된다.
   @Override
   protected Class<?>[] getRootConfigClasses() {
-    return new Class<?>[] {RootConfig.class, DatabaseConfig.class, MybatisConfig.class};
-  } // 여기서 설정한 IoC 컨테이너는 나머지 프론트컨트롤러가 다 공유함
+    return new Class<?>[] {RootConfig.class, DatabaseConfig.class};
+  }
 
 
   // 수퍼클래스에서 DispatcherServlet을 준비할 때 사용할 서블릿 이름을 리턴한다.
