@@ -137,6 +137,12 @@
       bno=#{value}
   </delete>
   
+  <delete id="deleteFilesByMemberBoards">
+    delete from 
+      app_board_file
+    where bno in (select bno from app_board where mno=#{value})
+  </delete>
+  
   <select id="findAll" resultMap="boardMap">
   select
     b.bno,

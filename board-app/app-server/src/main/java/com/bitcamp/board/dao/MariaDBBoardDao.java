@@ -6,12 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
 import org.mariadb.jdbc.Statement;
-import org.springframework.stereotype.Repository;
 import com.bitcamp.board.domain.AttachedFile;
 import com.bitcamp.board.domain.Board;
 import com.bitcamp.board.domain.Member;
 
-@Repository
+//@Repository
 //@Component를 DAO 역할을 수행하는 객체에 붙이는 애노테이션으로 변경한다.
 // - 이 애노테이션을 붙이면 Spring IoC 컨테이너가 객체를 자동 생성한다.
 // - 객체의 이름을 명시하지 않으면 클래스 이름(첫 알파벳은 소문자 (예) "mariaDBboardDao")을 사용하여 저장한다.

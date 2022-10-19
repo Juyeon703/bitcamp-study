@@ -1,7 +1,6 @@
 package com.bitcamp.board.dao;
 
 import java.util.List;
-import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import com.bitcamp.board.domain.Board;
 // - 물론 생성자의 파라미터 값을 자동으로 주입한다.
 // - 파라미터에 해당하는 객체가 없다면 생성 오류가 발생한다.
 public class MybatisBoardDao implements BoardDao {
-  @Autowired DataSource ds;
   @Autowired SqlSessionFactory sqlSessionFactory;
 
   @Override
@@ -69,6 +67,13 @@ public class MybatisBoardDao implements BoardDao {
   }
 
   @Override
+  public int deleteByMember(int memberNo) throws Exception {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      return sqlSession.delete("BoardDao.deleteByMember", memberNo);
+    }
+  }
+
+  @Override
   public List<Board> findAll() throws Exception {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       return sqlSession.selectList(
@@ -109,6 +114,13 @@ public class MybatisBoardDao implements BoardDao {
   public int deleteFiles(int boardNo) throws Exception {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       return sqlSession.delete("BoardDao.deleteFiles", boardNo);
+    }
+  }
+
+  @Override
+  public int deleteFilesByMemberBoards(int memberNo) throws Exception {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      return sqlSession.delete("BoardDao.deleteFilesByMemberBoards", memberNo);
     }
   }
 }
