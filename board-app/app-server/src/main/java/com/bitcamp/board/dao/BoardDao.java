@@ -1,9 +1,13 @@
 package com.bitcamp.board.dao;
 
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
 import com.bitcamp.board.domain.AttachedFile;
 import com.bitcamp.board.domain.Board;
 
+@Mapper
 public interface BoardDao {
 
   int insert(Board board);
