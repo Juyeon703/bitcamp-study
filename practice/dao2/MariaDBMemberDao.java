@@ -1,20 +1,20 @@
-package com.bitcamp.board.dao;
+package dao2;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.sql.DataSource;
 import com.bitcamp.board.domain.Member;
-import com.bitcamp.sql.DataSource;
 
+// @Repository
+//@Component를 DAO 역할을 수행하는 객체에 붙이는 애노테이션으로 변경한다.
 public class MariaDBMemberDao implements MemberDao {
 
-  //  Connection con;
   DataSource ds;
 
-  // DAO가 사용할 의존 객체 Connection을 생성자의 파라미터로 받는다.
   public MariaDBMemberDao(DataSource ds) {
+    System.out.println("MariaDBMemberDao() 호출됨!");
     this.ds = ds;
   }
 
@@ -121,12 +121,11 @@ public class MariaDBMemberDao implements MemberDao {
     }
   }
 
-
   @Override
-  public Member findByEmailPassword(String email, String password) throws Exception{
+  public Member findByEmailPassword(String email, String password) throws Exception {
     try (PreparedStatement pstmt = ds.getConnection().prepareStatement(
-        "select mno,name,email,cdt from app_member where email=? and pwd=sha2(?,256)");
-        ) {
+        "select mno,name,email,cdt from app_member where email=? and pwd=sha2(?,256)")) {
+
       pstmt.setString(1, email);
       pstmt.setString(2, password);
 

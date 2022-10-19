@@ -1,4 +1,4 @@
-package com.bitcamp.board.dao;
+package dao2;
 
 import java.util.List;
 import org.apache.ibatis.session.SqlSession;

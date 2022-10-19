@@ -1,4 +1,4 @@
-package com.bitcamp.board.dao;
+package dao1;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
