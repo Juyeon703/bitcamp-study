@@ -14,7 +14,11 @@ dependencies {
     // spring-jdbc 관련 라이브러리
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     // spring-webMVC 관련 라이브러리
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation ('org.springframework.boot:spring-boot-starter-web') {
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+    // undertow 서블릿컨테이너
+    implementation 'org.springframework.boot:spring-boot-starter-undertow'
     // Thymeleaf 관련 라이브러리
      implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     // mybatis-spring 관련 라이브러리
