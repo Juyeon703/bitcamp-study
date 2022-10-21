@@ -15,6 +15,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     // spring-webMVC 관련 라이브러리
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    // Thymeleaf 관련 라이브러리
+     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     // mybatis-spring 관련 라이브러리
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
     // mariadb jdbc drive 관련 라이브러리 
@@ -23,19 +25,6 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     // 단위테스트 관련 라이브러리
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-    //// implementation 'com.google.guava:guava:30.1.1-jre'
-    //// implementation 'com.google.code.gson:gson:2.9.1'
-    //// implementation 'org.reflections:reflections:0.10.2' 
-     
-    // JSTL 명세를 구현한 라이브러리
-    implementation 'javax.servlet:jstl:1.2'
-   
-   // 임베디드용 톰캣서버 라이브러리(jasper는 core, jsp 처리해주는 등 여러 기능 포함)
-   // SpringBoot는 기본으로 tomcat-embed-core 라이브러리만 포함한다.
-   // 따라서 JSP 엔진이 포함되지 않는다.
-   // 그래서 다음과 같이 직접 JSP 엔진 라이브러리를 포함시켜야 한다.
-  // implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.68'
 }
 
 // 단위 테스트에 사용할 라이브러리를 지정한다.

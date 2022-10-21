@@ -17,7 +17,6 @@ import com.bitcamp.board.domain.Board;
 public class DefaultBoardService implements BoardService {
 
   @Autowired 
-  //  @Qualifier("mybatisBoardDao") 
   BoardDao boardDao;
 
   @Transactional
